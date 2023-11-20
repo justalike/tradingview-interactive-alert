@@ -46,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Fetch candle data when the page is fully loaded
   fetchCandleData(defaultSymbol, defaultTimeframe);
+  fetchAllLineData(defaultSymbol, defaultTimeframe);
 });
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
@@ -284,6 +285,34 @@ function fetchCandleData(symbol, timeframe) {
 
       // Update the candle series on the chart
       candleSeries.setData(formattedData);
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+    });
+}
+function fetchAllLineData(symbol, timeframe) {
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
+
+  fetch(apiUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      if (data.extremum) {
+        extremaData = data.extremum; 
+        updateChartWithData(data.extremum);
+      }
+
+      if (data.wave) {
+        updateWaveSeries(data.wave);
+      }
+
+      if (data.trends) {
+        updateChartWithTrendData(data.trends);
+      }
     })
     .catch(error => {
       console.error('Fetch error:', error);
