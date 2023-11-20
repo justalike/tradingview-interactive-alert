@@ -272,7 +272,7 @@ async function fetchCandleData(symbol, timeframe) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-     const data = response.json();
+     const data = await response.json();
    
       const formattedData = data.map(candle => ({
         time: candle.timestamp / 1000,
@@ -291,7 +291,7 @@ async function fetchCandleData(symbol, timeframe) {
 async function fetchAllLineData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
     try{
-  const response = fetch(apiUrl)
+  const response = await fetch(apiUrl)
     
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
