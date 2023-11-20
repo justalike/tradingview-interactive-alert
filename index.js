@@ -42,7 +42,7 @@ waveSeries = chart.addLineSeries();
 document.addEventListener('DOMContentLoaded', () => {
   // Set default values for symbol and timeframe
   const defaultSymbol = 'BTC/USDT';
-  const defaultTimeframe = '1m';
+  const defaultTimeframe = '1h';
   
   // Fetch candle data when the page is fully loaded
   fetchCandleData(defaultSymbol, defaultTimeframe);
