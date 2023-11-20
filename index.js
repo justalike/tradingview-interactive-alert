@@ -33,11 +33,20 @@ let trendLineSeries = [];
 const domElement = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(domElement, chartProperties);
 const candleSeries = chart.addCandlestickSeries()
-const fetchedData = fetchCandleData("BTC/USDT", "1m");
-
+//const fetchedData = fetchCandleData("BTC/USDT", "1m");
 // Initialize the line series and assign it to the global variable
 lineSeries = chart.addLineSeries();
 waveSeries = chart.addLineSeries();
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Set default values for symbol and timeframe
+  const defaultSymbol = 'BTC/USDT';
+  const defaultTimeframe = '1m';
+  
+  // Fetch candle data when the page is fully loaded
+  fetchCandleData(defaultSymbol, defaultTimeframe);
+});
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
   const file = event.target.files[0];
@@ -253,8 +262,6 @@ function updateWaveSeries(data) {
   waveSeries.setData(seriesData);
 }
 
-
-
 function fetchCandleData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/data?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
 
@@ -266,9 +273,17 @@ function fetchCandleData(symbol, timeframe) {
       return response.json();
     })
     .then(data => {
-      console.log(data[0])
+      // Assuming 'data' is an array of candle objects
+      const formattedData = data.map(candle => ({
+        time: candle.timestamp / 1000, // Adjust if your API uses a different timestamp format
+        open: parseFloat(candle.open),
+        high: parseFloat(candle.high),
+        low: parseFloat(candle.low),
+        close: parseFloat(candle.close),
+      }));
 
-      candleSeries.setData(data);
+      // Update the candle series on the chart
+      candleSeries.setData(formattedData);
     })
     .catch(error => {
       console.error('Fetch error:', error);
