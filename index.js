@@ -39,14 +39,14 @@ lineSeries = chart.addLineSeries();
 waveSeries = chart.addLineSeries();
 
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   // Set default values for symbol and timeframe
   const defaultSymbol = 'BTC/USDT';
   const defaultTimeframe = '1h';
   
   // Fetch candle data when the page is fully loaded
-  fetchCandleData(defaultSymbol, defaultTimeframe);
-  fetchAllLineData(defaultSymbol, defaultTimeframe);
+  await fetchCandleData(defaultSymbol, defaultTimeframe);
+  await fetchAllLineData(defaultSymbol, defaultTimeframe);
 });
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
@@ -195,7 +195,7 @@ function updateWaveSeries(data) {
       
       // If next doesn't exist, just push current and break
       if (!next) {
-        //processedData.push(current);
+        processedData.push(current);
         console.log(`Found null next! ${i}`);
         console.log(data[i]);
         break;
@@ -263,44 +263,41 @@ function updateWaveSeries(data) {
   waveSeries.setData(seriesData);
 }
 
-function fetchCandleData(symbol, timeframe) {
+async function fetchCandleData(symbol, timeframe) {
+  try{
   const apiUrl = `https://test-api-one-phi.vercel.app/api/data?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
 
-  fetch(apiUrl)
-    .then(response => {
+  const response = await fetch(apiUrl)
+   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return response.json();
-    })
-    .then(data => {
-      // Assuming 'data' is an array of candle objects
+     const data = response.json();
+   
       const formattedData = data.map(candle => ({
-        time: candle.timestamp / 1000, // Adjust if your API uses a different timestamp format
+        time: candle.timestamp / 1000,
         open: parseFloat(candle.open),
         high: parseFloat(candle.high),
         low: parseFloat(candle.low),
         close: parseFloat(candle.close),
       }));
 
-      // Update the candle series on the chart
       candleSeries.setData(formattedData);
-    })
-    .catch(error => {
+   
+    } catch(error) {
       console.error('Fetch error:', error);
-    });
+    }
 }
-function fetchAllLineData(symbol, timeframe) {
+async function fetchAllLineData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
-
-  fetch(apiUrl)
-    .then(response => {
+    try{
+  const response = fetch(apiUrl)
+    
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      return response.json();
-    })
-    .then(data => {
+      const data = await response.json();
+    
       if (data.extremum) {
         extremaData = data.extremum; 
         updateChartWithData(data.extremum);
@@ -313,8 +310,8 @@ function fetchAllLineData(symbol, timeframe) {
       if (data.trends) {
         updateChartWithTrendData(data.trends);
       }
-    })
-    .catch(error => {
+   
+    } catch(error) {
       console.error('Fetch error:', error);
-    });
+    };
 }
