@@ -335,10 +335,10 @@ async function getQueryParams() {
 // Function to initialize the chart with data based on URL parameters
 async function initializeChartWithData() {
   try{
-  const { symbol, timeframe } = getQueryParams();
+  const { symbol, timeframe } = await getQueryParams();
     console.log(symbol, timeframe)
   if (symbol && timeframe) {
-    
+
     await fetchCandleData(symbol, timeframe);
     await fetchAllLineData(symbol, timeframe);
    
