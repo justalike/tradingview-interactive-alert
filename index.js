@@ -164,7 +164,7 @@ function updateChartWithData(data) {
       value: item.value,
     };
   }).filter(item => item !== null); // Filter out invalid items
-  
+
   lineSeries.setData(lineData);
 
   // Prepare the data for the markers
@@ -297,7 +297,7 @@ async function fetchAllLineData(symbol, timeframe) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-    
+      
       if (data.extremum) {
         extremaData = data.extremum; 
         updateChartWithData(data.extremum);
@@ -317,7 +317,8 @@ async function fetchAllLineData(symbol, timeframe) {
 }
 
 // Function to parse query parameters
-function getQueryParams() {
+async function getQueryParams() {
+  try{ 
   console.log(`Getting query parameters`)
   const queryParams = {};
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -326,6 +327,9 @@ function getQueryParams() {
   }
   console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
   return queryParams;
+} catch (error) {
+  console.error('Error getting query parameters:', error);
+ }
 }
 
 // Function to initialize the chart with data based on URL parameters
@@ -334,8 +338,10 @@ async function initializeChartWithData() {
   const { symbol, timeframe } = getQueryParams();
     console.log(symbol, timeframe)
   if (symbol && timeframe) {
-    await fetchAllLineData(symbol, timeframe);
+    
     await fetchCandleData(symbol, timeframe);
+    await fetchAllLineData(symbol, timeframe);
+   
   } else {
   
   await fetchCandleData("BTC/USDT", "1h");
