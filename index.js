@@ -40,87 +40,87 @@ waveSeries = chart.addLineSeries();
 
 document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
-document.getElementById('dataFile').addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const rawData = JSON.parse(e.target.result);
-        const formattedData = rawData.map(entry => ({
-          time: entry.timestamp / 1000,
-          open: parseFloat(entry.open),
-          high: parseFloat(entry.high),
-          low: parseFloat(entry.low),
-          close: parseFloat(entry.close),
-        }));
-        console.log(formattedData);
-        candleSeries.setData(formattedData);
-      } catch (error) {
-        console.log('Parsing error:', error);
-      }
-    };
-    reader.onerror = (error) => console.log('File reading error:', error);
-    reader.readAsText(file);
-  }
-});
+// document.getElementById('dataFile').addEventListener('change', (event) => {
+//   const file = event.target.files[0];
+//   if (file) {
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       try {
+//         const rawData = JSON.parse(e.target.result);
+//         const formattedData = rawData.map(entry => ({
+//           time: entry.timestamp / 1000,
+//           open: parseFloat(entry.open),
+//           high: parseFloat(entry.high),
+//           low: parseFloat(entry.low),
+//           close: parseFloat(entry.close),
+//         }));
+//         console.log(formattedData);
+//         candleSeries.setData(formattedData);
+//       } catch (error) {
+//         console.log('Parsing error:', error);
+//       }
+//     };
+//     reader.onerror = (error) => console.log('File reading error:', error);
+//     reader.readAsText(file);
+//   }
+// });
 
-document.getElementById('extremaFile').addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const rawData = JSON.parse(e.target.result);
-        // Update the global extremaData variable
-        extremaData = rawData;
-        // Now update the line series and markers with the new data
-        updateChartWithData(rawData);
-      } catch (error) {
-        console.log('Parsing error:', error);
-      }
-    };
-    reader.onerror = (error) => console.log('File reading error:', error);
-    reader.readAsText(file);
-  }
-});
-
-
-document.getElementById('waveFile').addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-          try {
-              const rawData = JSON.parse(e.target.result);
-              updateWaveSeries(rawData);
-          } catch (error) {
-              console.log('Parsing error:', error);
-          }
-      };
-      reader.onerror = (error) => console.log('File reading error:', error);
-      reader.readAsText(file);
-  }
-});
+// document.getElementById('extremaFile').addEventListener('change', (event) => {
+//   const file = event.target.files[0];
+//   if (file) {
+//     const reader = new FileReader();
+//     reader.onload = (e) => {
+//       try {
+//         const rawData = JSON.parse(e.target.result);
+//         // Update the global extremaData variable
+//         extremaData = rawData;
+//         // Now update the line series and markers with the new data
+//         updateChartWithData(rawData);
+//       } catch (error) {
+//         console.log('Parsing error:', error);
+//       }
+//     };
+//     reader.onerror = (error) => console.log('File reading error:', error);
+//     reader.readAsText(file);
+//   }
+// });
 
 
+// document.getElementById('waveFile').addEventListener('change', (event) => {
+//   const file = event.target.files[0];
+//   if (file) {
+//       const reader = new FileReader();
+//       reader.onload = (e) => {
+//           try {
+//               const rawData = JSON.parse(e.target.result);
+//               updateWaveSeries(rawData);
+//           } catch (error) {
+//               console.log('Parsing error:', error);
+//           }
+//       };
+//       reader.onerror = (error) => console.log('File reading error:', error);
+//       reader.readAsText(file);
+//   }
+// });
 
-document.getElementById('trendFile').addEventListener('change', (event) => {
-  const file = event.target.files[0];
-  if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-          try {
-              const rawData = JSON.parse(e.target.result);
-              updateChartWithTrendData(rawData);
-          } catch (error) {
-              console.log('Parsing error:', error);
-          }
-      };
-      reader.onerror = (error) => console.log('File reading error:', error);
-      reader.readAsText(file);
-  }
-});
+
+
+// document.getElementById('trendFile').addEventListener('change', (event) => {
+//   const file = event.target.files[0];
+//   if (file) {
+//       const reader = new FileReader();
+//       reader.onload = (e) => {
+//           try {
+//               const rawData = JSON.parse(e.target.result);
+//               updateChartWithTrendData(rawData);
+//           } catch (error) {
+//               console.log('Parsing error:', error);
+//           }
+//       };
+//       reader.onerror = (error) => console.log('File reading error:', error);
+//       reader.readAsText(file);
+//   }
+// });
 
 
 function updateChartWithTrendData(data) {
