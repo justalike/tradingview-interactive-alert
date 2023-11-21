@@ -309,18 +309,21 @@ async function fetchAllLineData(symbol, timeframe) {
 
 // Function to parse query parameters
 function getQueryParams() {
+  console.log(`Getting query parameters`)
   const queryParams = {};
   const urlSearchParams = new URLSearchParams(window.location.search);
   for (const [key, value] of urlSearchParams.entries()) {
     queryParams[key] = value;
   }
+  console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
   return queryParams;
 }
 
 // Function to initialize the chart with data based on URL parameters
 async function initializeChartWithData() {
+  try{
   const { symbol, timeframe } = getQueryParams();
-
+    console.log(symbol, timeframe)
   if (symbol && timeframe) {
     await fetchAllLineData(symbol, timeframe);
     await fetchCandleData(symbol, timeframe);
@@ -329,5 +332,8 @@ async function initializeChartWithData() {
   await fetchCandleData("BTC/USDT", "1h");
   await fetchAllLineData("BTC/USDT", "1h");
   }
+} catch (error) {
+  console.error('Error initializing chart with data:', error);
+}
 }
 
