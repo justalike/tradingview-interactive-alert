@@ -126,36 +126,45 @@ document.getElementById('trendFile').addEventListener('change', (event) => {
 function updateChartWithTrendData(data) {
   data.forEach(trend => {
 
-    if (!trend.startTrend || !trend.endTrend || !trend.startTrend.timestamp || !trend.endTrend.timestamp || !("value" in trend.startTrend) || !("value" in trend.endTrend)) {
-      console.log('Missing or invalid data for trend:', trend);
-      return;  }
-      // Create a new line series for each trend
+    if (!trend.startTrend || !trend.endTrend ||
+      !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
+      typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number') {
+    console.log('Missing or invalid data for trend:', trend);
+    return; // Skip this iteration
+  }
        trendLineSeries = chart.addLineSeries({
-          color: trend.direction === 'up' ? 'green' : 'red', // Set color based on direction
+          color: trend.direction === 'up' ? 'white' : 'yellow', // Set color based on direction
           lineWidth: 2,
       });
       
       // Set the data for the trend line series
       trendLineSeries.setData([
           { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
-          { time: trend.endTrend.timestamp / 1000, value: trend.endTrend.value },
+          { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
       ]);
       
       // Set the markers on the trend line series
       trendLineSeries.setMarkers([
           { time: trend.startTrend.timestamp / 1000, position: 'aboveBar', color: 'yellow', shape: 'circle' },
-      ])
+      
+          { time: trend.endTrend?.timestamp / 1000, position: 'aboveBar', color: 'yellow', shape: 'circle' },
+        ])
       
   });
 }
 
 function updateChartWithData(data) {
-  // Prepare the data for the line series
-  const lineData = data.map(item => ({
-    time: item.timestamp / 1000,
-    value: item.value,
-  }));
-  // Set the data for the line series
+  const lineData = data.map(item => {
+    if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
+      console.log('Invalid item data', item);
+      return null; // Return null to filter this item out
+    }
+    return {
+      time: item.timestamp / 1000,
+      value: item.value,
+    };
+  }).filter(item => item !== null); // Filter out invalid items
+  
   lineSeries.setData(lineData);
 
   // Prepare the data for the markers
