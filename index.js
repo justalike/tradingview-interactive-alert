@@ -38,16 +38,7 @@ const candleSeries = chart.addCandlestickSeries()
 lineSeries = chart.addLineSeries();
 waveSeries = chart.addLineSeries();
 
-
-document.addEventListener('DOMContentLoaded', async () => {
-  // Set default values for symbol and timeframe
-  const defaultSymbol = 'BTC/USDT';
-  const defaultTimeframe = '1h';
-  
-  // Fetch candle data when the page is fully loaded
-  await fetchCandleData(defaultSymbol, defaultTimeframe);
-  await fetchAllLineData(defaultSymbol, defaultTimeframe);
-});
+document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
   const file = event.target.files[0];
@@ -315,3 +306,28 @@ async function fetchAllLineData(symbol, timeframe) {
       console.error('Fetch error:', error);
     };
 }
+
+// Function to parse query parameters
+function getQueryParams() {
+  const queryParams = {};
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  for (const [key, value] of urlSearchParams.entries()) {
+    queryParams[key] = value;
+  }
+  return queryParams;
+}
+
+// Function to initialize the chart with data based on URL parameters
+async function initializeChartWithData() {
+  const { symbol, timeframe } = getQueryParams();
+
+  if (symbol && timeframe) {
+    await fetchAllLineData(symbol, timeframe);
+    await fetchCandleData(symbol, timeframe);
+  } else {
+  
+  await fetchCandleData("BTC/USDT", "1h");
+  await fetchAllLineData("BTC/USDT", "1h");
+  }
+}
+
