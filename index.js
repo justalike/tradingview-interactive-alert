@@ -22,21 +22,22 @@ const chartProperties = {
   }
 }
 
-// Declare these variables globally
-
 let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
 let trendLineSeries = [];
 
 
-const domElement = document.getElementById('tvchart');
-const chart = LightweightCharts.createChart(domElement, chartProperties);
+const chartContainer = document.getElementById('tvchart');
+const chart = LightweightCharts.createChart(chartContainer, chartProperties);
+setChartSize();
 const candleSeries = chart.addCandlestickSeries()
 //const fetchedData = fetchCandleData("BTC/USDT", "1m");
 // Initialize the line series and assign it to the global variable
 lineSeries = chart.addLineSeries();
 waveSeries = chart.addLineSeries();
+
+window.addEventListener('resize', setChartSize);
 
 document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
@@ -352,3 +353,12 @@ async function initializeChartWithData() {
 }
 }
 
+function setChartSize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  chartProperties.width = width;
+  chartProperties.height = height;
+
+  chart.applyOptions(chartProperties);
+}
