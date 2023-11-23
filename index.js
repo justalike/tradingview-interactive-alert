@@ -196,7 +196,7 @@ function updateWaveSeries(data) {
       
       // If next doesn't exist, just push current and break
       if (!next) {
-        //processedData.push(current);
+        processedData.push(current);
         console.log(`Found null next! ${i}`);
         console.log(data[i]);
         break;
@@ -300,7 +300,6 @@ async function fetchAllLineData(symbol, timeframe) {
       const data = await response.json();
       
       if (data.extremum) {
-        extremaData = data.extremum; 
         updateChartWithData(data.extremum);
       }
 
