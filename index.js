@@ -125,6 +125,8 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 
 function updateChartWithTrendData(data) {
+  data.sort((a, b) => a.startTrend.timestamp - b.startTrend.timestamp);
+  console.log(data)
   data.forEach(trend => {
 
     if (!trend.startTrend || !trend.endTrend ||
@@ -152,6 +154,7 @@ function updateChartWithTrendData(data) {
         ])
       
   });
+  console.log(trendLineSeries)
 }
 
 function updateChartWithData(data) {
@@ -190,6 +193,9 @@ function updateChartWithData(data) {
   lineSeries.setMarkers(markersData);
 }
 function updateWaveSeries(data) {
+  console.log(`Waves: ${data.length}`)
+
+  console.log(data)
   // Create an empty array to hold the formatted data
   const seriesData = [];
 
@@ -281,7 +287,8 @@ function updateWaveSeries(data) {
           { time: wave.end / 1000, value: wave.endValue, color }
       );
   }
-
+  console.log(`seriesData`)
+  console.log(seriesData)
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
 }
