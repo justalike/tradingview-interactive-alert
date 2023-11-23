@@ -166,7 +166,9 @@ function updateChartWithData(data) {
     };
   }).filter(item => item !== null); // Filter out invalid items
 
-  lineSeries.setData(lineData);
+  console.log(lineData); // Add this line to debug
+lineSeries.setData(lineData);
+
 
   // Prepare the data for the markers
   const markersData = data.map(item => ({
