@@ -156,6 +156,7 @@ function updateChartWithTrendData(data) {
 
 function updateChartWithData(data) {
   console.log(data)
+  data.sort((a, b) => a.timestamp - b.timestamp);
   const lineData = data.map(item => {
     if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
       console.log('Invalid item data', item);
