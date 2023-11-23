@@ -155,6 +155,7 @@ function updateChartWithTrendData(data) {
 }
 
 function updateChartWithData(data) {
+  console.log(data)
   const lineData = data.map(item => {
     if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
       console.log('Invalid item data', item);
@@ -166,8 +167,14 @@ function updateChartWithData(data) {
     };
   }).filter(item => item !== null); // Filter out invalid items
 
-  console.log(lineData); // Add this line to debug
-lineSeries.setData(lineData);
+
+  const uniqueLineData = lineData.reduce((acc, cur) => {
+    if (!acc.some(item => item.time === cur.time)) {
+      acc.push(cur);
+    }
+    return acc;
+  }, []);
+  lineSeries.setData(uniqueLineData);
 
 
   // Prepare the data for the markers
