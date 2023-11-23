@@ -305,13 +305,13 @@ async function fetchAllLineData(symbol, timeframe) {
         updateChartWithData(data.extremum);
       }
 
-      if (data.wave) {
-        updateWaveSeries(data.wave);
-      }
+      // if (data.wave) {
+      //   updateWaveSeries(data.wave);
+      // }
 
-      if (data.trends) {
-        updateChartWithTrendData(data.trends);
-      }
+      // if (data.trends) {
+      //   updateChartWithTrendData(data.trends);
+      // }
    
     } catch(error) {
       console.error('Fetch error:', error);
