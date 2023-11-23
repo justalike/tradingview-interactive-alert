@@ -192,70 +192,82 @@ function updateWaveSeries(data) {
   // Create an empty array to hold the formatted data
   const seriesData = [];
 
-
   function processTimeFrames(data) {
-    // Step 1: Sort the data
+    // Sort the data by start time to process in chronological order
     data.sort((a, b) => a.start - b.start);
   
+    // This array will store the processed data with no overlaps or gaps
     let processedData = [];
-    
+  
+    // Iterate over the sorted data
     for (let i = 0; i < data.length; i++) {
       let current = data[i];
       let next = data[i + 1];
-      
-      // If next doesn't exist, just push current and break
+  
+      // If there is no next element, this is the last timeframe
       if (!next) {
         processedData.push(current);
-        console.log(`Found null next! ${i}`);
-        console.log(data[i]);
-        break;
+        console.log(`Reached the last timeframe at index: ${i}`);
+        break; // Exit the loop as this is the last element
       }
-      
-      // Step 2: Handle overlapping time frames
+  
+      // Detect overlap when the current end is greater than the next start
       if (current.end > next.start) {
-        console.log(`Found overlap! ${i}`);
-        console.log(data[i])
-        // Option: merge overlapping objects (simple merge shown here, adjust as needed)
+        console.log(`Overlap detected at index: ${i}`);
+  
+        // Merge overlapping timeframes by extending the end to the latest end time
         let merged = {
           start: current.start,
           end: Math.max(current.end, next.end),
-          // ... merge other fields as necessary
+          // Consider merging other relevant fields if necessary
         };
         processedData.push(merged);
-        i++;  // Skip next object since it's merged
-      } 
-      // Step 3: Handle missing time frames
-      else if (current.end < next.start) {
-        console.log(`Found gap! ${i}`);
-        console.log(data[i])
-        processedData.push(current);  // Push current object
-        // Fill the gap with a new object
+  
+        // Skip the next timeframe since it's merged into the current one
+        i++;
+      } else if (current.end < next.start) { // Detect a gap between the current and next timeframe
+        console.log(`Gap detected at index: ${i}`);
+  
+        // Push the current timeframe
+        processedData.push(current);
+  
+        // Create a placeholder to fill the gap with null or some default values
         processedData.push({
           start: current.end,
           end: next.start,
-          // ... fill other fields as necessary
+          // Set other fields to null or defaults to indicate placeholder data
+          placeholder: true, // An indicator that this is a placeholder object
         });
-      } 
-      else {
-        processedData.push(current);  // No overlap or gap, just push current object
+      } else {
+        // No overlap or gap, push the current timeframe as is
+        processedData.push(current);
       }
     }
   
     return processedData;
   }
   
-  // Usage:
   
    data = processTimeFrames(data);
   // Loop through each wave in the data
   for (let i = 0; i < data.length; i++) {
       const wave = data[i];
      
+
+      if (wave.start == null || wave.startValue == null) {
+        console.log(`Found wave with null start at index ${i}:`, wave);
+        continue; // Skip this wave as it has incomplete start data
+      }
       // Skip this wave if it has no end or any value is null
-      if (wave.end == null || wave.endValue == null || wave.start == null || wave.startValue == null) {
-        console.log(`Found null wave! ${i}`);
-        console.log(data[i])
+      if (wave.end == null || wave.endValue == null) {
+        console.log(`Found last ongoing wave at index ${i}:`, wave);
         
+        seriesData.push(
+          { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
+          { time: Date.now() / 1000, value: wave.startValue, color: 'blue' }
+        
+          );
+
           continue;  // Skip to the next iteration
       }
       
