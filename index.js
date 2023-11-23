@@ -156,6 +156,7 @@ function updateChartWithTrendData(data) {
 
 function updateChartWithData(data) {
   console.log(data)
+  data.sort((a, b) => a.timestamp - b.timestamp);
   const lineData = data.map(item => {
     if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
       console.log('Invalid item data', item);
@@ -174,6 +175,7 @@ function updateChartWithData(data) {
     }
     return acc;
   }, []);
+  
   lineSeries.setData(uniqueLineData);
 
 
@@ -189,6 +191,9 @@ function updateChartWithData(data) {
   lineSeries.setMarkers(markersData);
 }
 function updateWaveSeries(data) {
+  console.log(`Waves: ${data.length}`)
+
+  console.log(data)
   // Create an empty array to hold the formatted data
   const seriesData = [];
 
@@ -280,7 +285,7 @@ function updateWaveSeries(data) {
           { time: wave.end / 1000, value: wave.endValue, color }
       );
   }
-
+ 
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
 }
