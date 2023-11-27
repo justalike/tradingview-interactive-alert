@@ -38,7 +38,7 @@ volumeSeries = chart.addHistogramSeries({
   priceFormat: {
     type: 'volume',
   },
-  priceScaleId: 'right',
+  priceScaleId: '',
   scaleMargins: {
     bottom: 0.8,
     top: 0,
