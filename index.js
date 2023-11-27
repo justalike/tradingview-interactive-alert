@@ -30,7 +30,7 @@ let trendLineSeries = [];
 
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
-// setChartSize();
+setChartSize();
 const candleSeries = chart.addCandlestickSeries()
 //const fetchedData = fetchCandleData("BTC/USDT", "1m");
 // Initialize the line series and assign it to the global variable
@@ -44,7 +44,7 @@ waveSeries = chart.addLineSeries({
   lineStyle: 2 // or LineStyle.Dashed, based on your preference
 });
 
-//window.addEventListener('resize', setChartSize);
+window.addEventListener('resize', setChartSize);
 
 document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
@@ -394,12 +394,11 @@ async function initializeChartWithData() {
 }
 }
 
-// function setChartSize() {
-//   const width = window.innerWidth;
-//   const height = window.innerHeight;
+function setChartSize() {
+  
+  chartProperties.width = document.body.clientWidth,
+  chartProperties.height = document.body.clientHeight
 
-//   chartProperties.width = width;
-//   chartProperties.height = height;
 
-//   chart.applyOptions(chartProperties);
-// }
+  chart.applyOptions(chartProperties);
+}
