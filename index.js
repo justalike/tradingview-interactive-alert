@@ -34,8 +34,15 @@ const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 const candleSeries = chart.addCandlestickSeries()
 //const fetchedData = fetchCandleData("BTC/USDT", "1m");
 // Initialize the line series and assign it to the global variable
-lineSeries = chart.addLineSeries();
-waveSeries = chart.addLineSeries();
+// Modify your lineSeries and waveSeries initialization
+lineSeries = chart.addLineSeries({
+  lineWidth: 0.5,
+  lineType: LineStyle.Dashed // or LineStyle.Dashed, based on your preference
+});
+waveSeries = chart.addLineSeries({
+  lineWidth: 2,
+  lineType: LineStyle.Dashed // or LineStyle.Dashed, based on your preference
+});
 
 window.addEventListener('resize', setChartSize);
 
