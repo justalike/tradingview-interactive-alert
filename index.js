@@ -35,15 +35,24 @@ setChartSize();
 const candleSeries = chart.addCandlestickSeries()
 
 volumeSeries = chart.addHistogramSeries({
-  priceFormat: {
-    type: 'volume',
-  },
-  priceScaleId: '',
-  scaleMargins: {
-    bottom: 0,
-    top: 0.7,
-  },
-})
+	color: '#26a69a',
+	priceFormat: {
+		type: 'volume',
+	},
+	priceScaleId: '', // set as an overlay by setting a blank priceScaleId
+	// set the positioning of the volume series
+	scaleMargins: {
+		top: 0.7, // highest point of the series will be 70% away from the top
+		bottom: 0,
+	},
+});
+volumeSeries.priceScale().applyOptions({
+	scaleMargins: {
+		top: 0.7, // highest point of the series will be 70% away from the top
+		bottom: 0,
+	},
+});
+
 lineSeries = chart.addLineSeries({
   lineWidth: 0.5,
   lineStyle: 2 // or LineStyle.Dashed, based on your preference
