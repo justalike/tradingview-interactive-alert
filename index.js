@@ -159,33 +159,33 @@ function updateChartWithData(data) {
 
   data.sort((a, b) => a.timestamp - b.timestamp);
 
-  const lineData = data.map( (item, i) => {
-    if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
-      console.log('Invalid item data', item);
+  // const lineData = data.map( (item, i) => {
+  //   if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
+  //     console.log('Invalid item data', item);
 
-      if (item[i].timestamp == item[i-1].timestamp) {
-        console.log('Two extrema in one candle found.', item);
-        item[i].timestamp+1; // or return item[i-1] ?
-         return item[i]
-      }
+  //     if (item[i].timestamp == item[i-1].timestamp) {
+  //       console.log('Two extrema in one candle found.', item);
+  //       item[i].timestamp+1; // or return item[i-1] ?
+  //        return item[i]
+  //     }
 
-      return null; // Return null to filter this item out
-    }
-    return {
-      time: item.timestamp / 1000,
-      value: item.value,
-    };
-  }).filter(item => item !== null); // Filter out invalid items
+  //     return null; // Return null to filter this item out
+  //   }
+  //   return {
+  //     time: item.timestamp / 1000,
+  //     value: item.value,
+  //   };
+  // }).filter(item => item !== null); // Filter out invalid items
 
 
-  const uniqueLineData = lineData.reduce((acc, cur) => {
-    if (!acc.some(item => item.time === cur.time)) {
-      acc.push(cur);
-    }
-    return acc;
-  }, []);
+  // const uniqueLineData = lineData.reduce((acc, cur) => {
+  //   if (!acc.some(item => item.time === cur.time)) {
+  //     acc.push(cur);
+  //   }
+  //   return acc;
+  // }, []);
   
-  lineSeries.setData(uniqueLineData);
+  // lineSeries.setData(uniqueLineData);
 
 
   // Prepare the data for the markers
