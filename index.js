@@ -187,16 +187,16 @@ function updateChartWithTrendData(data) {
 }
 
 function updateChartWithData(data) {
-  console.log(data)
+  //console.log(data)
 
   data.sort((a, b) => a.timestamp - b.timestamp);
 
   const lineData = data.map( (item, i) => {
     if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
-      console.log('Invalid item data', item);
+     // console.log('Invalid item data', item);
 
       if (item[i].timestamp == item[i-1].timestamp) {
-        console.log('Two extrema in one candle found.', item);
+      //  console.log('Two extrema in one candle found.', item);
         item[i].timestamp+1; // or return item[i-1] ?
          return item[i]
       }
@@ -232,9 +232,9 @@ function updateChartWithData(data) {
   lineSeries.setMarkers(markersData);
 }
 function updateWaveSeries(data) {
-  console.log(`Waves: ${data.length}`)
+  //console.log(`Waves: ${data.length}`)
 
-  console.log(data)
+  //console.log(data)
   // Create an empty array to hold the formatted data
   const seriesData = [];
 
@@ -253,13 +253,13 @@ function updateWaveSeries(data) {
       // If there is no next element, this is the last timeframe
       if (!next) {
         processedData.push(current);
-        console.log(`Reached the last timeframe at index: ${i}`);
+       // console.log(`Reached the last timeframe at index: ${i}`);
         break; // Exit the loop as this is the last element
       }
   
       // Detect overlap when the current end is greater than the next start
       if (current.end > next.start) {
-        console.log(`Overlap detected at index: ${i}`);
+       // console.log(`Overlap detected at index: ${i}`);
   
         // Merge overlapping timeframes by extending the end to the latest end time
         let merged = {
@@ -272,7 +272,7 @@ function updateWaveSeries(data) {
         // Skip the next timeframe since it's merged into the current one
         i++;
       } else if (current.end < next.start) { // Detect a gap between the current and next timeframe
-        console.log(`Gap detected at index: ${i}`);
+        //console.log(`Gap detected at index: ${i}`);
   
         // Push the current timeframe
         processedData.push(current);
@@ -301,12 +301,12 @@ function updateWaveSeries(data) {
      
 
       if (wave.start == null || wave.startValue == null) {
-        console.log(`Found wave with null start at index ${i}:`, wave);
+      //  console.log(`Found wave with null start at index ${i}:`, wave);
         continue; // Skip this wave as it has incomplete start data
       }
       // Skip this wave if it has no end or any value is null
       if (wave.end == null || wave.endValue == null) {
-        console.log(`Found last ongoing wave at index ${i}:`, wave);
+      //  console.log(`Found last ongoing wave at index ${i}:`, wave);
         
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
@@ -391,13 +391,13 @@ async function fetchAllLineData(symbol, timeframe) {
 // Function to parse query parameters
 async function getQueryParams() {
   try{ 
-  console.log(`Getting query parameters`)
+ // console.log(`Getting query parameters`)
   const queryParams = {};
   const urlSearchParams = new URLSearchParams(window.location.search);
   for (const [key, value] of urlSearchParams.entries()) {
     queryParams[key] = value;
   }
-  console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
+ // console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
   return queryParams;
 } catch (error) {
   console.error('Error getting query parameters:', error);
@@ -408,7 +408,7 @@ async function getQueryParams() {
 async function initializeChartWithData() {
   try{
   const { symbol, timeframe } = await getQueryParams();
-    console.log(symbol, timeframe)
+  //  console.log(symbol, timeframe)
   if (symbol && timeframe) {
 
     await fetchCandleData(symbol, timeframe);
