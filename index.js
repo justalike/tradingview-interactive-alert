@@ -156,10 +156,19 @@ function updateChartWithTrendData(data) {
 
 function updateChartWithData(data) {
   console.log(data)
+
   data.sort((a, b) => a.timestamp - b.timestamp);
-  const lineData = data.map(item => {
+
+  const lineData = data.map( (item, i) => {
     if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
       console.log('Invalid item data', item);
+
+      if (item[i].timestamp == item[i-1].timestamp) {
+        console.log('Two extrema in one candle found.', item);
+        item[i].timestamp+1; // or return item[i-1] ?
+         return item[i]
+      }
+
       return null; // Return null to filter this item out
     }
     return {
