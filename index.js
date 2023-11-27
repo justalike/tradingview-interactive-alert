@@ -26,15 +26,24 @@ let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
 let trendLineSeries = [];
+let volumeSeries = [];
 
 
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
 const candleSeries = chart.addCandlestickSeries()
-//const fetchedData = fetchCandleData("BTC/USDT", "1m");
-// Initialize the line series and assign it to the global variable
-// Modify your lineSeries and waveSeries initialization
+
+volumeSeries = chart.addHistogramSeries({
+  priceFormat: {
+    type: 'volume',
+  },
+  priceScaleId: 'right',
+  scaleMargins: {
+    bottom: 0.8,
+    top: 0,
+  },
+})
 lineSeries = chart.addLineSeries({
   lineWidth: 0.5,
   lineStyle: 2 // or LineStyle.Dashed, based on your preference
@@ -45,7 +54,6 @@ waveSeries = chart.addLineSeries({
 });
 
 window.addEventListener('resize', setChartSize);
-
 document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 // document.getElementById('dataFile').addEventListener('change', (event) => {
@@ -138,7 +146,7 @@ function updateChartWithTrendData(data) {
       !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
       typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number') {
     console.log('Missing or invalid data for trend:', trend);
-    return; // Skip this iteration
+    return; 
   }
        trendLineSeries = chart.addLineSeries({
           color: trend.direction === 'up' ? 'white' : 'yellow', // Set color based on direction
@@ -176,13 +184,13 @@ function updateChartWithData(data) {
          return item[i]
       }
 
-      return null; // Return null to filter this item out
+      return null; 
     }
     return {
       time: item.timestamp / 1000,
       value: item.value,
     };
-  }).filter(item => item !== null); // Filter out invalid items
+  }).filter(item => item !== null);
 
 
   const uniqueLineData = lineData.reduce((acc, cur) => {
@@ -324,8 +332,13 @@ async function fetchCandleData(symbol, timeframe) {
         low: parseFloat(candle.low),
         close: parseFloat(candle.close),
       }));
+      const volumeData = data.map( candle => ({
+        time: candle.timestamp / 1000,
+        value: parseFloat(candle.volume)
+      }));
 
       candleSeries.setData(formattedData);
+      volumeSeries.setData(volumeData)
    
     } catch(error) {
       console.error('Fetch error:', error);
