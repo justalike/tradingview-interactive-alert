@@ -44,7 +44,7 @@ waveSeries = chart.addLineSeries({
   lineType: LightweightCharts.LineType.Dashed // or LineStyle.Dashed, based on your preference
 });
 
-window.addEventListener('resize', setChartSize);
+//window.addEventListener('resize', setChartSize);
 
 document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
