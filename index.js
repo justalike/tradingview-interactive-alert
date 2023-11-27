@@ -1,6 +1,6 @@
 const chartProperties = {
-  width: 1920,
-  height: 1080,
+  width: window.innerWidth,
+  height: window.innerHeight,
   layout: {
     background: { color: "#222" },
     textColor: "#C3BCDB",
@@ -30,7 +30,7 @@ let trendLineSeries = [];
 
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
-setChartSize();
+// setChartSize();
 const candleSeries = chart.addCandlestickSeries()
 //const fetchedData = fetchCandleData("BTC/USDT", "1m");
 // Initialize the line series and assign it to the global variable
@@ -159,33 +159,33 @@ function updateChartWithData(data) {
 
   data.sort((a, b) => a.timestamp - b.timestamp);
 
-  // const lineData = data.map( (item, i) => {
-  //   if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
-  //     console.log('Invalid item data', item);
+  const lineData = data.map( (item, i) => {
+    if (typeof item.timestamp !== 'number' || typeof item.value !== 'number') {
+      console.log('Invalid item data', item);
 
-  //     if (item[i].timestamp == item[i-1].timestamp) {
-  //       console.log('Two extrema in one candle found.', item);
-  //       item[i].timestamp+1; // or return item[i-1] ?
-  //        return item[i]
-  //     }
+      if (item[i].timestamp == item[i-1].timestamp) {
+        console.log('Two extrema in one candle found.', item);
+        item[i].timestamp+1; // or return item[i-1] ?
+         return item[i]
+      }
 
-  //     return null; // Return null to filter this item out
-  //   }
-  //   return {
-  //     time: item.timestamp / 1000,
-  //     value: item.value,
-  //   };
-  // }).filter(item => item !== null); // Filter out invalid items
+      return null; // Return null to filter this item out
+    }
+    return {
+      time: item.timestamp / 1000,
+      value: item.value,
+    };
+  }).filter(item => item !== null); // Filter out invalid items
 
 
-  // const uniqueLineData = lineData.reduce((acc, cur) => {
-  //   if (!acc.some(item => item.time === cur.time)) {
-  //     acc.push(cur);
-  //   }
-  //   return acc;
-  // }, []);
+  const uniqueLineData = lineData.reduce((acc, cur) => {
+    if (!acc.some(item => item.time === cur.time)) {
+      acc.push(cur);
+    }
+    return acc;
+  }, []);
   
-  // lineSeries.setData(uniqueLineData);
+  lineSeries.setData(uniqueLineData);
 
 
   // Prepare the data for the markers
@@ -387,12 +387,12 @@ async function initializeChartWithData() {
 }
 }
 
-function setChartSize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+// function setChartSize() {
+//   const width = window.innerWidth;
+//   const height = window.innerHeight;
 
-  chartProperties.width = width;
-  chartProperties.height = height;
+//   chartProperties.width = width;
+//   chartProperties.height = height;
 
-  chart.applyOptions(chartProperties);
-}
+//   chart.applyOptions(chartProperties);
+// }
