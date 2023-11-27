@@ -37,11 +37,11 @@ const candleSeries = chart.addCandlestickSeries()
 // Modify your lineSeries and waveSeries initialization
 lineSeries = chart.addLineSeries({
   lineWidth: 0.5,
-  lineType: LineStyle.Dashed // or LineStyle.Dashed, based on your preference
+  lineType: LightweightCharts.LineType.Dashed // or LineStyle.Dashed, based on your preference
 });
 waveSeries = chart.addLineSeries({
   lineWidth: 2,
-  lineType: LineStyle.Dashed // or LineStyle.Dashed, based on your preference
+  lineType: LightweightCharts.LineType.Dashed // or LineStyle.Dashed, based on your preference
 });
 
 window.addEventListener('resize', setChartSize);
