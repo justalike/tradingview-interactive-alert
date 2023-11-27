@@ -40,8 +40,8 @@ volumeSeries = chart.addHistogramSeries({
   },
   priceScaleId: '',
   scaleMargins: {
-    bottom: 0.8,
-    top: 0,
+    bottom: 0,
+    top: 0.7,
   },
 })
 lineSeries = chart.addLineSeries({
