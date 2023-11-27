@@ -33,8 +33,8 @@ const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
 const candleSeries = chart.addCandlestickSeries()
-                          .priceScale()
-                          .applyOptions({
+                          
+candleSeries.priceScale().applyOptions({
                             scaleMargins: {
                                 top: 0.1, // highest point of the series will be 10% away from the top
                                 bottom: 0.4, // lowest point will be 40% away from the bottom
