@@ -38,6 +38,7 @@ candleSeries.priceScale().applyOptions({
                             scaleMargins: {
                                 top: 0.2, // highest point of the series will be 10% away from the top
                                 bottom: 0.3, // lowest point will be 40% away from the bottom
+                                right: 0.1, // 
                             },
                           });
 
