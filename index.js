@@ -34,13 +34,24 @@ const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
 const candleSeries = chart.addCandlestickSeries()
                           
-candleSeries.priceScale().applyOptions({
-                            scaleMargins: {
-                                top: 0.2, // highest point of the series will be 10% away from the top
-                                bottom: 0.3, // lowest point will be 40% away from the bottom
-                                right: 0.8, // 
-                            },
-                          });
+// candleSeries.priceScale().applyOptions({
+//                             scaleMargins: {
+//                                 top: 0.2, // highest point of the series will be 10% away from the top
+//                                 bottom: 0.3, // lowest point will be 40% away from the bottom
+//                             },
+//                           });
+candleSeries.applyOptions({
+  priceScale: {
+    borderVisible: false,
+    entireTextOnly: true,
+    scaleMargins: {
+      top: 0.2,
+      bottom: 0.3,
+    },
+  },
+  // Add an additional right offset
+  rightOffset: 10, // Adjust the value to increase or decrease the space
+});
 
 
 volumeSeries = chart.addHistogramSeries({
