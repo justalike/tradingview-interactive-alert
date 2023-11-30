@@ -39,13 +39,6 @@ candleSeries.priceScale().applyOptions({
                                 top: 0.2, // highest point of the series will be 10% away from the top
                                 bottom: 0.3, // lowest point will be 40% away from the bottom
                             },
-
-  timeScale: {
-    rightOffset: 50, // Adjust this value to control the amount of space on the right
-    timeVisible: true,
-    secondsVisible: false,
-    borderColor: '#485c7b',
-  }
                           });
 
 
