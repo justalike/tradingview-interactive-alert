@@ -42,6 +42,32 @@ candleSeries.priceScale().applyOptions({
                           });
 
 
+
+
+                          function getCrosshairDataPoint(series, param) {
+                            if (!param.time) {
+                              return null;
+                            }
+                            const dataPoint = param.seriesData.get(series);
+                            return dataPoint || null;
+                          }
+                          
+                          function syncCrosshair(chart, series, dataPoint) {
+                            if (dataPoint) {
+                              chart.setCrosshairPosition(dataPoint.value, dataPoint.time, series);
+                              return;
+                            }
+                            chart.clearCrosshairPosition();
+                          }
+                          chart.subscribeCrosshairMove(param => {
+                            const dataPoint = getCrosshairDataPoint(candleSeries, param);
+                            syncCrosshair(chart, candleSeries, dataPoint);
+                          
+                          });
+
+
+
+
 volumeSeries = chart.addHistogramSeries({
 	color: '#26a69a',
 	priceFormat: {
@@ -408,6 +434,18 @@ async function getQueryParams() {
 async function initializeChartWithData() {
   try{
   const { symbol, timeframe } = await getQueryParams();
+
+
+chart.applyOptions({
+	watermark: {
+		visible: true,
+		fontSize: 52,
+		horzAlign: 'center',
+		vertAlign: 'center',
+		color: 'rgba(255, 255, 255, 0.7)',
+		text: `${symbol}:${timeframe}`,
+	},
+});
   //  console.log(symbol, timeframe)
   if (symbol && timeframe) {
 
