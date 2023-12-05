@@ -11,12 +11,6 @@ const chartProperties = {
   },
   crosshair: {
     mode: LightweightCharts.CrosshairMode.Normal,
-    format: {
-      price: {
-        precision: 4, // set the precision to 4 decimal places for price
-      },
-      volume: true, // enable volume in the crosshair
-    },
   },
   priceScale: {
     borderColor: '#485c7b',
@@ -35,7 +29,7 @@ let waveSeries = [];
 let trendLineSeries = [];
 let volumeSeries = [];
 
-
+const myPriceFormatter = p => p.toFixed(5);
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
@@ -84,6 +78,11 @@ waveSeries = chart.addLineSeries({
   lineStyle: 2 // or LineStyle.Dashed, based on your preference
 });
 
+chart.applyOptions({
+  localization: {
+      priceFormatter: myPriceFormatter,
+  },
+});
 window.addEventListener('resize', setChartSize);
 document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
