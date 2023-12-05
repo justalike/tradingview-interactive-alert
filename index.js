@@ -45,9 +45,9 @@ candleSeries.priceScale().applyOptions({
 
 
                           function getCrosshairDataPoint(series, param) {
-                            if (!param.time) {
-                              return null;
-                            }
+                            // if (!param.time) {
+                            //   return null;
+                            // }
                             const dataPoint = param.seriesData.get(series);
                             return dataPoint || null;
                           }
