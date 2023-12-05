@@ -15,7 +15,7 @@ const chartProperties = {
   priceScale: {
     borderColor: '#485c7b',
     visible: true,
-    precision: 4
+    ticksVisible: true
   },
   timeScale: {
     timeVisible: true,
@@ -42,30 +42,6 @@ candleSeries.priceScale().applyOptions({
                                 top: 0.2, // highest point of the series will be 10% away from the top
                                 bottom: 0.3, // lowest point will be 40% away from the bottom
                             },
-                          });
-
-
-
-
-                          function getCrosshairDataPoint(series, param) {
-                            // if (!param.time) {
-                            //   return null;
-                            // }
-                            const dataPoint = param.seriesData.get(series);
-                            return dataPoint || null;
-                          }
-                          
-                          function syncCrosshair(chart, series, dataPoint) {
-                            if (dataPoint) {
-                              chart.setCrosshairPosition(dataPoint.value, dataPoint.time, series);
-                              return;
-                            }
-                            chart.clearCrosshairPosition();
-                          }
-                          chart.subscribeCrosshairMove(param => {
-                            const dataPoint = getCrosshairDataPoint(candleSeries, param);
-                            syncCrosshair(chart, candleSeries, dataPoint);
-                          
                           });
 
 
