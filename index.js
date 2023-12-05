@@ -14,14 +14,6 @@ const chartProperties = {
   },
   priceScale: {
     borderColor: '#485c7b',
-    visible: true,
-    ticksVisible: true,
-    format: {
-      type: "price",
-      precision: 3, // set the precision to 3 decimal places
-      minMove: 0.01,
-    },
-    
   },
   timeScale: {
     timeVisible: true,
@@ -47,6 +39,11 @@ candleSeries.priceScale().applyOptions({
                             scaleMargins: {
                                 top: 0.2, // highest point of the series will be 10% away from the top
                                 bottom: 0.3, // lowest point will be 40% away from the bottom
+                            },
+                            format: {
+                              type: "price",
+                              precision: 3,
+                              minMove: 0.01,
                             },
                           });
 
