@@ -33,20 +33,6 @@ const myPriceFormatter = p => p.toFixed(5);
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
-const candleSeries = chart.addCandlestickSeries()
-                          
-candleSeries.priceScale().applyOptions({
-                            scaleMargins: {
-                                top: 0.2, // highest point of the series will be 10% away from the top
-                                bottom: 0.3, // lowest point will be 40% away from the bottom
-                            },
-                            format: {
-                              type: "price",
-                              precision: 3,
-                              minMove: 0.01,
-                            },
-                          });
-
 
 
 
@@ -77,6 +63,22 @@ waveSeries = chart.addLineSeries({
   lineWidth: 2,
   lineStyle: 2 // or LineStyle.Dashed, based on your preference
 });
+
+
+const candleSeries = chart.addCandlestickSeries()
+                          
+candleSeries.priceScale().applyOptions({
+                            scaleMargins: {
+                                top: 0.2, // highest point of the series will be 10% away from the top
+                                bottom: 0.3, // lowest point will be 40% away from the bottom
+                            },
+                            format: {
+                              type: "price",
+                              precision: 3,
+                              minMove: 0.01,
+                            },
+                          });
+
 
 chart.applyOptions({
   localization: {
