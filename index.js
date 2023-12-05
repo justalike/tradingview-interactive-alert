@@ -11,6 +11,12 @@ const chartProperties = {
   },
   crosshair: {
     mode: LightweightCharts.CrosshairMode.Normal,
+    format: {
+      price: {
+        precision: 4, // set the precision to 4 decimal places for price
+      },
+      volume: true, // enable volume in the crosshair
+    },
   },
   priceScale: {
     borderColor: '#485c7b',
