@@ -37,7 +37,10 @@ setChartSize();
 
 
 volumeSeries = chart.addHistogramSeries({
-	color: '#26a69a',
+	
+  topColor: "green",
+  bottomColor: "red",
+  
 	priceFormat: {
 		type: 'volume',
 	},
