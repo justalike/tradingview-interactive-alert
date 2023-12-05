@@ -15,7 +15,13 @@ const chartProperties = {
   priceScale: {
     borderColor: '#485c7b',
     visible: true,
-    ticksVisible: true
+    ticksVisible: true,
+    format: {
+      type: "price",
+      precision: 3, // set the precision to 3 decimal places
+      minMove: 0.01,
+    },
+    
   },
   timeScale: {
     timeVisible: true,
