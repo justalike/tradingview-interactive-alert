@@ -14,12 +14,14 @@ const chartProperties = {
   },
   priceScale: {
     borderColor: '#485c7b',
+    priceVisible: true
   },
   timeScale: {
     timeVisible: true,
     secondsVisible: false,
     borderColor: '#485c7b',
-  }
+  },
+  precision: 4
 }
 
 let extremaData = [];
