@@ -320,12 +320,7 @@ function updateWaveSeries(data) {
   for (let i = 0; i < data.length; i++) {
       const wave = data[i];
 
-      if (wave.maxVolumeBarMiddle){
-        volumeBarsData.push(
-          { time: time.wave.start / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
-          { time: time.wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
-          )
-      }
+     
 
       if (wave.start == null || wave.startValue == null) {
       //  console.log(`Found wave with null start at index ${i}:`, wave);
@@ -334,7 +329,7 @@ function updateWaveSeries(data) {
       // Skip this wave if it has no end or any value is null
       if (wave.end == null || wave.endValue == null) {
       //  console.log(`Found last ongoing wave at index ${i}:`, wave);
-        
+      
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
           { time: Date.now() / 1000, value: wave.startValue, color: 'blue' }
@@ -346,7 +341,13 @@ function updateWaveSeries(data) {
       
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
-      
+       
+       if (wave.maxVolumeBarMiddle){
+        volumeBarsData.push(
+          { time: time.wave.start / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
+          { time: time.wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
+          )
+      }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color },
