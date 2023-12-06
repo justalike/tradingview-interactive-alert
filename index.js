@@ -342,10 +342,13 @@ function updateWaveSeries(data) {
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
        
-       if (wave.maxVolumeBarMiddle){
+       if (wave.maxVolCandle){
+
+        const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
+
         volumeBarsData.push(
-          { time: wave.start / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
-          { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
+          { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'purple' },
+          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'purple' },
           )
       }
       // Create two points for this wave and add them to the seriesData array
