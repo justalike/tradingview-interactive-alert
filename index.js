@@ -26,7 +26,7 @@ const chartProperties = {
 let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
-let volumeBarsSeies = [];
+let volumeBarsSeries = [];
 let trendLineSeries = [];
 let volumeSeries = [];
 
