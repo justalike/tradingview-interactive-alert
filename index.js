@@ -26,6 +26,7 @@ const chartProperties = {
 let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
+let volumeBarsData = [];
 let trendLineSeries = [];
 let volumeSeries = [];
 
@@ -37,10 +38,7 @@ setChartSize();
 
 
 volumeSeries = chart.addHistogramSeries({
-	
-  topColor: "green",
-  bottomColor: "red",
-  
+	color: '#26a69a',
 	priceFormat: {
 		type: 'volume',
 	},
@@ -50,6 +48,7 @@ volumeSeries = chart.addHistogramSeries({
 		top: 0.7, // highest point of the series will be 70% away from the top
 		bottom: 0,
 	},
+
 });
 volumeSeries.priceScale().applyOptions({
 	scaleMargins: {
@@ -66,6 +65,10 @@ waveSeries = chart.addLineSeries({
   lineWidth: 2,
   lineStyle: 2 // or LineStyle.Dashed, based on your preference
 });
+volumeBarsSeries = chart.addLineSeries({
+  lineWidth: 2,
+  lineStyle: 2
+})
 
 
 const candleSeries = chart.addCandlestickSeries()
@@ -251,10 +254,11 @@ function updateChartWithData(data) {
 }
 function updateWaveSeries(data) {
   //console.log(`Waves: ${data.length}`)
-
+  
   //console.log(data)
   // Create an empty array to hold the formatted data
   const seriesData = [];
+  const volumeBarsData = [];
 
   function processTimeFrames(data) {
     // Sort the data by start time to process in chronological order
@@ -310,13 +314,18 @@ function updateWaveSeries(data) {
   
     return processedData;
   }
-  
-  
+
    data = processTimeFrames(data);
   // Loop through each wave in the data
   for (let i = 0; i < data.length; i++) {
       const wave = data[i];
-     
+
+      if (wave.maxVolumeBarMiddle){
+        volumeBarsData.push(
+          { time: time.wave.start / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
+          { time: time.wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'purple' },
+          )
+      }
 
       if (wave.start == null || wave.startValue == null) {
       //  console.log(`Found wave with null start at index ${i}:`, wave);
@@ -347,6 +356,7 @@ function updateWaveSeries(data) {
  
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
+  volumeBarsSeries.setData(volumeBarsData);
 }
 
 async function fetchCandleData(symbol, timeframe) {
