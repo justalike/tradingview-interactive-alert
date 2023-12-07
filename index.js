@@ -355,7 +355,7 @@ function updateWaveSeries(data) {
              color: 'white',
              lineWidth: 2,
              lineStyle: 2,
-             lineVisible: false,
+             lastValueVisible: false,
              crosshairMarkerVisible: false,
              overlay: true
            });
