@@ -260,8 +260,7 @@ function updateWaveSeries(data) {
   //console.log(data)
   // Create an empty array to hold the formatted data
   const seriesData = [];
-  const volumeBarsData = [];
-
+  
   function processTimeFrames(data) {
     // Sort the data by start time to process in chronological order
     data.sort((a, b) => a.start - b.start);
@@ -350,6 +349,15 @@ function updateWaveSeries(data) {
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
        
+        const candleData = {
+          time: timestamp / 1000,
+          open: open,
+          high: high,
+          low: low,
+          close: close,
+          color: 'orange' // Set the color to orange
+        };
+        
          function createAndSetLineSeries(data) {
            const lineSeries = chart.addLineSeries({
              color: 'white',
@@ -361,6 +369,14 @@ function updateWaveSeries(data) {
              overlay: true
            });
            lineSeries.setData(data);
+
+           const keybarIndex = candleSeries.data.findIndex(candle => candle.time === candleData.time);
+           if (keybarIndex !== -1) {
+            // Replace the specific candle with the updated candle data
+            candleSeries.data[keybarIndex] = candleData;
+          
+            // Update the candleSeries with the modified data array
+            candleSeries.update(candleSeries.data);
          }
 
         const lineData = [
