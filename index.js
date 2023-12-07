@@ -342,14 +342,26 @@ function updateWaveSeries(data) {
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
        console.log(wave)
+
+       function createAndSetLineSeries(data) {
+        chart.addLineSeries({
+          lineWidth: 2,
+          lineStyle: 2 })
+          .setData(data);
+      }
        if (wave.maxVolCandle){
 
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
-        volumeBarsData.push(
-          { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'purple' },
-          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'purple' },
-          )
+        createAndSetLineSeries([
+          { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'white' },
+          { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'white' },
+          ]);
+        
+        // volumeBarsData.push(
+        //   { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
+        //   { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
+        //   )
       }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
@@ -360,7 +372,7 @@ function updateWaveSeries(data) {
  
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
-  volumeBarsSeries.setData(volumeBarsData);
+ // volumeBarsSeries.setData(volumeBarsData);
 }
 
 async function fetchCandleData(symbol, timeframe) {
