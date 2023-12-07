@@ -349,14 +349,13 @@ function updateWaveSeries(data) {
       
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
-      
-        const newCandleSeries = candleSeries.data.map(datapoint => {
-          // map function is changing the color for the individual
-          // candlestick points that close above 205
-          if (datapoint.time !== timestamp/1000) { return datapoint; }
-        
-          return { ...datapoint, color: 'orange', wickColor: 'orange' };
-      });
+
+        const newCandleSeries = [
+          { time: timestamp / 1000, value: high, color: 'white' },
+          { time: timestamp / 1000, value: low, color: 'white' },
+          { time: timestamp / 1000, value: open, color: 'white' },
+          { time: timestamp / 1000, value: close, color: 'white' },
+        ];
 
         candleSeries.setData(newCandleSeries);
          function createAndSetLineSeries(data) {
