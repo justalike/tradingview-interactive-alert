@@ -359,7 +359,7 @@ function updateWaveSeries(data) {
               close: candle.close,
               color: 'orange'
             });
-          }
+          
 
          function createAndSetLineSeries(data) {
            const lineSeries = chart.addLineSeries({
