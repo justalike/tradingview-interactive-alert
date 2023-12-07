@@ -392,6 +392,7 @@ function updateWaveSeries(data) {
         ];
         
         createAndSetLineSeries(lineData);
+        candleSeries.setData(modifiedData);
         // volumeBarsData.push(
           
         //   { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
@@ -408,7 +409,7 @@ function updateWaveSeries(data) {
  
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
-  candleSeries.setData(modifiedData);
+  
   //volumeBarsSeries.setData(volumeBarsData);
 }
 
