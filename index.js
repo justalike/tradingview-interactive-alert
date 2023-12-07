@@ -356,7 +356,8 @@ function updateWaveSeries(data) {
               open: candle.open,
               high: candle.high,
               low: candle.low,
-              close: candle.close
+              close: candle.close,
+              color: 'orange'
             });
           }
 
