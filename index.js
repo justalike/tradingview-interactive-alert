@@ -352,10 +352,10 @@ function updateWaveSeries(data) {
        
         
         volumeBarsData.push(
-          { time: wave.start / 1000, value: maxVolumeBarMiddle, color: 'transparent' },
+          { time: wave.start / 1000, value: wave.maxVolumeBarMiddle, color: 'transparent' },
           { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-          { time: (wave.end-1) / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'transparent' }
+          { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'transparent' }
           )
       }
       // Create two points for this wave and add them to the seriesData array
