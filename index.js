@@ -350,7 +350,7 @@ function updateWaveSeries(data) {
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
 
-          for (candle of wave.maxVolCandle){
+         
             candleSeries.update({
               time: candle.timestamp / 1000,
               open: candle.open,
