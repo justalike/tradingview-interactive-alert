@@ -350,17 +350,18 @@ function updateWaveSeries(data) {
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
        
-        function createAndSetLineSeries(data) {
-          const lineSeries = chart.addLineSeries({ 
-            color: 'white',
-            lineWidth: 2,
-            lineStyle: 2,
-            lineVisible: false, // Hide the series line
-            pointMarkersVisible: false, // Hide the circle markers on each point
-                });
-          lineSeries.setData(data);
-        }
-        
+         function createAndSetLineSeries(data) {
+           const lineSeries = chart.addLineSeries({
+             color: 'white',
+             lineWidth: 2,
+             lineStyle: 2,
+             lineVisible: false,
+             crosshairMarkerVisible: false,
+             overlay: true
+           });
+           lineSeries.setData(data);
+         }
+
         const lineData = [
           { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
           { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' }
