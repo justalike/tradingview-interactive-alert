@@ -352,11 +352,11 @@ function updateWaveSeries(data) {
 
          
             candleSeries.update({
-              time: candle.timestamp / 1000,
-              open: candle.open,
-              high: candle.high,
-              low: candle.low,
-              close: candle.close,
+              time: timestamp / 1000,
+              open: open,
+              high: high,
+              low: low,
+              close: close,
               color: 'orange'
             });
           
