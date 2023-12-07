@@ -321,8 +321,6 @@ function updateWaveSeries(data) {
   for (let i = 0; i < data.length; i++) {
       const wave = data[i];
 
-     
-
       if (wave.start == null || wave.startValue == null) {
       //  console.log(`Found wave with null start at index ${i}:`, wave);
         continue; // Skip this wave as it has incomplete start data
@@ -348,30 +346,19 @@ function updateWaveSeries(data) {
         continue;
       }
        if (wave.maxVolCandle){
-        const modifiedData = [];
+      
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
+      
+        const newCandleSeries = candleSeries.map(datapoint => {
+          // map function is changing the color for the individual
+          // candlestick points that close above 205
+          if (datapoint.time !== timestamp/1000) { return datapoint; }
+        
+          return { ...datapoint, color: 'orange', wickColor: 'orange' };
+      });
 
-        for (const candle of candleSeries.data) {
-          if (candle.time === timestamp / 1000) {
-          // Create a new candle with the modified values
-              const modifiedCandle = {
-                time: candle.time,
-                open: candle.open,
-                high: candle.high,
-                low: candle.low,
-                close: candle.close,
-                color: 'orange'
-            };
-
-            modifiedData.push(modifiedCandle);
-          } else {
-            modifiedData.push(candle);
-          }
-        }
-       
-
-
+        candleSeries.setData(newCandleSeries);
          function createAndSetLineSeries(data) {
            const lineSeries = chart.addLineSeries({
              color: 'white',
@@ -387,12 +374,11 @@ function updateWaveSeries(data) {
          }
 
         const lineData = [
-          { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-          { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' }
+          { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
         ];
         
         createAndSetLineSeries(lineData);
-        candleSeries.setData(modifiedData);
         // volumeBarsData.push(
           
         //   { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
@@ -409,7 +395,6 @@ function updateWaveSeries(data) {
  
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
-  
   //volumeBarsSeries.setData(volumeBarsData);
 }
 
