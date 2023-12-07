@@ -378,6 +378,7 @@ function updateWaveSeries(data) {
             // Update the candleSeries with the modified data array
             candleSeries.update(candleSeries.data);
          }
+        }
 
         const lineData = [
           { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
