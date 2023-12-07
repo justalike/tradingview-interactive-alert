@@ -1,3 +1,5 @@
+
+
 const chartProperties = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -343,13 +345,6 @@ function updateWaveSeries(data) {
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
        console.log(wave)
 
-       function createAndSetLineSeries(data) {
-        chart.addLineSeries({
-          lineWidth: 2,
-          lineStyle: 2 })
-          .setData(data)
-          
-      }
        if (wave.maxVolCandle){
 
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
@@ -357,11 +352,10 @@ function updateWaveSeries(data) {
        
         
         volumeBarsData.push(
-         
-          { time: (timestamp-1) / 1000},
+          { time: wave.start / 1000 },
           { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
           { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-          { time: (wave.end + 1)  / 1000 }
+
           )
       }
       // Create two points for this wave and add them to the seriesData array
