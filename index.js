@@ -348,23 +348,21 @@ function updateWaveSeries(data) {
           lineWidth: 2,
           lineStyle: 2 })
           .setData(data)
-          .applyOptions({
-            priceFormat: ''
-          });;
+          
       }
        if (wave.maxVolCandle){
 
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
-        createAndSetLineSeries([
-          { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'white' },
-          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' },
-          ]);
+       
         
-        // volumeBarsData.push(
-        //   { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-        //   { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-        //   )
+        volumeBarsData.push(
+         
+         
+          { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end+ 1  / 1000 }
+          )
       }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
@@ -375,7 +373,7 @@ function updateWaveSeries(data) {
  
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
- // volumeBarsSeries.setData(volumeBarsData);
+  volumeBarsSeries.setData(volumeBarsData);
 }
 
 async function fetchCandleData(symbol, timeframe) {
