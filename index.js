@@ -350,7 +350,7 @@ function updateWaveSeries(data) {
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
       
-        const newCandleSeries = candleSeries.map(datapoint => {
+        const newCandleSeries = candleSeries.data.map(datapoint => {
           // map function is changing the color for the individual
           // candlestick points that close above 205
           if (datapoint.time !== timestamp/1000) { return datapoint; }
