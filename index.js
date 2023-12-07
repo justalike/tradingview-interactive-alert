@@ -350,14 +350,16 @@ function updateWaveSeries(data) {
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
 
-        const newCandleSeries = [
-          { time: timestamp / 1000, value: high, color: 'white' },
-          { time: timestamp / 1000, value: low, color: 'white' },
-          { time: timestamp / 1000, value: open, color: 'white' },
-          { time: timestamp / 1000, value: close, color: 'white' },
-        ];
+          for (candle of wave.maxVolCandle){
+            candleSeries.update({
+              time: candle.timestamp / 1000,
+              open: candle.open,
+              high: candle.high,
+              low: candle.low,
+              close: candle.close
+            });
+          }
 
-        candleSeries.setData(newCandleSeries);
          function createAndSetLineSeries(data) {
            const lineSeries = chart.addLineSeries({
              color: 'white',
