@@ -355,6 +355,7 @@ function updateWaveSeries(data) {
           { time: wave.start / 1000 },
           { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
           { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end / 1000 },
 
           )
       }
