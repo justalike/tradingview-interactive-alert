@@ -24,7 +24,7 @@ const chartProperties = {
   },
   
 }
-
+let candleData = []
 let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
@@ -349,16 +349,17 @@ function updateWaveSeries(data) {
       
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
-
+        const newCandles = []
+        for (let candle of candleData) {
+          if (candle.time === timestamp / 1000) {
+            candle.color = 'orange';
+            newCandles.push(candle);
+          } else {
+            newCandles.push(candle);
+          }
+        }
          
-            candleSeries.update({
-              time: timestamp / 1000,
-              open: open,
-              high: high,
-              low: low,
-              close: close,
-              color: 'orange'
-            });
+            candleSeries.setData(newCandles);
           
 
          function createAndSetLineSeries(data) {
@@ -426,6 +427,8 @@ async function fetchCandleData(symbol, timeframe) {
       candleSeries.setData(formattedData);
       volumeSeries.setData(volumeData)
    
+      candleData = formattedData;
+     
     } catch(error) {
       console.error('Fetch error:', error);
     }
