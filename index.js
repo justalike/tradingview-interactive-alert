@@ -351,7 +351,13 @@ function updateWaveSeries(data) {
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
        
         function createAndSetLineSeries(data) {
-          const lineSeries = chart.addLineSeries({ color: 'white', lineWidth: 2, lineStyle: 2, lineVisible: false,  crosshairMarkerVisible: false});
+          const lineSeries = chart.addLineSeries({ 
+            color: 'white',
+            lineWidth: 2,
+            lineStyle: 2,
+            lineVisible: false, // Hide the series line
+            pointMarkersVisible: false, // Hide the circle markers on each point
+                });
           lineSeries.setData(data);
         }
         
