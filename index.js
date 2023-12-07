@@ -342,22 +342,36 @@ function updateWaveSeries(data) {
       
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
-       console.log(wave)
-
+       
+       if (wave.maxVolumeBarMiddle == null || wave.maxVolume == null) {
+        console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
+        continue;
+      }
        if (wave.maxVolCandle){
-
+        const modifiedData = [];
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
+
+        for (const candle of candleSeries.data) {
+          if (candle.time === timestamp / 1000) {
+          // Create a new candle with the modified values
+              const modifiedCandle = {
+                time: candle.time,
+                open: candle.open,
+                high: candle.high,
+                low: candle.low,
+                close: candle.close,
+                color: 'orange'
+            };
+
+            modifiedData.push(modifiedCandle);
+          } else {
+            modifiedData.push(candle);
+          }
+        }
        
-        const candleData = {
-          time: timestamp / 1000,
-          open: open,
-          high: high,
-          low: low,
-          close: close,
-          color: 'orange' // Set the color to orange
-        };
-        
+
+
          function createAndSetLineSeries(data) {
            const lineSeries = chart.addLineSeries({
              color: 'white',
@@ -369,18 +383,8 @@ function updateWaveSeries(data) {
              overlay: true
            });
            lineSeries.setData(data);
-
-           if (candleSeries && Array.isArray(candleSeries.data)) {
-            const keybarIndex = candleSeries.data.findIndex(candle => candle.time === candleData.time);
-            if (keybarIndex !== -1) {
-              // Replace the specific candle with the updated candle data
-              candleSeries.data[keybarIndex] = candleData;
-            
-              // Update the candleSeries with the modified data array
-              candleSeries.update(candleSeries.data);
-            }
-          }
-        }
+           
+         }
 
         const lineData = [
           { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
@@ -404,6 +408,7 @@ function updateWaveSeries(data) {
  
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
+  candleSeries.setData(modifiedData);
   //volumeBarsSeries.setData(volumeBarsData);
 }
 
