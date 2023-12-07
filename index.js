@@ -370,14 +370,16 @@ function updateWaveSeries(data) {
            });
            lineSeries.setData(data);
 
-           const keybarIndex = candleSeries.data.findIndex(candle => candle.time === candleData.time);
-           if (keybarIndex !== -1) {
-            // Replace the specific candle with the updated candle data
-            candleSeries.data[keybarIndex] = candleData;
-          
-            // Update the candleSeries with the modified data array
-            candleSeries.update(candleSeries.data);
-         }
+           if (candleSeries && Array.isArray(candleSeries.data)) {
+            const keybarIndex = candleSeries.data.findIndex(candle => candle.time === candleData.time);
+            if (keybarIndex !== -1) {
+              // Replace the specific candle with the updated candle data
+              candleSeries.data[keybarIndex] = candleData;
+            
+              // Update the candleSeries with the modified data array
+              candleSeries.update(candleSeries.data);
+            }
+          }
         }
 
         const lineData = [
