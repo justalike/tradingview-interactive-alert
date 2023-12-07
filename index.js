@@ -347,7 +347,10 @@ function updateWaveSeries(data) {
         chart.addLineSeries({
           lineWidth: 2,
           lineStyle: 2 })
-          .setData(data);
+          .setData(data)
+          .applyOptions({
+            priceFormat: ''
+          });;
       }
        if (wave.maxVolCandle){
 
@@ -355,7 +358,7 @@ function updateWaveSeries(data) {
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
         createAndSetLineSeries([
           { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'white' },
-          { time: timestamp / 1000, value: maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' },
           ]);
         
         // volumeBarsData.push(
