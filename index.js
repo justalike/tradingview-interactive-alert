@@ -356,6 +356,7 @@ function updateWaveSeries(data) {
              lineWidth: 2,
              lineStyle: 2,
              lastValueVisible: false,
+             priceLineVisible: false,
              crosshairMarkerVisible: false,
              overlay: true
            });
