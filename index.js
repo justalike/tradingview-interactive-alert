@@ -353,8 +353,7 @@ function updateWaveSeries(data) {
         for (let candle of candleData) {
           if (candle.time === timestamp / 1000) {
             candle.color = 'orange';
-            candle.wickUpColor = 'yelow';
-            candle.wickDownColor = 'yellow';
+            candle.wickColor = "orange"
             newCandles.push(candle);
           } else {
             newCandles.push(candle);
