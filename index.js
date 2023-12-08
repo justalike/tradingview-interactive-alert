@@ -320,7 +320,7 @@ function updateWaveSeries(data) {
   // Loop through each wave in the data
   for (let i = 0; i < data.length; i++) {
       const wave = data[i];
-
+      const keyBar = wave?.maxVolCandle
       if (wave.start == null || wave.startValue == null) {
       //  console.log(`Found wave with null start at index ${i}:`, wave);
         continue; // Skip this wave as it has incomplete start data
@@ -341,13 +341,13 @@ function updateWaveSeries(data) {
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
        
-       if (wave.maxVolumeBarMiddle == null || wave.maxVolume == null) {
+       if (keyBar.maxVolumeBarMiddle == null || keyBar.maxVolume == null) {
         console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
         continue;
       }
-       if (wave.maxVolCandle){
+       if (keyBar){
       
-        const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = wave.maxVolCandle;
+        const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = keyBar;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
         const newCandles = []
         for (let candle of candleData) {
