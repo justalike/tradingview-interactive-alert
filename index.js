@@ -341,14 +341,14 @@ function updateWaveSeries(data) {
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
        
-       if (keyBar.maxVolumeBarMiddle == null || keyBar.maxVolume == null) {
+       if (keyBar.maxVolumeBarMiddle == null || keyBar.volume == null) {
         console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
         continue;
       }
        if (keyBar){
       
-        const { timestamp, high, low, open, close, maxVolumeBarMiddle, maxVolume } = keyBar;
-        console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${maxVolume}`)
+        const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
+        console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
         const newCandles = []
         for (let candle of candleData) {
           if (candle.time === timestamp / 1000) {
