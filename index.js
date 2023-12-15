@@ -44,28 +44,27 @@ volumeSeries = chart.addHistogramSeries({
 	priceFormat: {
 		type: 'volume',
 	},
-	priceScaleId: '', // set as an overlay by setting a blank priceScaleId
-	// set the positioning of the volume series
+	priceScaleId: '',
 	scaleMargins: {
-		top: 0.7, // highest point of the series will be 70% away from the top
+		top: 0.7, // highest point 70% away from the top
 		bottom: 0,
 	},
 
 });
 volumeSeries.priceScale().applyOptions({
 	scaleMargins: {
-		top: 0.7, // highest point of the series will be 70% away from the top
+		top: 0.7, 
 		bottom: 0,
 	},
 });
 
 lineSeries = chart.addLineSeries({
   lineWidth: 0.5,
-  lineStyle: 2 // or LineStyle.Dashed, based on your preference
+  lineStyle: 2 // or LineStyle.Dashed
 });
 waveSeries = chart.addLineSeries({
   lineWidth: 2,
-  lineStyle: 2 // or LineStyle.Dashed, based on your preference
+  lineStyle: 2 
 });
 volumeBarsSeries = chart.addLineSeries({
   lineWidth: 2,
@@ -82,8 +81,8 @@ candleSeries.priceScale().applyOptions({
                             },
                             format: {
                               type: "price",
-                              precision: 3,
-                              minMove: 0.01,
+                              precision: 4,
+                              minMove: 0.001,
                             },
                           });
 
@@ -262,22 +261,18 @@ function updateWaveSeries(data) {
   const seriesData = [];
   
   function processTimeFrames(data) {
-    // Sort the data by start time to process in chronological order
     data.sort((a, b) => a.start - b.start);
   
-    // This array will store the processed data with no overlaps or gaps
     let processedData = [];
-  
-    // Iterate over the sorted data
+
     for (let i = 0; i < data.length; i++) {
       let current = data[i];
       let next = data[i + 1];
-  
-      // If there is no next element, this is the last timeframe
+     
       if (!next) {
         processedData.push(current);
        // console.log(`Reached the last timeframe at index: ${i}`);
-        break; // Exit the loop as this is the last element
+        break; 
       }
   
       // Detect overlap when the current end is greater than the next start
@@ -353,13 +348,13 @@ function updateWaveSeries(data) {
         for (let candle of candleData) {
           if (candle.time === timestamp / 1000) {
             candle.color = 'orange';
-            candle.wickColor = "orange"
+            candle.wickColor = 'orange';
+            candle.borderColor = 'orange';
             newCandles.push(candle);
           } else {
             newCandles.push(candle);
           }
         }
-         
             candleSeries.setData(newCandles);
           
 
@@ -384,11 +379,7 @@ function updateWaveSeries(data) {
         
         createAndSetLineSeries(lineData);
         // volumeBarsData.push(
-          
-        //   { time: timestamp / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-        //   { time: wave.end / 1000, value: wave.maxVolumeBarMiddle, color: 'white' },
-          
-        //   )
+    
       }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
