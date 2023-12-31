@@ -381,25 +381,26 @@ function updateWaveSeries(data) {
           }
         }
             candleSeries.setData(newCandles);
-        //  function createAndSetLineSeries(data) {
-        //    const lineSeries = chart.addLineSeries({
-        //      color: 'white',
-        //      lineWidth: 2,
-        //      lineStyle: 2,
-        //      lastValueVisible: false,
-        //      priceLineVisible: false,
-        //      crosshairMarkerVisible: false,
-        //      overlay: true
-        //    });
-        //    lineSeries.setData(data);
-        //  }
 
-        // const lineData = [
-        //   { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'white' },
-        //   { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
-        // ];
-        // createAndSetLineSeries(lineData);
-        // volumeBarsData.push(
+         function createAndSetLineSeries(data) {
+           const lineSeries = chart.addLineSeries({
+             color: 'white',
+             lineWidth: 2,
+             lineStyle: 2,
+             lastValueVisible: false,
+             priceLineVisible: false,
+             crosshairMarkerVisible: false,
+             overlay: true
+           });
+           lineSeries.setData(data);
+         }
+
+        const lineData = [
+          { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'white' },
+          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
+        ];
+        createAndSetLineSeries(lineData);
+        volumeBarsData.push(
       }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
