@@ -184,7 +184,6 @@ function updateChartWithTrendData(data) {
     if (!trend.startTrend || !trend.endTrend ||
       !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
       !trend.breakTrend.timestamp || !trend.breakTrend.value ||
-      !trend.maxVolumeZone ||
       typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number') {
     console.log('Missing or invalid data for trend:', trend);
     return;
