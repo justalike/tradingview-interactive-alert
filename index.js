@@ -4,7 +4,7 @@ const chartProperties = {
   width: window.innerWidth,
   height: window.innerHeight,
   layout: {
-    background: { color: "#222" },
+    background: { color: "#161a25" },
     textColor: "#C3BCDB",
   },
   grid: {
@@ -22,7 +22,6 @@ const chartProperties = {
     secondsVisible: false,
     borderColor: '#485c7b',
   },
-  
 }
 let candleData = []
 let extremaData = [];
@@ -31,6 +30,8 @@ let waveSeries = [];
 let volumeBarsSeries = [];
 let trendLineSeries = [];
 let volumeSeries = [];
+let breakTrendLineSeries = [];
+let rangesSeries = [];
 
 const myPriceFormatter = p => p.toFixed(5);
 const chartContainer = document.getElementById('tvchart');
@@ -53,7 +54,7 @@ volumeSeries = chart.addHistogramSeries({
 });
 volumeSeries.priceScale().applyOptions({
 	scaleMargins: {
-		top: 0.7, 
+		top: 0.7,
 		bottom: 0,
 	},
 });
@@ -64,7 +65,7 @@ lineSeries = chart.addLineSeries({
 });
 waveSeries = chart.addLineSeries({
   lineWidth: 2,
-  lineStyle: 2 
+  lineStyle: 2
 });
 volumeBarsSeries = chart.addLineSeries({
   lineWidth: 2,
@@ -73,7 +74,6 @@ volumeBarsSeries = chart.addLineSeries({
 
 
 const candleSeries = chart.addCandlestickSeries()
-                          
 candleSeries.priceScale().applyOptions({
                             scaleMargins: {
                                 top: 0.2, // highest point of the series will be 10% away from the top
@@ -179,32 +179,73 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 
 function updateChartWithTrendData(data) {
-  data.forEach(trend => {
+  data.forEach((trend, index) => {
 
     if (!trend.startTrend || !trend.endTrend ||
       !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
+      !trend.breakTrend.timestamp || !trend.breakTrend.value ||
       typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number') {
     console.log('Missing or invalid data for trend:', trend);
-    return; 
+    return;
   }
        trendLineSeries = chart.addLineSeries({
-          color: trend.direction === 'up' ? 'white' : 'yellow', // Set color based on direction
+          color: trend.trendDirection == "U" ? 'white' : 'yellow', // Set color based on direction
           lineWidth: 2,
       });
-      
+        breakTrendLineSeries = chart.addLineSeries({
+          color: 'orange',
+          lineWidth: 2,
+          lineStyle: 2,
+          lastValueVisible: false,
+          priceLineVisible: false,
+          crosshairMarkerVisible: false,
+          overlay: true
+        })
+
+        rangesSeries = chart.addLineSeries({
+          color: trend.trendDirection === "U" ? 'lime' : 'red',
+          lineWidth: 2,
+          lineStyle: 1,
+          lastValueVisible: false,
+          priceLineVisible: false,
+          crosshairMarkerVisible: false,
+          overlay: true
+        })
+
+         rangesSeries.setData([
+          { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+          { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+          { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+          { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+          { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+      ]);
+
       // Set the data for the trend line series
       trendLineSeries.setData([
           { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
           { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
       ]);
-      
+
+        let nextTrendEndTime;
+        if (index === data.length - 1) {
+            // If it's the last trend, use the current timestamp
+            nextTrendEndTime = Math.floor(Date.now() / 1000);
+        } else {
+            // Otherwise, use the end time of the next trend
+
+            nextTrendEndTime =  trend.endTrend.timestamp / 1000;
+        }
+
+        breakTrendLineSeries.setData([
+        { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
+        { time: nextTrendEndTime, value: trend.breakTrend.value },
+      ])
+
       // Set the markers on the trend line series
       trendLineSeries.setMarkers([
           { time: trend.startTrend.timestamp / 1000, position: 'aboveBar', color: 'yellow', shape: 'circle' },
-      
           { time: trend.endTrend?.timestamp / 1000, position: 'aboveBar', color: 'yellow', shape: 'circle' },
         ])
-      
   });
 }
 
@@ -223,7 +264,7 @@ function updateChartWithData(data) {
          return item[i]
       }
 
-      return null; 
+      return null;
     }
     return {
       time: item.timestamp / 1000,
@@ -238,7 +279,6 @@ function updateChartWithData(data) {
     }
     return acc;
   }, []);
-  
   lineSeries.setData(uniqueLineData);
 
 
@@ -255,30 +295,24 @@ function updateChartWithData(data) {
 }
 function updateWaveSeries(data) {
   //console.log(`Waves: ${data.length}`)
-  
   //console.log(data)
   // Create an empty array to hold the formatted data
   const seriesData = [];
-  
   function processTimeFrames(data) {
     data.sort((a, b) => a.start - b.start);
-  
     let processedData = [];
 
     for (let i = 0; i < data.length; i++) {
       let current = data[i];
       let next = data[i + 1];
-     
       if (!next) {
         processedData.push(current);
        // console.log(`Reached the last timeframe at index: ${i}`);
-        break; 
+        break;
       }
-  
       // Detect overlap when the current end is greater than the next start
       if (current.end > next.start) {
        // console.log(`Overlap detected at index: ${i}`);
-  
         // Merge overlapping timeframes by extending the end to the latest end time
         let merged = {
           start: current.start,
@@ -286,15 +320,12 @@ function updateWaveSeries(data) {
           // Consider merging other relevant fields if necessary
         };
         processedData.push(merged);
-  
         // Skip the next timeframe since it's merged into the current one
         i++;
       } else if (current.end < next.start) { // Detect a gap between the current and next timeframe
         //console.log(`Gap detected at index: ${i}`);
-  
         // Push the current timeframe
         processedData.push(current);
-  
         // Create a placeholder to fill the gap with null or some default values
         processedData.push({
           start: current.end,
@@ -307,7 +338,6 @@ function updateWaveSeries(data) {
         processedData.push(current);
       }
     }
-  
     return processedData;
   }
 
@@ -323,25 +353,20 @@ function updateWaveSeries(data) {
       // Skip this wave if it has no end or any value is null
       if (wave.end == null || wave.endValue == null) {
       //  console.log(`Found last ongoing wave at index ${i}:`, wave);
-      
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
           { time: Date.now() / 1000, value: wave.startValue, color: 'blue' }
-        
           );
 
           continue;  // Skip to the next iteration
       }
-      
       // Determine the color based on the start and end values
        const color = wave.startValue < wave.endValue ? 'green' : 'red';
-       
        if (keyBar.maxVolumeBarMiddle == null || keyBar.volume == null) {
         console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
         continue;
       }
        if (keyBar){
-      
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
         console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
         const newCandles = []
@@ -356,30 +381,25 @@ function updateWaveSeries(data) {
           }
         }
             candleSeries.setData(newCandles);
-          
+        //  function createAndSetLineSeries(data) {
+        //    const lineSeries = chart.addLineSeries({
+        //      color: 'white',
+        //      lineWidth: 2,
+        //      lineStyle: 2,
+        //      lastValueVisible: false,
+        //      priceLineVisible: false,
+        //      crosshairMarkerVisible: false,
+        //      overlay: true
+        //    });
+        //    lineSeries.setData(data);
+        //  }
 
-         function createAndSetLineSeries(data) {
-           const lineSeries = chart.addLineSeries({
-             color: 'white',
-             lineWidth: 2,
-             lineStyle: 2,
-             lastValueVisible: false,
-             priceLineVisible: false,
-             crosshairMarkerVisible: false,
-             overlay: true
-           });
-           lineSeries.setData(data);
-           
-         }
-
-        const lineData = [
-          { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'white' },
-          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
-        ];
-        
-        createAndSetLineSeries(lineData);
+        // const lineData = [
+        //   { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'white' },
+        //   { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
+        // ];
+        // createAndSetLineSeries(lineData);
         // volumeBarsData.push(
-    
       }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
@@ -387,7 +407,6 @@ function updateWaveSeries(data) {
           { time: wave.end / 1000, value: wave.endValue, color }
       );
   }
- 
   // Update the wave series with the formatted data
   waveSeries.setData(seriesData);
   //volumeBarsSeries.setData(volumeBarsData);
@@ -398,12 +417,10 @@ async function fetchCandleData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/data?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
 
   const response = await fetch(apiUrl)
-   
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
      const data = await response.json();
-   
       const formattedData = data.map(candle => ({
         time: candle.timestamp / 1000,
         open: parseFloat(candle.open),
@@ -418,9 +435,7 @@ async function fetchCandleData(symbol, timeframe) {
 
       candleSeries.setData(formattedData);
       volumeSeries.setData(volumeData)
-   
       candleData = formattedData;
-     
     } catch(error) {
       console.error('Fetch error:', error);
     }
@@ -429,12 +444,10 @@ async function fetchAllLineData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
     try{
   const response = await fetch(apiUrl)
-    
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      
       if (data.extremum) {
         updateChartWithData(data.extremum);
       }
@@ -446,7 +459,6 @@ async function fetchAllLineData(symbol, timeframe) {
       if (data.trends) {
         updateChartWithTrendData(data.trends);
       }
-   
     } catch(error) {
       console.error('Fetch error:', error);
     };
@@ -454,7 +466,7 @@ async function fetchAllLineData(symbol, timeframe) {
 
 // Function to parse query parameters
 async function getQueryParams() {
-  try{ 
+  try{
  // console.log(`Getting query parameters`)
   const queryParams = {};
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -479,7 +491,7 @@ chart.applyOptions({
 		visible: true,
 		fontSize: 52,
 		horzAlign: 'center',
-		vertAlign: 'center',
+		vertAlign: 'top',
 		color: 'rgba(255, 255, 255, 0.7)',
 		text: `${symbol}:${timeframe}`,
 	},
@@ -489,9 +501,7 @@ chart.applyOptions({
 
     await fetchCandleData(symbol, timeframe);
     await fetchAllLineData(symbol, timeframe);
-   
   } else {
-  
   await fetchCandleData("BTC/USDT", "1h");
   await fetchAllLineData("BTC/USDT", "1h");
   }
@@ -501,10 +511,23 @@ chart.applyOptions({
 }
 
 function setChartSize() {
-  
   chartProperties.width = document.body.clientWidth,
   chartProperties.height = document.body.clientHeight
 
 
   chart.applyOptions(chartProperties);
 }
+
+// function createAndSetBreakTrendSeries(data) {
+//   const lineSeries = chart.addLineSeries({
+//     color: 'green',
+//     lineWidth: 2,
+//     lineStyle: 2,
+//     lastValueVisible: false,
+//     priceLineVisible: false,
+//     crosshairMarkerVisible: false,
+//     overlay: true
+//   });
+//   breakTrendLineSeries.setData(data);
+
+// }
