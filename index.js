@@ -79,7 +79,7 @@ if (
 		param.point.y < 0 ||
 		param.point.y > chartContainer.clientHeight ){
  
-      document.getElementById('tooltip').style.display = 'block';
+      document.getElementById('tooltip').style.display = 'none';
       return;
   }
   const timestamp = param.time ;
@@ -103,7 +103,12 @@ function showTooltip(wave, point) {
   const toolTipHeight = 80;
   const toolTipMargin = 15;
 
-  tooltip.innerHTML = `Start: ${wave.startValue}, End: ${wave.endValue}, Velocity: ${wave.velocity}`;
+  tooltip.innerHTML = `
+  <div>Start: ${wave.startValue}</div>
+  <div>End: ${wave.endValue}</div>
+  <div>Velocity: ${wave.velocity}</div>
+`;
+
   tooltip.style.display = 'block';
 
   const y = point.y;
