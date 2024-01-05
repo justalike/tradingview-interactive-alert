@@ -38,30 +38,7 @@ const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
 
-const waveData = await fetchWaveData(symbol, timeframe);
 
-
-//Tooltips:
-chart.subscribeCrosshairMove(async function(param) {
-  
-  if (!param.point) {
-      document.getElementById('tooltip').style.display = 'none';
-      return;
-  }
-  const timestamp = param.time ;
-  console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
-  await updateTooltipContent(timestamp, param); // Function to update tooltip content
-});
-
-async function updateTooltipContent(timestamp, param) {
-  
-  const { symbol, timeframe } = await getQueryParams();
-  
-  const wave = waveData.find(w => w.start <= timestamp && w.end>= timestamp);
-  if (wave) {
-      showTooltip(wave, param.point);
-  }
-}
 
 async function fetchWaveData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
@@ -77,6 +54,35 @@ async function fetchWaveData(symbol, timeframe) {
       return null; // Return null or an empty array as per your error handling strategy
   }
 }
+const initData = async () => {
+  
+  const { symbol, timeframe } = await getQueryParams();
+  const waveData = await fetchWaveData(symbol, timeframe);
+
+  return { symbol: symbol, timeframe: timeframe, waveData: waveData }
+}
+const pairData = await initData();
+
+//Tooltips:
+chart.subscribeCrosshairMove(async function(param) {
+
+  if (!param.point) {
+      document.getElementById('tooltip').style.display = 'none';
+      return;
+  }
+  const timestamp = param.time ;
+  
+  console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
+  await updateTooltipContent(pairData.waveData, timestamp, param); // Function to update tooltip content
+});
+
+async function updateTooltipContent(waveData, timestamp, param) {
+  
+  const wave = waveData.find(w => w.start <= timestamp && w.end>= timestamp);
+  if (wave) {
+      showTooltip(wave, param.point);
+  }
+}
 
 function showTooltip(wave, point) {
   const tooltip = document.getElementById('tooltip');
@@ -86,6 +92,7 @@ function showTooltip(wave, point) {
   tooltip.style.top = point.y + 'px';
   tooltip.style.display = 'block';
 }
+
 
 //End of tooltips
 
@@ -417,7 +424,7 @@ function updateWaveSeries(data) {
       }
        if (keyBar){
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
-        console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
+        //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
         const newCandles = []
         for (let candle of candleData) {
           if (candle.time === timestamp / 1000) {
