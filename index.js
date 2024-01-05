@@ -38,24 +38,25 @@ const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
 setChartSize();
 
-
+const waveData = await fetchWaveData(symbol, timeframe);
 
 
 //Tooltips:
 chart.subscribeCrosshairMove(async function(param) {
+  
   if (!param.point) {
       document.getElementById('tooltip').style.display = 'none';
       return;
   }
-  const timestamp = param.time ; // Get the timestamp from the crosshair position
+  const timestamp = param.time ;
+  console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
   await updateTooltipContent(timestamp, param); // Function to update tooltip content
 });
 
 async function updateTooltipContent(timestamp, param) {
-  console.log(`param is : ${param}`)
+  
   const { symbol, timeframe } = await getQueryParams();
-  const waveData = await fetchWaveData(symbol, timeframe);
-  console.log(waveData) 
+  
   const wave = waveData.find(w => w.start <= timestamp && w.end>= timestamp);
   if (wave) {
       showTooltip(wave, param.point);
@@ -85,8 +86,6 @@ function showTooltip(wave, point) {
   tooltip.style.top = point.y + 'px';
   tooltip.style.display = 'block';
 }
-
-
 
 //End of tooltips
 
