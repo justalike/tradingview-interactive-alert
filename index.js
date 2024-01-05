@@ -98,7 +98,7 @@ async function updateTooltipContent(waveData, timestamp, param) {
 
 function showTooltip(wave, point) {
   const tooltip = document.getElementById('tooltip');
-  const container = document.getElementById('container');
+  const container = document.getElementById('tvchart');
 
   const toolTipWidth = 80;
   const toolTipHeight = 80;
