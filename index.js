@@ -82,7 +82,7 @@ chart.subscribeCrosshairMove(async function(param) {
 
 async function updateTooltipContent(waveData, timestamp, param) {
   
-  const wave = waveData.find(w => w.start <= timestamp && w.end>= timestamp);
+  const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000>= timestamp);
   if (wave) {
       showTooltip(wave, param.point);
   }
