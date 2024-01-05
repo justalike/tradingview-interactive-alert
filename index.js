@@ -115,10 +115,10 @@ function showTooltip(wave, point) {
   if (tooltipY < toolTipMargin) {
     tooltipY = point.y + toolTipMargin;
   }
-  const y = param.point.y;
-  let left = param.point.x + toolTipMargin;
+  const y = point.y;
+  let left = point.x + toolTipMargin;
   if (left > container.clientWidth - toolTipWidth) {
-    left = param.point.x - toolTipMargin - toolTipWidth;
+    left = point.x - toolTipMargin - toolTipWidth;
   }
 
   let top = y + toolTipMargin;
