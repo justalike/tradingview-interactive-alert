@@ -77,9 +77,9 @@ if (
 		param.point.x < 0 ||
 		param.point.x > chartContainer.clientWidth ||
 		param.point.y < 0 ||
-		param.point.y > chartContainer.clientHeight || !globalPairData){
+		param.point.y > chartContainer.clientHeight ){
  
-      document.getElementById('tooltip').style.display = 'none';
+      document.getElementById('tooltip').style.display = 'block';
       return;
   }
   const timestamp = param.time ;
@@ -275,7 +275,7 @@ function updateChartWithTrendData(data) {
     return;
   }
        trendLineSeries = chart.addLineSeries({
-          color: trend.trendDirection == "U" ? 'white' : 'yellow', // Set color based on direction
+          color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
           lineWidth: 2,
       });
         breakTrendLineSeries = chart.addLineSeries({
@@ -289,7 +289,7 @@ function updateChartWithTrendData(data) {
         })
 
         rangesSeries = chart.addLineSeries({
-          color: trend.trendDirection === "U" ? 'lime' : 'red',
+          color: trend.direction === "U" ? 'lime' : 'red',
           lineWidth: 2,
           lineStyle: 1,
           lastValueVisible: false,
