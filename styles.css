@@ -12,3 +12,6 @@ html, body {
     height: 100%;
   }
   
+  #tooltip {
+    pointer-events: none; /* Ensures tooltip doesn't interfere with chart events */
+}

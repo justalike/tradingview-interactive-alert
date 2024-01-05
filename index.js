@@ -40,6 +40,52 @@ setChartSize();
 
 
 
+
+//Tooltips:
+chart.subscribeCrosshairMove(async function(param) {
+  if (!param.point) {
+      document.getElementById('tooltip').style.display = 'none';
+      return;
+  }
+  const timestamp = param.time ; // Get the timestamp from the crosshair position
+  await updateTooltipContent(timestamp); // Function to update tooltip content
+});
+
+async function updateTooltipContent(timestamp) {
+  const waveData = await fetchWaveData(); // Your function to get wave data
+  const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000 >= timestamp);
+  if (wave) {
+      showTooltip(wave, param.point);
+  }
+}
+
+async function fetchWaveData(symbol, timeframe) {
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
+  try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data.wave; // Assuming 'wave' is the key for the wave data
+  } catch (error) {
+      console.error('Fetch error:', error);
+      return null; // Return null or an empty array as per your error handling strategy
+  }
+}
+
+function showTooltip(wave, point) {
+  const tooltip = document.getElementById('tooltip');
+  tooltip.innerHTML = `Start: ${wave.startValue}, End: ${wave.endValue}, Velocity: ${wave.velocity}`;
+  tooltip.style.left = point.x + 'px';
+  tooltip.style.top = point.y + 'px';
+  tooltip.style.display = 'block';
+}
+
+
+
+//End of tooltips
+
 volumeSeries = chart.addHistogramSeries({
 	color: '#26a69a',
 	priceFormat: {
@@ -189,7 +235,7 @@ function updateChartWithTrendData(data) {
     return;
   }
        trendLineSeries = chart.addLineSeries({
-          color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
+          color: trend.trendDirection == "U" ? 'white' : 'yellow', // Set color based on direction
           lineWidth: 2,
       });
         breakTrendLineSeries = chart.addLineSeries({
@@ -203,7 +249,7 @@ function updateChartWithTrendData(data) {
         })
 
         rangesSeries = chart.addLineSeries({
-          color: trend.direction === "U" ? 'lime' : 'red',
+          color: trend.trendDirection === "U" ? 'lime' : 'red',
           lineWidth: 2,
           lineStyle: 1,
           lastValueVisible: false,
@@ -400,7 +446,7 @@ function updateWaveSeries(data) {
           { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
         ];
         createAndSetLineSeries(lineData);
-        volumeBarsData.push(
+        // volumeBarsData.push(
       }
       // Create two points for this wave and add them to the seriesData array
       seriesData.push(
