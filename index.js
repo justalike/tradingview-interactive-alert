@@ -56,7 +56,7 @@ async function updateTooltipContent(timestamp, param) {
   const { symbol, timeframe } = await getQueryParams();
   const waveData = await fetchWaveData(symbol, timeframe);
   console.log(waveData) 
-  const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000 >= timestamp);
+  const wave = waveData.find(w => w.start <= timestamp && w.end>= timestamp);
   if (wave) {
       showTooltip(wave, param.point);
   }
