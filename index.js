@@ -75,9 +75,9 @@ if (
   param.point === undefined ||
 		!param.time ||
 		param.point.x < 0 ||
-		param.point.x > container.clientWidth ||
+		param.point.x > chartContainer.clientWidth ||
 		param.point.y < 0 ||
-		param.point.y > container.clientHeight || !globalPairData){
+		param.point.y > chartContainer.clientHeight || !globalPairData){
  
       document.getElementById('tooltip').style.display = 'none';
       return;
@@ -98,8 +98,7 @@ async function updateTooltipContent(waveData, timestamp, param) {
 
 function showTooltip(wave, point) {
   const tooltip = document.getElementById('tooltip');
-  const container = document.getElementById('tvchart');
-
+  
   const toolTipWidth = 80;
   const toolTipHeight = 80;
   const toolTipMargin = 15;
@@ -109,7 +108,7 @@ function showTooltip(wave, point) {
 
   // Adjusting X coordinate
   let tooltipX = point.x - toolTipWidth / 2;
-  tooltipX = Math.max(toolTipMargin, Math.min(container.clientWidth - toolTipWidth - toolTipMargin, tooltipX));
+  tooltipX = Math.max(toolTipMargin, Math.min(chartContainer.clientWidth - toolTipWidth - toolTipMargin, tooltipX));
 
   // Adjusting Y coordinate
   let tooltipY = point.y - toolTipHeight - toolTipMargin;
