@@ -52,8 +52,10 @@ chart.subscribeCrosshairMove(async function(param) {
 });
 
 async function updateTooltipContent(timestamp, param) {
+  console.log(`param is : ${param}`)
   const { symbol, timeframe } = await getQueryParams();
-  const waveData = await fetchWaveData(symbol, timeframe); // Your function to get wave data
+  const waveData = await fetchWaveData(symbol, timeframe);
+  console.log(waveData) 
   const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000 >= timestamp);
   if (wave) {
       showTooltip(wave, param.point);
@@ -77,6 +79,7 @@ async function fetchWaveData(symbol, timeframe) {
 
 function showTooltip(wave, point) {
   const tooltip = document.getElementById('tooltip');
+  console.log(wave.startValue, wave.endValue, wave.velocity)
   tooltip.innerHTML = `Start: ${wave.startValue}, End: ${wave.endValue}, Velocity: ${wave.velocity}`;
   tooltip.style.left = point.x + 'px';
   tooltip.style.top = point.y + 'px';
