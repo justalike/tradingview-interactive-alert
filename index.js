@@ -115,9 +115,19 @@ function showTooltip(wave, point) {
   if (tooltipY < toolTipMargin) {
     tooltipY = point.y + toolTipMargin;
   }
+  const y = param.point.y;
+  let left = param.point.x + toolTipMargin;
+  if (left > container.clientWidth - toolTipWidth) {
+    left = param.point.x - toolTipMargin - toolTipWidth;
+  }
 
-  tooltip.style.left = tooltipX + 'px';
-  tooltip.style.top = tooltipY + 'px';
+  let top = y + toolTipMargin;
+  if (top > container.clientHeight - toolTipHeight) {
+    top = y - toolTipHeight - toolTipMargin;
+  }
+  tooltip.style.left = left + 'px';
+  tooltip.style.top = top + 'px';
+
 }
 
 
