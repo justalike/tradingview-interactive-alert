@@ -117,12 +117,12 @@ function showTooltip(wave, point) {
   }
   const y = point.y;
   let left = point.x + toolTipMargin;
-  if (left > container.clientWidth - toolTipWidth) {
+  if (left > chartContainer.clientWidth - toolTipWidth) {
     left = point.x - toolTipMargin - toolTipWidth;
   }
 
   let top = y + toolTipMargin;
-  if (top > container.clientHeight - toolTipHeight) {
+  if (top > chartContainer.clientHeight - toolTipHeight) {
     top = y - toolTipHeight - toolTipMargin;
   }
   tooltip.style.left = left + 'px';
