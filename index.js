@@ -77,7 +77,7 @@ chart.subscribeCrosshairMove(async function(param) {
   const timestamp = param.time ;
   
   console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
-  await updateTooltipContent(globalPairData.wave, timestamp, param); // Function to update tooltip content
+  await updateTooltipContent(globalPairData, timestamp, param); // Function to update tooltip content
 });
 
 async function updateTooltipContent(waveData, timestamp, param) {
