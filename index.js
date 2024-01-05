@@ -106,15 +106,6 @@ function showTooltip(wave, point) {
   tooltip.innerHTML = `Start: ${wave.startValue}, End: ${wave.endValue}, Velocity: ${wave.velocity}`;
   tooltip.style.display = 'block';
 
-  // Adjusting X coordinate
-  let tooltipX = point.x - toolTipWidth / 2;
-  tooltipX = Math.max(toolTipMargin, Math.min(chartContainer.clientWidth - toolTipWidth - toolTipMargin, tooltipX));
-
-  // Adjusting Y coordinate
-  let tooltipY = point.y - toolTipHeight - toolTipMargin;
-  if (tooltipY < toolTipMargin) {
-    tooltipY = point.y + toolTipMargin;
-  }
   const y = point.y;
   let left = point.x + toolTipMargin;
   if (left > chartContainer.clientWidth - toolTipWidth) {
@@ -127,6 +118,7 @@ function showTooltip(wave, point) {
   }
   tooltip.style.left = left + 'px';
   tooltip.style.top = top + 'px';
+  console.log(top, left)
 
 }
 
