@@ -70,7 +70,15 @@ initializeWaveData()
 //Tooltips:
 chart.subscribeCrosshairMove(async function(param) {
 
-  if (!param.point || !globalPairData) {
+
+if (
+  param.point === undefined ||
+		!param.time ||
+		param.point.x < 0 ||
+		param.point.x > container.clientWidth ||
+		param.point.y < 0 ||
+		param.point.y > container.clientHeight || !globalPairData){
+ 
       document.getElementById('tooltip').style.display = 'none';
       return;
   }
@@ -90,12 +98,29 @@ async function updateTooltipContent(waveData, timestamp, param) {
 
 function showTooltip(wave, point) {
   const tooltip = document.getElementById('tooltip');
-  console.log(wave.startValue, wave.endValue, wave.velocity)
+  const container = document.getElementById('container');
+
+  const toolTipWidth = 80;
+  const toolTipHeight = 80;
+  const toolTipMargin = 15;
+
   tooltip.innerHTML = `Start: ${wave.startValue}, End: ${wave.endValue}, Velocity: ${wave.velocity}`;
-  tooltip.style.left = point.x + 'px';
-  tooltip.style.top = point.y + 'px';
   tooltip.style.display = 'block';
+
+  // Adjusting X coordinate
+  let tooltipX = point.x - toolTipWidth / 2;
+  tooltipX = Math.max(toolTipMargin, Math.min(container.clientWidth - toolTipWidth - toolTipMargin, tooltipX));
+
+  // Adjusting Y coordinate
+  let tooltipY = point.y - toolTipHeight - toolTipMargin;
+  if (tooltipY < toolTipMargin) {
+    tooltipY = point.y + toolTipMargin;
+  }
+
+  tooltip.style.left = tooltipX + 'px';
+  tooltip.style.top = tooltipY + 'px';
 }
+
 
 
 //End of tooltips
