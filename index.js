@@ -23,7 +23,8 @@ const chartProperties = {
     borderColor: '#485c7b',
   },
 }
-let candleData = []
+let globalPairData = null;
+let candleData = [];
 let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
@@ -54,26 +55,29 @@ async function fetchWaveData(symbol, timeframe) {
       return null; // Return null or an empty array as per your error handling strategy
   }
 }
-const initData = async () => {
-  
-  const { symbol, timeframe } = await getQueryParams();
-  const waveData = await fetchWaveData(symbol, timeframe);
 
-  return { symbol: symbol, timeframe: timeframe, waveData: waveData }
+async function initializeWaveData() {
+  try {
+      const { symbol, timeframe } = await getQueryParams();
+      globalPairData = await fetchWaveData(symbol, timeframe);
+  } catch (error) {
+      console.error('Error fetching wave data:', error);
+  }
 }
-const pairData = await initData();
+
+initializeWaveData()
 
 //Tooltips:
 chart.subscribeCrosshairMove(async function(param) {
 
-  if (!param.point) {
+  if (!param.point || !globalPairData) {
       document.getElementById('tooltip').style.display = 'none';
       return;
   }
   const timestamp = param.time ;
   
   console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
-  await updateTooltipContent(pairData.waveData, timestamp, param); // Function to update tooltip content
+  await updateTooltipContent(globalPairData.wave, timestamp, param); // Function to update tooltip content
 });
 
 async function updateTooltipContent(waveData, timestamp, param) {
