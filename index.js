@@ -381,7 +381,7 @@ function updateChartWithData(data) {
     position: item.type === 'maximum' ? 'aboveBar' : 'belowBar',
     color: item.type === 'maximum' ? 'red' : 'blue',
     shape: 'circle',
-    size: 0.1,
+    size: 5,
   }));
 
   // Set the markers on the line series
