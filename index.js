@@ -84,7 +84,7 @@ if (
   }
   const timestamp = param.time ;
   
-  console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
+ // console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
   await updateTooltipContent(globalPairData, timestamp, param); // Function to update tooltip content
 });
 
@@ -123,7 +123,7 @@ function showTooltip(wave, point) {
   }
   tooltip.style.left = left + 'px';
   tooltip.style.top = top + 'px';
-  console.log(top, left)
+ //console.log(top, left)
 
 }
 
