@@ -336,8 +336,8 @@ function updateChartWithTrendData(data) {
         let startTrendMarkerPos = trend.direction == "D"  ? 'aboveBar' : 'belowBar';
       // Set the markers on the trend line series
       trendLineSeries.setMarkers([
-          { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square', size: 0.1, },
-          { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square', size: 0.1,},
+          { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square' },
+          { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square'},
         ])
   });
 }
@@ -381,7 +381,6 @@ function updateChartWithData(data) {
     position: item.type === 'maximum' ? 'aboveBar' : 'belowBar',
     color: item.type === 'maximum' ? 'red' : 'blue',
     shape: 'circle',
-    size: 1/10,
   }));
 
   // Set the markers on the line series
