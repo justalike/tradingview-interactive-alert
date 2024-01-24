@@ -330,11 +330,12 @@ function updateChartWithTrendData(data) {
         }
         
         console.log(nextTrendEndTime)
+        console.log(Date.now() / 1000)
         console.log(trend)
         console.log(index)
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-        { time: nextTrendEndTime||Math.floor(Date.now() / 1000), value: trend.breakTrend.value },
+        { time: Math.floor(Date.now() / 1000), value: trend.breakTrend.value },
       ])
 
         let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
