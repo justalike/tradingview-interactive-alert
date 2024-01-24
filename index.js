@@ -275,7 +275,7 @@ function updateChartWithTrendData(data) {
     if (!trend.startTrend || !trend.endTrend ||
       !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
       !trend.breakTrend.timestamp || !trend.breakTrend.value ||
-      typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number') {
+      typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number' || typeof trend.breakTrend.value !== 'number') {
     console.log('Missing or invalid data for trend:', trend);
     return;
   }
