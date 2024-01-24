@@ -271,7 +271,7 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 function updateChartWithTrendData(data) {
   data.forEach((trend, index) => {
-    console.log(trend)
+   // console.log(trend)
     if (!trend.startTrend || !trend.endTrend ||
       !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
       !trend.breakTrend.timestamp || !trend.breakTrend.value ||
@@ -321,13 +321,17 @@ function updateChartWithTrendData(data) {
         if (index === data.length - 1) {
             // If it's the last trend, use the current timestamp
             nextTrendEndTime = Math.floor(Date.now() / 1000);
-        } else {
+        }
+        
+        else {
             // Otherwise, use the end time of the next trend
-
+            
             nextTrendEndTime =  trend.endTrend.timestamp / 1000;
         }
-
+        
         console.log(nextTrendEndTime)
+        console.log(trend)
+        console.log(index)
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
         { time: nextTrendEndTime||Math.floor(Date.now() / 1000), value: trend.breakTrend.value },
