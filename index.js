@@ -327,6 +327,7 @@ function updateChartWithTrendData(data) {
             nextTrendEndTime =  trend.endTrend.timestamp / 1000;
         }
 
+        console.log(nextTrendEndTime)
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
         { time: nextTrendEndTime||Math.floor(Date.now() / 1000), value: trend.breakTrend.value },
