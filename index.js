@@ -329,7 +329,7 @@ function updateChartWithTrendData(data) {
 
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-        { time: nextTrendEndTime, value: trend.breakTrend.value },
+        { time: Date.now()/1000, value: trend.breakTrend.value },
       ])
 
         let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
