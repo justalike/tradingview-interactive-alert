@@ -324,15 +324,21 @@ function updateChartWithTrendData(data) {
 
         if (index === data.length - 1) {
             // If it's the last trend, use the current timestamp
-            nextTrendEndTime = Math.floor(Date.now()- 10000) / 1000;
+            nextTrendEndTime = Math.floor(Date.now()) / 1000;
+        }
+        else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
+            // if breaktrend is further than the endTrend extremum
+          nextTrendEndTime = Math.floor(Date.now()) / 1000;
         }
         
         else {
             // Otherwise, use the end time of the next trend
-            
+          
             nextTrendEndTime =  trend.endTrend.timestamp / 1000;
         }
         
+
+
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
         { time:nextTrendEndTime, value: trend.breakTrend.value },
@@ -571,13 +577,13 @@ async function fetchCandleData(symbol, timeframe) {
     if (data.wave) {
       logNullValues(data.wave, 'Wave');
       console.log(data.wave);
-      //updateWaveSeries(data.wave);
+      updateWaveSeries(data.wave);
     }
 
     if (data.trends) {
       logNullValues(data.trends, 'Trends');
       console.log(data.trends);
-      //updateChartWithTrendData(data.trends);
+      updateChartWithTrendData(data.trends);
     }
   } catch (error) {
     console.error('Fetch error:', error);
