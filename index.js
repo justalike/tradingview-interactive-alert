@@ -549,18 +549,20 @@ async function fetchAllLineData(symbol, timeframe) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      console.log(response)
+      
       const data = await response.json();
-      if (data.extremum) {
-        console.log(data.extremum)
+      if (data.extremum) {  
+       
         updateChartWithData(data.extremum);
       }
 
       if (data.wave) {
+        console.log(data.wave)
         updateWaveSeries(data.wave);
       }
 
       if (data.trends) {
+        console.log(data.trends)
         updateChartWithTrendData(data.trends);
       }
     } catch(error) {
