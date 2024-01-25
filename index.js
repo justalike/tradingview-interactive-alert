@@ -571,7 +571,7 @@ async function fetchCandleData(symbol, timeframe) {
     if (data.wave) {
       logNullValues(data.wave, 'Wave');
       console.log(data.wave);
-      updateWaveSeries(data.wave);
+      //updateWaveSeries(data.wave);
     }
 
     if (data.trends) {
