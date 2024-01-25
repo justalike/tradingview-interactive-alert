@@ -565,13 +565,13 @@ async function fetchCandleData(symbol, timeframe) {
     // Check and log null values in extremum, wave, and trends
     if (data.extremum) {
       logNullValues(data.extremum, 'Extremum');
-      //updateChartWithData(data.extremum);
+      updateChartWithData(data.extremum);
     }
 
     if (data.wave) {
       logNullValues(data.wave, 'Wave');
       console.log(data.wave);
-      updateWaveSeries(data.wave);
+      //updateWaveSeries(data.wave);
     }
 
     if (data.trends) {
