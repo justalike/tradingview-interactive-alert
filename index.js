@@ -541,34 +541,49 @@ async function fetchCandleData(symbol, timeframe) {
     } catch(error) {
       console.error('Fetch error:', error);
     }
-}
-async function fetchAllLineData(symbol, timeframe) {
+}async function fetchAllLineData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
-    try{
-  const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      if (data.extremum) {  
-       
-        updateChartWithData(data.extremum);
-      }
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-      if (data.wave) {
-        console.log(data.wave)
-        updateWaveSeries(data.wave);
-      }
+    const data = await response.json();
 
-      if (data.trends) {
-        console.log(data.trends)
-        updateChartWithTrendData(data.trends);
-      }
-    } catch(error) {
-      console.error('Fetch error:', error);
-    };
+    // Function to log null values in an array of objects
+    const logNullValues = (array, name) => {
+      array.forEach((item, index) => {
+        Object.entries(item).forEach(([key, value]) => {
+          if (value === null) {
+            console.log(`${name} item ${index}, key '${key}' is null`);
+          }
+        });
+      });
+    }
+
+    // Check and log null values in extremum, wave, and trends
+    if (data.extremum) {
+      logNullValues(data.extremum, 'Extremum');
+      updateChartWithData(data.extremum);
+    }
+
+    if (data.wave) {
+      logNullValues(data.wave, 'Wave');
+      console.log(data.wave);
+      updateWaveSeries(data.wave);
+    }
+
+    if (data.trends) {
+      logNullValues(data.trends, 'Trends');
+      console.log(data.trends);
+      updateChartWithTrendData(data.trends);
+    }
+  } catch (error) {
+    console.error('Fetch error:', error);
+  };
 }
+
 
 // Function to parse query parameters
 async function getQueryParams() {
