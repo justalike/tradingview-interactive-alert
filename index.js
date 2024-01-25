@@ -328,7 +328,7 @@ function updateChartWithTrendData(data) {
         }
         else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
             // if breaktrend is further than the endTrend extremum
-          nextTrendEndTime = data[index+1].endTrend.timestamp 
+          nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
         }
         
         else {
@@ -341,7 +341,7 @@ function updateChartWithTrendData(data) {
 
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-        { time:nextTrendEndTime, value: trend.breakTrend.value },
+        { time: nextTrendEndTime, value: trend.breakTrend.value },
       ])
 
         let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
