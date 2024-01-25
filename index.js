@@ -551,6 +551,7 @@ async function fetchAllLineData(symbol, timeframe) {
       }
       const data = await response.json();
       if (data.extremum) {
+        console.log(data.extremum)
         updateChartWithData(data.extremum);
       }
 
