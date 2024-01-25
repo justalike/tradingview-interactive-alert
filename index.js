@@ -282,7 +282,10 @@ function updateChartWithTrendData(data) {
        trendLineSeries = chart.addLineSeries({
           color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
           lineWidth: 2,
+          priceLineVisible: false,
+          crosshairMarkerVisible: false,
       });
+
         breakTrendLineSeries = chart.addLineSeries({
           color: 'orange',
           lineWidth: 2,
@@ -318,9 +321,10 @@ function updateChartWithTrendData(data) {
       ]);
 
         let nextTrendEndTime;
+
         if (index === data.length - 1) {
             // If it's the last trend, use the current timestamp
-            nextTrendEndTime = Math.floor(Date.now() / 1000);
+            nextTrendEndTime = Math.floor(Date.now()) / 1000;
         }
         
         else {
@@ -329,21 +333,17 @@ function updateChartWithTrendData(data) {
             nextTrendEndTime =  trend.endTrend.timestamp / 1000;
         }
         
-        console.log(nextTrendEndTime)
-        console.log(Date.now() / 1000)
-        console.log(trend)
-        console.log(index)
         breakTrendLineSeries.setData([
         { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-        { time: Math.floor(Date.now() / 1000), value: trend.breakTrend.value },
+        { time:nextTrendEndTime, value: trend.breakTrend.value },
       ])
 
         let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
         let startTrendMarkerPos = trend.direction == "D"  ? 'aboveBar' : 'belowBar';
       // Set the markers on the trend line series
       trendLineSeries.setMarkers([
-          { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square' },
-          { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square'},
+          { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.startTrend.value},
+          { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.endTrend?.value},
         ])
   });
 }
