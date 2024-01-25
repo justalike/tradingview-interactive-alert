@@ -324,7 +324,7 @@ function updateChartWithTrendData(data) {
 
         if (index === data.length - 1) {
             // If it's the last trend, use the current timestamp
-            nextTrendEndTime = Math.floor(Date.now()) / 1000;
+            nextTrendEndTime = Math.floor(Date.now()- 10000) / 1000;
         }
         
         else {
@@ -388,6 +388,8 @@ function updateChartWithData(data) {
     color: item.type === 'maximum' ? 'red' : 'blue',
     shape: 'circle',
   }));
+
+  console.log(markersData)
 
   // Set the markers on the line series
   lineSeries.setMarkers(markersData);
