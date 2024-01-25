@@ -549,6 +549,7 @@ async function fetchAllLineData(symbol, timeframe) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+      console.log(response)
       const data = await response.json();
       if (data.extremum) {
         console.log(data.extremum)
