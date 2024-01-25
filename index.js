@@ -328,7 +328,7 @@ function updateChartWithTrendData(data) {
         }
         else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
             // if breaktrend is further than the endTrend extremum
-          nextTrendEndTime = Math.floor(Date.now()) / 1000;
+          nextTrendEndTime = data[index+1].endTrend.timestamp || Math.floor(Date.now()) / 1000;
         }
         
         else {
