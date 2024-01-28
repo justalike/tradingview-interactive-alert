@@ -287,7 +287,7 @@ function updateChartWithTrendData(data) {
       });
 
         breakTrendLineSeries = chart.addLineSeries({
-          color: 'orange',
+          color: trend.direction == "U" ? 'white' : 'yellow',
           lineWidth: 2,
           lineStyle: 2,
           lastValueVisible: false,
@@ -491,7 +491,7 @@ function updateWaveSeries(data) {
 
          function createAndSetLineSeries(data) {
            const lineSeries = chart.addLineSeries({
-             color: 'white',
+             color: 'orange',
              lineWidth: 2,
              lineStyle: 2,
              lastValueVisible: false,
@@ -503,8 +503,8 @@ function updateWaveSeries(data) {
          }
 
         const lineData = [
-          { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'white' },
-          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'white' }
+          { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'orange' },
+          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'orange' }
         ];
         createAndSetLineSeries(lineData);
         // volumeBarsData.push(
