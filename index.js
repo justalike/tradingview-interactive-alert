@@ -43,6 +43,7 @@ setChartSize();
 
 async function fetchWaveData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
+  
   try {
       const response = await fetch(apiUrl);
       if (!response.ok) {
@@ -522,8 +523,7 @@ function updateWaveSeries(data) {
 
 async function fetchCandleData(symbol, timeframe) {
   try{
-  const apiUrl = `https://test-api-one-phi.vercel.app/api/data?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
-
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
   const response = await fetch(apiUrl)
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
