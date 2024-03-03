@@ -1,5 +1,7 @@
 
 
+import { connectWebSocket } from "./ws";
+
 const chartProperties = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -644,6 +646,9 @@ function setChartSize() {
 
   chart.applyOptions(chartProperties);
 }
+
+
+connectWebSocket()
 
 // function createAndSetBreakTrendSeries(data) {
 //   const lineSeries = chart.addLineSeries({
