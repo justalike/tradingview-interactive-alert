@@ -168,6 +168,13 @@ volumeBarsSeries = chart.addLineSeries({
 
 export function updateCandleSeries(data) {
   candleSeries.update(data);
+  lineSeries.update()
+  waveSeries.update()
+  volumeBarsSeries.update()
+  trendLineSeries.update()
+  volumeSeries.update()
+  breakTrendLineSeries.update()
+  rangesSeries.update()
 }
  const candleSeries = chart.addCandlestickSeries()
 candleSeries.priceScale().applyOptions({
