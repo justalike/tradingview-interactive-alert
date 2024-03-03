@@ -1,6 +1,6 @@
 
 
-import { connectWebSocket } from "./ws";
+import { connectWebSocket } from "./ws.js";
 
 const chartProperties = {
   width: window.innerWidth,
