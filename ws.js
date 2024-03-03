@@ -1,9 +1,6 @@
-// Assuming Lightweight Charts is already set up
 import { updateCandleSeries } from './index.js';
-// Function to parse query parameters
 
 
-// Establish WebSocket Connection based on URL parameters
 export function connectWebSocket() {
 
     function getQueryParams() {
@@ -14,7 +11,6 @@ export function connectWebSocket() {
         };
     }
     
-    // Function to format symbol for Binance WebSocket
     function formatSymbol(symbol) {
         return symbol.replace('/', '').toLowerCase();
     }
@@ -32,9 +28,9 @@ export function connectWebSocket() {
     binanceWs.onmessage = (event) => {
         const message = JSON.parse(event.data);
 
-        const candle = message.k;
+        const candle = message.k; //kline
         const candlestickData = {
-            time: candle.t / 1000, // Convert timestamp from ms to s
+            time: candle.t / 1000, // Convert ms to s to draw candles in the chart
             open: parseFloat(candle.o),
             high: parseFloat(candle.h),
             low: parseFloat(candle.l),
