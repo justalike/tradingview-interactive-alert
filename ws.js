@@ -1,7 +1,5 @@
 // Assuming Lightweight Charts is already set up
-import chart from './index.js';
-import candleSeries from './index.js';
-
+import { updateCandleSeries } from './index.js';
 // Function to parse query parameters
 
 
@@ -43,7 +41,7 @@ export function connectWebSocket() {
             close: parseFloat(candle.c),
         };
 
-        candleSeries.update(candlestickData);
+        updateCandleSeries(candlestickData);
     };
 
     binanceWs.onopen = () => {
@@ -56,4 +54,4 @@ export function connectWebSocket() {
 }
 
 // Call the function to connect to the WebSocket
-connectWebSocket();
+

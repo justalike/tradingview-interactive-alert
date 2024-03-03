@@ -166,8 +166,10 @@ volumeBarsSeries = chart.addLineSeries({
   lineStyle: 2
 })
 
-
-const candleSeries = chart.addCandlestickSeries()
+export function updateCandleSeries(data) {
+  candleSeries.update(data);
+}
+ const candleSeries = chart.addCandlestickSeries()
 candleSeries.priceScale().applyOptions({
                             scaleMargins: {
                                 top: 0.2, // highest point of the series will be 10% away from the top
