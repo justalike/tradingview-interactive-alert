@@ -35,7 +35,7 @@ let trendLineSeries = [];
 let volumeSeries = [];
 let breakTrendLineSeries = [];
 let rangesSeries = [];
-let lastCandle = null;
+var lastCandle = null;
 
 const myPriceFormatter = p => p.toFixed(5);
 const chartContainer = document.getElementById('tvchart');
@@ -63,7 +63,9 @@ async function fetchWaveData(symbol, timeframe) {
 async function initializeWaveData() {
   try {
       const { symbol, timeframe } = await getQueryParams();
+      await fetchCandleData(symbol, timeframe)
       globalPairData = await fetchWaveData(symbol, timeframe);
+      
   } catch (error) {
       console.error('Error fetching wave data:', error);
   }
@@ -465,6 +467,7 @@ function updateWaveSeries(data) {
       // Skip this wave if it has no end or any value is null
       if (wave.end == null || wave.endValue == null) {
       //  console.log(`Found last ongoing wave at index ${i}:`, wave);
+      console.log(lastCandle)
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
           { time: /*Date.now()*/ lastCandle.timestamp, value: wave.startValue, color: 'blue' }
