@@ -35,6 +35,7 @@ let trendLineSeries = [];
 let volumeSeries = [];
 let breakTrendLineSeries = [];
 let rangesSeries = [];
+let lastCandle = null;
 
 const myPriceFormatter = p => p.toFixed(5);
 const chartContainer = document.getElementById('tvchart');
@@ -130,9 +131,6 @@ function showTooltip(wave, point) {
 
 }
 
-
-
-//End of tooltips
 
 volumeSeries = chart.addHistogramSeries({
 	color: '#26a69a',
@@ -329,7 +327,9 @@ function updateChartWithTrendData(data) {
 
         if (index === data.length - 1) {
             // If it's the last trend, use the current timestamp
-            nextTrendEndTime = Math.floor(Date.now()) / 1000;
+
+            //nextTrendEndTime = Math.floor(Date.now()) / 1000;
+            nextTrendEndTime = lastCandle.timestamp
         }
         else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
             // if breaktrend is further than the endTrend extremum
@@ -467,7 +467,7 @@ function updateWaveSeries(data) {
       //  console.log(`Found last ongoing wave at index ${i}:`, wave);
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
-          { time: Date.now() / 1000, value: wave.startValue, color: 'blue' }
+          { time: /*Date.now()*/ lastCandle.timestamp, value: wave.startValue, color: 'blue' }
           );
 
           continue;  // Skip to the next iteration
@@ -478,7 +478,8 @@ function updateWaveSeries(data) {
         console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
         continue;
       }
-       if (keyBar){
+      
+      if (keyBar){
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
         //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
         const newCandles = []
@@ -492,6 +493,7 @@ function updateWaveSeries(data) {
             newCandles.push(candle);
           }
         }
+        
             candleSeries.setData(newCandles);
 
          function createAndSetLineSeries(data) {
@@ -544,14 +546,16 @@ async function fetchCandleData(symbol, timeframe) {
         time: candle.timestamp / 1000,
         value: parseFloat(candle.volume)
       }));
-
+      lastCandle = formattedData[formattedData.length - 1];
       candleSeries.setData(formattedData);
       volumeSeries.setData(volumeData)
       candleData = formattedData;
     } catch(error) {
       console.error('Fetch error:', error);
     }
-}async function fetchAllLineData(symbol, timeframe) {
+}
+
+async function fetchAllLineData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
   try {
     const response = await fetch(apiUrl);
