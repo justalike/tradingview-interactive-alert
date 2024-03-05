@@ -331,7 +331,7 @@ function updateChartWithTrendData(data) {
             // If it's the last trend, use the current timestamp
 
             //nextTrendEndTime = Math.floor(Date.now()) / 1000;
-            nextTrendEndTime = lastCandle.timestamp
+            nextTrendEndTime = lastCandle.time
         }
         else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
             // if breaktrend is further than the endTrend extremum
@@ -470,7 +470,7 @@ function updateWaveSeries(data) {
       console.log(lastCandle)
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
-          { time: /*Date.now()*/ lastCandle.timestamp, value: wave.startValue, color: 'blue' }
+          { time: /*Date.now()*/ lastCandle.time, value: wave.startValue, color: 'blue' }
           );
 
           continue;  // Skip to the next iteration
