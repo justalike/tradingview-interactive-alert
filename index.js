@@ -352,16 +352,16 @@ function updateChartWithTrendData(data) {
             }
           }
 
-          return candleData 
+          return candlesArr.length > 0 ? candlesArr[0] : trend.startTrend.timestamp / 1000; 
         }
-        const firstRangeCandle = findFirstRangeCandle(candleData);
+        const firstRangeCandleTimestamp = findFirstRangeCandle(candleData);
 
          rangesSeries.setData([
-          { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-          { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+          { time: firstRangeCandleTimestamp , value: trend.maxVolumeZone.startPrice },
+          { time: firstRangeCandleTimestamp , value: trend.maxVolumeZone.endPrice},
           { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
           { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-          { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+          { time: firstRangeCandleTimestamp , value: trend.maxVolumeZone.startPrice},
       ]);
 
       // Set the data for the trend line series
