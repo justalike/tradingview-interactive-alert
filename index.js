@@ -350,8 +350,8 @@ function updateChartWithTrendData(data) {
                 candles[i].high > trend.maxVolumeZone.startPrice) {
               candlesArr.push(candles[i]);
             }
-          }
-
+         }
+        console.log( candlesArr[0].timestamp / 1000 ) 
           return candlesArr.length > 0 ? candlesArr[0].timestamp / 1000 : trend.startTrend.timestamp / 1000; 
         }
         const firstRangeCandleTimestamp = findFirstRangeCandle(candleData);
