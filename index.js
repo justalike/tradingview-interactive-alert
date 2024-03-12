@@ -273,34 +273,7 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData);
 //   }
 // });
 
-async function fetchCandleData(symbol, timeframe) {
-  try{
-  const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
-  const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-     const data = await response.json();
-      const formattedData = data.map(candle => ({
-        time: candle.timestamp / 1000,
-        open: parseFloat(candle.open),
-        high: parseFloat(candle.high),
-        low: parseFloat(candle.low),
-        close: parseFloat(candle.close),
-      }));
-      const volumeData = data.map( candle => ({
-        time: candle.timestamp / 1000,
-        value: parseFloat(candle.volume)
-      }));
-      lastCandle = formattedData[formattedData.length - 1];
-      candleSeries.setData(formattedData);
-      volumeSeries.setData(volumeData)
-      candleData = formattedData;
 
-    } catch(error) {
-      console.error('Fetch error:', error);
-    }
-}
 function updateChartWithTrendData(data) {
   data.forEach((trend, index) => {
    // console.log(trend)
@@ -338,30 +311,12 @@ function updateChartWithTrendData(data) {
           overlay: true
         })
 
-
-       async function findFirstRangeCandle (candles) { 
-
-        const { symbol, timeframe } = await getQueryParams();
-        await fetchCandleData(symbol, timeframe)
-
-          const candlesArr = []
-          for (let i = 0; i < candles.length; i++) {
-            if (candles[i].timestamp > trend.startTrend.timestamp &&
-                candles[i].high > trend.maxVolumeZone.startPrice) {
-              candlesArr.push(candles[i]);
-            }
-         }
-        console.log( candlesArr[0].timestamp / 1000 ) 
-          return candlesArr.length > 0 ? candlesArr[0].timestamp / 1000 : trend.startTrend.timestamp / 1000; 
-        }
-        const firstRangeCandleTimestamp = findFirstRangeCandle(candleData);
-
          rangesSeries.setData([
-          { time: firstRangeCandleTimestamp , value: trend.maxVolumeZone.startPrice },
-          { time: firstRangeCandleTimestamp , value: trend.maxVolumeZone.endPrice},
+          { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+          { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
           { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
           { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-          { time: firstRangeCandleTimestamp , value: trend.maxVolumeZone.startPrice},
+          { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
       ]);
 
       // Set the data for the trend line series
@@ -512,7 +467,7 @@ function updateWaveSeries(data) {
       // Skip this wave if it has no end or any value is null
       if (wave.end == null || wave.endValue == null) {
       //  console.log(`Found last ongoing wave at index ${i}:`, wave);
-      //console.log(lastCandle)
+      // console.log(lastCandle)
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
           { time: /*Date.now()*/ lastCandle.time, value: wave.startValue, color: 'blue' }
@@ -575,6 +530,33 @@ function updateWaveSeries(data) {
   //volumeBarsSeries.setData(volumeBarsData);
 }
 
+async function fetchCandleData(symbol, timeframe) {
+  try{
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
+  const response = await fetch(apiUrl)
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+     const data = await response.json();
+      const formattedData = data.map(candle => ({
+        time: candle.timestamp / 1000,
+        open: parseFloat(candle.open),
+        high: parseFloat(candle.high),
+        low: parseFloat(candle.low),
+        close: parseFloat(candle.close),
+      }));
+      const volumeData = data.map( candle => ({
+        time: candle.timestamp / 1000,
+        value: parseFloat(candle.volume)
+      }));
+      lastCandle = formattedData[formattedData.length - 1];
+      candleSeries.setData(formattedData);
+      volumeSeries.setData(volumeData)
+      candleData = formattedData;
+    } catch(error) {
+      console.error('Fetch error:', error);
+    }
+}
 
 async function fetchAllLineData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
