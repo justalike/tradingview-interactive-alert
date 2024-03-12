@@ -352,7 +352,7 @@ function updateChartWithTrendData(data) {
             }
           }
 
-          return candlesArr.length > 0 ? candlesArr[0] : trend.startTrend.timestamp / 1000; 
+          return candlesArr.length > 0 ? candlesArr[0].timestamp / 1000 : trend.startTrend.timestamp / 1000; 
         }
         const firstRangeCandleTimestamp = findFirstRangeCandle(candleData);
 
