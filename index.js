@@ -297,7 +297,6 @@ async function fetchCandleData(symbol, timeframe) {
       volumeSeries.setData(volumeData)
       candleData = formattedData;
 
-      return formattedData
     } catch(error) {
       console.error('Fetch error:', error);
     }
@@ -341,7 +340,10 @@ function updateChartWithTrendData(data) {
 
 
        async function findFirstRangeCandle (candles) { 
-         
+
+        const { symbol, timeframe } = await getQueryParams();
+        await fetchCandleData(symbol, timeframe)
+
           const candlesArr = []
           for (let i = 0; i < candles.length; i++) {
             if (candles[i].timestamp > trend.startTrend.timestamp &&
@@ -349,10 +351,10 @@ function updateChartWithTrendData(data) {
               candlesArr.push(candles[i]);
             }
           }
-          console.log(candleData)
-          return candlesArr.length>0 ? candlesArr[0] : trend.startTrend
+
+          return candleData 
         }
-        const firstRangeCandle = findFirstRangeCandle();
+        const firstRangeCandle = findFirstRangeCandle(candleData);
 
          rangesSeries.setData([
           { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
