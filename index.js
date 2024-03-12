@@ -311,12 +311,23 @@ function updateChartWithTrendData(data) {
           overlay: true
         })
 
+
+        function findFirstRangeCandle (candles) { 
+          for (let i = 0; i < candles.length; i++) {
+            if (candles[i].timestamp > trend.startTrend.timestamp &&
+                candles[i].high > trend.maxVolumeZone.startPrice) {
+              return candles[i];
+            }
+          }
+        }
+        const firstRangeCandle = findFirstRangeCandle(candleData);
+
          rangesSeries.setData([
-          { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-          { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+          { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+          { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
           { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
           { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-          { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+          { time: firstRangeCandle.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
       ]);
 
       // Set the data for the trend line series
@@ -467,7 +478,7 @@ function updateWaveSeries(data) {
       // Skip this wave if it has no end or any value is null
       if (wave.end == null || wave.endValue == null) {
       //  console.log(`Found last ongoing wave at index ${i}:`, wave);
-      console.log(lastCandle)
+      //console.log(lastCandle)
         seriesData.push(
           { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
           { time: /*Date.now()*/ lastCandle.time, value: wave.startValue, color: 'blue' }
