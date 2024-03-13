@@ -20,7 +20,11 @@ const chartProperties = {
     borderColor: '#485c7b',
   },
   timeScale: {
-    timeVisible: true,
+    rightOffset: 5, // Controls the empty space to the right
+    barSpacing: 5,
+    fixLeftEdge: true,
+    visible: true, // Show or hide the time scale
+    timeVisible: true, // Show the time (in addition to the date) on the time scale
     secondsVisible: false,
     borderColor: '#485c7b',
   },
@@ -490,7 +494,7 @@ function updateWaveSeries(data) {
         const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
         //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
         const newCandles = []
-        for (let candle of candleData) {
+        for (let candle of globalCandleData) {
           if (candle.time === timestamp / 1000) {
             candle.color = 'orange';
             candle.wickColor = 'orange';
@@ -677,25 +681,6 @@ function setChartSize() {
 
 
 
-function mergeData(currentData, newData) {
-  if (newData.length === 0) {
-      return currentData;
-  }
-  
-  // Assuming both currentData and newData are sorted by time ascending
-  const lastNewDataTime = newData[newData.length - 1].time;
-
-  // Find the last element of the new data in the current data
-  const overlapIndex = currentData.findIndex(dataPoint => dataPoint.time >= lastNewDataTime);
-  
-  // If found, trim the current data up to the point of overlap
-  if (overlapIndex !== -1) {
-      currentData.length = overlapIndex;
-  }
-
-  // Merge the new data with the trimmed current data
-  return currentData.concat(newData);
-}
 
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   // Fetching symbol and timeframe from URL query parameters
@@ -725,7 +710,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 
         candleSeries.setData(newCandleData);
         volumeSeries.setData(newVolumeData);
-   
+        // all lines data go there
    
    
   } catch (error) {
