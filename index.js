@@ -724,7 +724,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   }));
 
         candleSeries.setData(newCandleData);
-        volumeSeries.setData(currentVolumeData);
+        volumeSeries.setData(newVolumeData);
    
    
    
