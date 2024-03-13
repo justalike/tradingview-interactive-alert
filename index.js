@@ -675,9 +675,10 @@ chart.applyOptions({
 }
 
 function setChartSize() {
-  chartProperties.width = document.body.clientWidth,
-  chartProperties.height = document.body.clientHeight
+  // chartProperties.width = document.body.clientWidth,
+  // chartProperties.height = document.body.clientHeight
 
+  chart.timeScale().fitContent().resize(window.innerWidth, window.innerHeight);
 
   chart.applyOptions(chartProperties);
 }
@@ -721,7 +722,6 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   }
 });
 
-chart.timeScale().fitContent();
 
 connectWebSocket()
 
