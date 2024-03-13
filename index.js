@@ -123,7 +123,7 @@ function showTooltip(wave, point) {
   tooltip.innerHTML = `
   <div>Start: ${wave.startValue}</div>
   <div>End: ${wave.endValue}</div>
-  <div>Velocity: ${wave.velocity}</div>
+  <div>Velocity: ${wave.velocity.toFixed(4)}</div>
 `;
 
   tooltip.style.display = 'block';
