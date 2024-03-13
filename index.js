@@ -679,7 +679,9 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   const { symbol, timeframe } = await getQueryParams();
   const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;
   try {
+    
     const response = await fetch(apiUrl);
+    console.log(response)
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
