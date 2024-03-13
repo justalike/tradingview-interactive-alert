@@ -731,8 +731,8 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   });
 
         // Update chart series
-       let currentCandleData = mergeData(globalCandleData, newCandleData);
-       let currentVolumeData = mergeData(globalVolumeData, newVolumeData);
+       let currentCandleData = mergeData(candleSeries.data(), newCandleData);
+       let currentVolumeData = mergeData(volumeSeries.data(), newVolumeData);
     
         // Update the chart series with the merged dataset
         candleSeries.setData(currentCandleData);
