@@ -687,6 +687,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     }
     const historyData = await response.json();
    console.log(historyData.length)
+   console.log(historyData[0])
     
    historyData.forEach(dataPoint => {
     console.log('Updating with data point:', dataPoint); // Debugging: Log each data point
@@ -701,10 +702,12 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
         low: parseFloat(low),
         close: parseFloat(close),
     };
+    console.log (candlestickData[0].time)
     const volumeData = {
         time: timestamp / 1000, // Convert ms to s to draw candles in the chart
         value: parseFloat(volume),
     }
+    console.log (volume[0].time)
         volumeSeries.update(volumeData)
         candleSeries.update(candlestickData);
     } else {
