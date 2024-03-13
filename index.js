@@ -673,9 +673,7 @@ function setChartSize() {
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   // Fetching symbol and timeframe from URL query parameters
   const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;
-  const queryParams = new URLSearchParams(window.location.search);
-  const symbol = queryParams.get('symbol');
-  const timeframe = queryParams.get('timeframe');
+  const { symbol, timeframe } = await getQueryParams();
   try {
     const response = await fetch(apiUrl);
     if (!response.ok) {
