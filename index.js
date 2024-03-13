@@ -26,7 +26,8 @@ const chartProperties = {
   },
 }
 let globalPairData = null;
-let candleData = [];
+let globalCandleData = [];
+let globalVolumeData = [];
 let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
@@ -569,7 +570,8 @@ async function fetchCandleData(symbol, timeframe) {
       lastCandle = formattedData[formattedData.length - 1];
       candleSeries.setData(formattedData);
       volumeSeries.setData(volumeData)
-      candleData = formattedData;
+      globalCandleData = formattedData;
+      globalVolumeData = volumeData
     } catch(error) {
       console.error('Fetch error:', error);
     }
@@ -674,6 +676,27 @@ function setChartSize() {
 }
 
 
+
+function mergeData(currentData, newData) {
+  if (newData.length === 0) {
+      return currentData;
+  }
+  
+  // Assuming both currentData and newData are sorted by time ascending
+  const lastNewDataTime = newData[newData.length - 1].time;
+
+  // Find the last element of the new data in the current data
+  const overlapIndex = currentData.findIndex(dataPoint => dataPoint.time >= lastNewDataTime);
+  
+  // If found, trim the current data up to the point of overlap
+  if (overlapIndex !== -1) {
+      currentData.length = overlapIndex;
+  }
+
+  // Merge the new data with the trimmed current data
+  return currentData.concat(newData);
+}
+
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   // Fetching symbol and timeframe from URL query parameters
   const { symbol, timeframe } = await getQueryParams();
@@ -684,34 +707,39 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
-    const historyData = await response.json();
-    console.log(`Number of data points: ${historyData.length}`);
-    console.log('First data point:', historyData[0]);
+   
+  const newCandleData = [];
+  const newVolumeData = [];
+  const historyData = await response.json();
+  
+  historyData.forEach(dataPoint => {
+    const { open, high, low, close, volume, timestamp } = dataPoint;
+    const time = timestamp / 1000; // Convert ms to s for the chart
 
-    historyData.forEach(dataPoint => {
-      console.log('Updating with data point:', dataPoint);
-      const { open, high, low, close, volume, timestamp } = dataPoint;
+    newCandleData.push({
+      time,
+      open: parseFloat(open),
+      high: parseFloat(high),
+      low: parseFloat(low),
+      close: parseFloat(close),
+    });
 
-      if (timestamp && open && high && low && close) {
-        const candlestickData = {
-          time: timestamp / 1000, // Convert ms to s for the chart
-          open: parseFloat(open),
-          high: parseFloat(high),
-          low: parseFloat(low),
-          close: parseFloat(close),
-        };
-        const volumeData = {
-          time: timestamp / 1000, // Same timestamp as the candlestick data
-          value: parseFloat(volume),
-        };
+    newVolumeData.push({
+      time,
+      value: parseFloat(volume),
+    });
+  });
 
         // Update chart series
-        volumeSeries.update(volumeData);
-        candleSeries.update(candlestickData);
-      } else {
-        console.error('Invalid data point structure:', dataPoint);
-      }
-    });
+        currentCandleData = mergeData(globalCandleData, newCandleData);
+        currentVolumeData = mergeData(globalVolumeData, newVolumeData);
+    
+        // Update the chart series with the merged dataset
+        candleSeries.setData(currentCandleData);
+        volumeSeries.setData(currentVolumeData);
+   
+   
+   
   } catch (error) {
     console.error('Failed to load new data:', error);
   }
