@@ -64,6 +64,9 @@ async function initializeWaveData() {
   try {
       const { symbol, timeframe } = await getQueryParams();
       await fetchCandleData(symbol, timeframe)
+
+const preloadHistoryStatus = await preLoadHistoryCandles(symbol, timeframe);
+console.log(preloadHistoryStatus)
       globalPairData = await fetchWaveData(symbol, timeframe);
       
   } catch (error) {
@@ -712,8 +715,6 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 });
 
 
-const preloadHistoryStatus = await preLoadHistoryCandles(symbol, timeframe);
-    console.log(preloadHistoryStatus)
   
 connectWebSocket()
 
