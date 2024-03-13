@@ -673,52 +673,49 @@ function setChartSize() {
   chart.applyOptions(chartProperties);
 }
 
+
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   // Fetching symbol and timeframe from URL query parameters
- 
   const { symbol, timeframe } = await getQueryParams();
   const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;
   try {
-    
     const response = await fetch(apiUrl);
-    console.log(response)
+    console.log(response);
     if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
     }
     const historyData = await response.json();
-   console.log(historyData.length)
-   console.log(historyData[0])
-    
-   historyData.forEach(dataPoint => {
-    console.log('Updating with data point:', dataPoint); // Debugging: Log each data point
-    // Ensure dataPoint has the expected structure here
-    const { open, high, low, close, volume, timestamp } = dataPoint;
+    console.log(`Number of data points: ${historyData.length}`);
+    console.log('First data point:', historyData[0]);
 
-    if(dataPoint && dataPoint.timestamp && dataPoint.open && dataPoint.high && dataPoint.low && dataPoint.close) {
-      const candlestickData = {
-        time: timestamp / 1000, // Convert ms to s to draw candles in the chart
-        open: parseFloat(open),
-        high: parseFloat(high),
-        low: parseFloat(low),
-        close: parseFloat(close),
-    };
-    console.log (candlestickData[0].time)
-    const volumeData = {
-        time: timestamp / 1000, // Convert ms to s to draw candles in the chart
-        value: parseFloat(volume),
-    }
-    console.log (volume[0].time)
-        volumeSeries.update(volumeData)
+    historyData.forEach(dataPoint => {
+      console.log('Updating with data point:', dataPoint);
+      const { open, high, low, close, volume, timestamp } = dataPoint;
+
+      if (timestamp && open && high && low && close) {
+        const candlestickData = {
+          time: timestamp / 1000, // Convert ms to s for the chart
+          open: parseFloat(open),
+          high: parseFloat(high),
+          low: parseFloat(low),
+          close: parseFloat(close),
+        };
+        const volumeData = {
+          time: timestamp / 1000, // Same timestamp as the candlestick data
+          value: parseFloat(volume),
+        };
+
+        // Update chart series
+        volumeSeries.update(volumeData);
         candleSeries.update(candlestickData);
-    } else {
+      } else {
         console.error('Invalid data point structure:', dataPoint);
-    }
-});
+      }
+    });
   } catch (error) {
-      console.error('Failed to load new data:', error);
+    console.error('Failed to load new data:', error);
   }
 });
-
 
   
 connectWebSocket()
