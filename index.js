@@ -22,7 +22,6 @@ const chartProperties = {
   timeScale: {
     rightOffset: 5, // Controls the empty space to the right
     barSpacing: 5,
-    fixLeftEdge: true,
     visible: true, // Show or hide the time scale
     timeVisible: true, // Show the time (in addition to the date) on the time scale
     secondsVisible: false,
@@ -718,7 +717,8 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   }
 });
 
-  
+chart.timeScale().fitContent();
+
 connectWebSocket()
 
 // function createAndSetBreakTrendSeries(data) {
