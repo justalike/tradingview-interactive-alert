@@ -14,8 +14,8 @@ html, body {
 
   #loadDataButton {
     position: absolute;
-    top: 20px; /* Adjust as needed */
-    right: 20px; /* Adjust as needed */
+    top: 100px; /* Adjust as needed */
+    right: 100px; /* Adjust as needed */
     z-index: 1000; /* Ensure the button is above the chart elements */
     opacity: 0; /* Make button invisible by default */
     transition: opacity 0.2s ease; /* Smooth transition for the opacity change */

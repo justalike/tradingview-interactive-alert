@@ -103,12 +103,11 @@ if (
 
 async function updateTooltipContent(waveData, timestamp, param) {
   
+  if (!waveData) return
   const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000>= timestamp);
-  if (wave) {
+  if (!wave) return
       showTooltip(wave, param.point);
-  } else {
-    return
-  }
+
 }
 
 function showTooltip(wave, point) {
