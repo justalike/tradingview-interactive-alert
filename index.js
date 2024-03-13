@@ -530,6 +530,17 @@ function updateWaveSeries(data) {
   //volumeBarsSeries.setData(volumeBarsData);
 }
 
+async function preLoadHistoryCandles(symbol, timeframe) {
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}`;
+  const response = await fetch(apiUrl);
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data;
+
+}
+
 async function fetchCandleData(symbol, timeframe) {
   try{
   const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
@@ -537,6 +548,9 @@ async function fetchCandleData(symbol, timeframe) {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
+     const preloadHistoryStatus = await preLoadHistoryCandles(symbol, timeframe);
+     console.log(preloadHistoryStatus)
+
      const data = await response.json();
       const formattedData = data.map(candle => ({
         time: candle.timestamp / 1000,
@@ -655,6 +669,27 @@ function setChartSize() {
 
   chart.applyOptions(chartProperties);
 }
+
+document.getElementById('loadDataButton').addEventListener('click', async () => {
+  // Fetching symbol and timeframe from URL query parameters
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;
+  const queryParams = new URLSearchParams(window.location.search);
+  const symbol = queryParams.get('symbol');
+  const timeframe = queryParams.get('timeframe');
+  try {
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const historyData = await response.json();
+   
+    
+      historyData.forEach(dataPoint => candleSeries.update(dataPoint));
+  } catch (error) {
+      console.error('Failed to load new data:', error);
+  }
+});
+
 
 
 connectWebSocket()
