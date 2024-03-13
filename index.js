@@ -106,10 +106,14 @@ async function updateTooltipContent(waveData, timestamp, param) {
   const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000>= timestamp);
   if (wave) {
       showTooltip(wave, param.point);
+  } else {
+    return
   }
 }
 
 function showTooltip(wave, point) {
+
+  if (!wave) return
   const tooltip = document.getElementById('tooltip');
   
   const toolTipWidth = 80;
