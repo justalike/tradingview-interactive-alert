@@ -675,12 +675,9 @@ chart.applyOptions({
 }
 
 function setChartSize() {
-  // chartProperties.width = document.body.clientWidth,
-  // chartProperties.height = document.body.clientHeight
-
-  chart.timeScale().fitContent().resize(window.innerWidth, window.innerHeight);
-
-  chart.applyOptions(chartProperties);
+    chartProperties.width = document.body.clientWidth,
+    chartProperties.height = document.body.clientHeight
+    chart.applyOptions(chartProperties);
 }
 
 
