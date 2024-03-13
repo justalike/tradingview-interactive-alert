@@ -708,40 +708,22 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
         throw new Error(`HTTP error! status: ${response.status}`);
     }
    
-  const newCandleData = [];
-  const newVolumeData = [];
+ 
   const historyData = await response.json();
   
-  historyData.forEach(dataPoint => {
-    const { open, high, low, close, volume, timestamp } = dataPoint;
-    const time = timestamp / 1000; // Convert ms to s for the chart
+  const newCandleData = historyData.map(dataPoint => ({
+    time: dataPoint.timestamp / 1000, // Convert ms to s for the chart
+    open: dataPoint.open,
+    high: dataPoint.high,
+    low: dataPoint.low,
+    close: dataPoint.close,
+  }));
+  const newVolumeData = historyData.map(dataPoint => ({
+    time: dataPoint.timestamp / 1000, // Convert ms to s for the chart
+    value: dataPoint.volume,
+  }));
 
-    newCandleData.push({
-      time,
-      open: parseFloat(open),
-      high: parseFloat(high),
-      low: parseFloat(low),
-      close: parseFloat(close),
-    });
-
-    newVolumeData.push({
-      time,
-      value: parseFloat(volume),
-    });
-  });
-
-        // Update chart series
-        console.log(candleSeries.data()[0])
-        console.log(volumeSeries.data()[0])
-        console.log(newCandleData[0])
-        console.log(newVolumeData[0])
-       let currentCandleData = mergeData(candleSeries.data(), newCandleData);
-       let currentVolumeData = mergeData(volumeSeries.data(), newVolumeData);
-    
-       console.log(currentCandleData)
-       console.log(currentVolumeData)
-        // Update the chart series with the merged dataset
-        candleSeries.setData(currentCandleData);
+        candleSeries.setData(newCandleData);
         volumeSeries.setData(currentVolumeData);
    
    
