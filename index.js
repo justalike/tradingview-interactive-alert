@@ -531,10 +531,11 @@ function updateWaveSeries(data) {
 }
 
 async function preLoadHistoryCandles(symbol, timeframe) {
+  console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
   const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}`;
   const response = await fetch(apiUrl);
   if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+    throw new Error(`Failed to load history candles! \nHTTP error! status: ${response.status}`);
   }
   const data = await response.json();
   return data;
@@ -543,13 +544,12 @@ async function preLoadHistoryCandles(symbol, timeframe) {
 
 async function fetchCandleData(symbol, timeframe) {
   try{
-  const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
-  const response = await fetch(apiUrl)
+    const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
+    const response = await fetch(apiUrl)
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`Failed to fetch recent candles!\nHTTP error! status: ${response.status}`);
       }
-     const preloadHistoryStatus = await preLoadHistoryCandles(symbol, timeframe);
-     console.log(preloadHistoryStatus)
+    
 
      const data = await response.json();
       const formattedData = data.map(candle => ({
@@ -712,7 +712,9 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 });
 
 
-
+const preloadHistoryStatus = await preLoadHistoryCandles(symbol, timeframe);
+    console.log(preloadHistoryStatus)
+  
 connectWebSocket()
 
 // function createAndSetBreakTrendSeries(data) {
