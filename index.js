@@ -535,7 +535,7 @@ function updateWaveSeries(data) {
 
 async function preLoadHistoryCandles(symbol, timeframe) {
   console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
-  const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}`;
+  const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}&startDate=2023-012-01&endDate=2024-03-12`;
   const response = await fetch(apiUrl);
   if (!response.ok) {
     throw new Error(`Failed to load history candles! \nHTTP error! status: ${response.status}`);
