@@ -49,5 +49,4 @@ export function connectWebSocket() {
     };
 }
 
-// Call the function to connect to the WebSocket
 

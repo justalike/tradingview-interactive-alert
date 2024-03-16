@@ -1,37 +1,16 @@
 
-
 import { connectWebSocket } from "./ws.js";
+import { chartProperties, volumeSeriesConfig, lineSeriesConfig } from './config/chartConfig.js';
+import { createSeries } from './utils/utils.js';
 
-const chartProperties = {
-  width: window.innerWidth,
-  height: window.innerHeight,
-  layout: {
-    background: { color: "#161a25" },
-    textColor: "#C3BCDB",
-  },
-  grid: {
-    vertLines: { color: "#444" },
-    horzLines: { color: "#444" },
-  },
-  crosshair: {
-    mode: LightweightCharts.CrosshairMode.Normal,
-  },
-  priceScale: {
-    borderColor: '#485c7b',
-  },
-  timeScale: {
-    rightOffset: 5, // Controls the empty space to the right
-    barSpacing: 5,
-    visible: true, // Show or hide the time scale
-    timeVisible: true, // Show the time (in addition to the date) on the time scale
-    secondsVisible: false,
-    borderColor: '#485c7b',
-  },
-}
-let globalPairData = null;
+
+
+const myPriceFormatter = p => p.toFixed(5);
+const chartContainer = document.getElementById('tvchart');
+const chart = LightweightCharts.createChart(chartContainer, chartProperties);
+setChartSize();
+
 let globalCandleData = [];
-let globalVolumeData = [];
-let extremaData = [];
 let lineSeries = [];
 let waveSeries = [];
 let volumeBarsSeries = [];
@@ -41,12 +20,64 @@ let breakTrendLineSeries = [];
 let rangesSeries = [];
 var lastCandle = null;
 
-const myPriceFormatter = p => p.toFixed(5);
-const chartContainer = document.getElementById('tvchart');
-const chart = LightweightCharts.createChart(chartContainer, chartProperties);
-setChartSize();
+
+// Series configuration
+volumeSeries = chart.addHistogramSeries({
+	color: '#26a69a',
+	priceFormat: {
+		type: 'volume',
+	},
+	priceScaleId: '',
+	scaleMargins: {
+		top: 0.7, // highest point 70% away from the top
+		bottom: 0,
+	},
+
+});
+volumeSeries.priceScale().applyOptions({
+	scaleMargins: {
+		top: 0.7,
+		bottom: 0,
+	},
+});
+
+lineSeries = chart.addLineSeries({
+  lineWidth: 0.5,
+  lineStyle: 2 // or LineStyle.Dashed
+});
+waveSeries = chart.addLineSeries({
+  lineWidth: 2,
+  lineStyle: 2
+});
+volumeBarsSeries = chart.addLineSeries({
+  lineWidth: 2,
+  lineStyle: 2
+})
 
 
+
+const candleSeries = chart.addCandlestickSeries()
+
+candleSeries.priceScale().applyOptions({
+                            scaleMargins: {
+                                top: 0.2, // highest point of the series will be 10% away from the top
+                                bottom: 0.3, // lowest point will be 40% away from the bottom
+                            },
+                            format: {
+                              type: "price",
+                              precision: 4,
+                              minMove: 0.001,
+                            },
+                          });
+
+
+chart.applyOptions({
+  localization: {
+      priceFormatter: myPriceFormatter,
+  },
+});
+window.addEventListener('resize', setChartSize);
+document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 async function fetchWaveData(symbol, timeframe) {
   const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
@@ -80,126 +111,14 @@ console.log(preloadHistoryStatus)
 
 initializeWaveData()
 
-//Tooltips:
-chart.subscribeCrosshairMove(async function(param) {
 
 
-if (
-  param.point === undefined ||
-		!param.time ||
-		param.point.x < 0 ||
-		param.point.x > chartContainer.clientWidth ||
-		param.point.y < 0 ||
-		param.point.y > chartContainer.clientHeight ){
- 
-      document.getElementById('tooltip').style.display = 'none';
-      return;
-  }
-  const timestamp = param.time ;
-  
- // console.log(`timestamp is ${timestamp}`) // Get the timestamp from the crosshair position
-  await updateTooltipContent(globalPairData, timestamp, param); // Function to update tooltip content
-});
 
-async function updateTooltipContent(waveData, timestamp, param) {
-  
-  if (!waveData) return
-  const wave = waveData.find(w => w.start/1000 <= timestamp && w.end/1000>= timestamp);
-  if (!wave) return
-      showTooltip(wave, param.point);
-
-}
-
-function showTooltip(wave, point) {
-
-  if (!wave) return
-  const tooltip = document.getElementById('tooltip');
-  
-  const toolTipWidth = 80;
-  const toolTipHeight = 80;
-  const toolTipMargin = 15;
-
-  tooltip.innerHTML = `
-  <div>Start: ${wave.startValue}</div>
-  <div>End: ${wave.endValue}</div>
-  <div>Velocity: ${wave.velocity.toFixed(4)}</div>
-`;
-
-  tooltip.style.display = 'block';
-
-  const y = point.y;
-  let left = point.x + toolTipMargin;
-  if (left > chartContainer.clientWidth - toolTipWidth) {
-    left = point.x - toolTipMargin - toolTipWidth;
-  }
-
-  let top = y + toolTipMargin;
-  if (top > chartContainer.clientHeight - toolTipHeight) {
-    top = y - toolTipHeight - toolTipMargin;
-  }
-  tooltip.style.left = left + 'px';
-  tooltip.style.top = top + 'px';
- //console.log(top, left)
-
-}
-
-
-volumeSeries = chart.addHistogramSeries({
-	color: '#26a69a',
-	priceFormat: {
-		type: 'volume',
-	},
-	priceScaleId: '',
-	scaleMargins: {
-		top: 0.7, // highest point 70% away from the top
-		bottom: 0,
-	},
-
-});
-volumeSeries.priceScale().applyOptions({
-	scaleMargins: {
-		top: 0.7,
-		bottom: 0,
-	},
-});
-
-lineSeries = chart.addLineSeries({
-  lineWidth: 0.5,
-  lineStyle: 2 // or LineStyle.Dashed
-});
-waveSeries = chart.addLineSeries({
-  lineWidth: 2,
-  lineStyle: 2
-});
-volumeBarsSeries = chart.addLineSeries({
-  lineWidth: 2,
-  lineStyle: 2
-})
 
 export function updateCandleSeries(data) {
   candleSeries.update(data);
 }
- const candleSeries = chart.addCandlestickSeries()
-candleSeries.priceScale().applyOptions({
-                            scaleMargins: {
-                                top: 0.2, // highest point of the series will be 10% away from the top
-                                bottom: 0.3, // lowest point will be 40% away from the bottom
-                            },
-                            format: {
-                              type: "price",
-                              precision: 4,
-                              minMove: 0.001,
-                            },
-                          });
 
-
-chart.applyOptions({
-  localization: {
-      priceFormatter: myPriceFormatter,
-  },
-});
-window.addEventListener('resize', setChartSize);
-document.addEventListener('DOMContentLoaded', initializeChartWithData);
 
 // document.getElementById('dataFile').addEventListener('change', (event) => {
 //   const file = event.target.files[0];
@@ -417,231 +336,77 @@ function updateChartWithData(data) {
   // Set the markers on the line series
   lineSeries.setMarkers(markersData);
 }
-function updateWaveSeries(data) {
-  //console.log(`Waves: ${data.length}`)
-  //console.log(data)
-  // Create an empty array to hold the formatted data
-  const seriesData = [];
-  function processTimeFrames(data) {
-    data.sort((a, b) => a.start - b.start);
-    let processedData = [];
-
-    for (let i = 0; i < data.length; i++) {
-      let current = data[i];
-      let next = data[i + 1];
-      if (!next) {
-        processedData.push(current);
-       // console.log(`Reached the last timeframe at index: ${i}`);
-        break;
-      }
-      // Detect overlap when the current end is greater than the next start
-      if (current.end > next.start) {
-       // console.log(`Overlap detected at index: ${i}`);
-        // Merge overlapping timeframes by extending the end to the latest end time
-        let merged = {
-          start: current.start,
-          end: Math.max(current.end, next.end),
-          // Consider merging other relevant fields if necessary
-        };
-        processedData.push(merged);
-        // Skip the next timeframe since it's merged into the current one
-        i++;
-      } else if (current.end < next.start) { // Detect a gap between the current and next timeframe
-        //console.log(`Gap detected at index: ${i}`);
-        // Push the current timeframe
-        processedData.push(current);
-        // Create a placeholder to fill the gap with null or some default values
-        processedData.push({
-          start: current.end,
-          end: next.start,
-          // Set other fields to null or defaults to indicate placeholder data
-          placeholder: true, // An indicator that this is a placeholder object
-        });
-      } else {
-        // No overlap or gap, push the current timeframe as is
-        processedData.push(current);
-      }
-    }
-    return processedData;
+function updateWaveSeries(chart, data) {
+  if (!data.every(item => isValidWaveData(item))) {
+    console.log('Invalid wave data');
+    return;
   }
 
-   data = processTimeFrames(data);
-  // Loop through each wave in the data
+  const processedData = processTimeFrames(data).flatMap(wave => {
+    const color = wave.startValue < wave.endValue ? 'green' : 'red';
+    return [
+      { time: wave.start / 1000, value: wave.startValue, color },
+      { time: wave.end / 1000, value: wave.endValue, color }
+    ];
+  });
+
+  chart.waveSeries.setData(processedData);
+}
+
+function isValidWaveData(wave) {
+  return typeof wave.start === 'number' && typeof wave.startValue === 'number' &&
+         typeof wave.end === 'number' && typeof wave.endValue === 'number';
+}
+
+function processTimeFrames(data) {
+  data.sort((a, b) => a.start - b.start);
+  const processedData = [];
   for (let i = 0; i < data.length; i++) {
-      const wave = data[i];
-      const keyBar = wave?.maxVolCandle
-      if (wave.start == null || wave.startValue == null) {
-      //  console.log(`Found wave with null start at index ${i}:`, wave);
-        continue; // Skip this wave as it has incomplete start data
-      }
-      // Skip this wave if it has no end or any value is null
-      if (wave.end == null || wave.endValue == null) {
-      //  console.log(`Found last ongoing wave at index ${i}:`, wave);
-      // console.log(lastCandle)
-        seriesData.push(
-          { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
-          { time: /*Date.now()*/ lastCandle.time, value: wave.startValue, color: 'blue' }
-          );
-
-          continue;  // Skip to the next iteration
-      }
-      // Determine the color based on the start and end values
-       const color = wave.startValue < wave.endValue ? 'green' : 'red';
-       if (keyBar.maxVolumeBarMiddle == null || keyBar.volume == null) {
-        console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
-        continue;
-      }
-      
-      if (keyBar){
-        const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
-        //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
-        const newCandles = []
-        for (let candle of globalCandleData) {
-          if (candle.time === timestamp / 1000) {
-            candle.color = 'orange';
-            candle.wickColor = 'orange';
-            candle.borderColor = 'orange';
-            newCandles.push(candle);
-          } else {
-            newCandles.push(candle);
-          }
-        }
-        
-            candleSeries.setData(newCandles);
-
-         function createAndSetLineSeries(data) {
-           const lineSeries = chart.addLineSeries({
-             color: 'orange',
-             lineWidth: 2,
-             lineStyle: 2,
-             lastValueVisible: false,
-             priceLineVisible: false,
-             crosshairMarkerVisible: false,
-             overlay: true
-           });
-           lineSeries.setData(data);
-         }
-
-        const lineData = [
-          { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'orange' },
-          { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'orange' }
-        ];
-        createAndSetLineSeries(lineData);
-        // volumeBarsData.push(
-      }
-      // Create two points for this wave and add them to the seriesData array
-      seriesData.push(
-          { time: wave.start / 1000, value: wave.startValue, color },
-          { time: wave.end / 1000, value: wave.endValue, color }
-      );
+    const current = data[i];
+    let merged = current;
+    while (i < data.length - 1 && current.end > data[i + 1].start) {
+      const next = data[i + 1];
+      merged = {
+        start: current.start,
+        end: Math.max(merged.end, next.end),
+        startValue: current.startValue,
+        endValue: next.endValue ? Math.max(merged.endValue, next.endValue) : merged.endValue
+      };
+      i++;
+    }
+    processedData.push(merged);
   }
-  // Update the wave series with the formatted data
-  waveSeries.setData(seriesData);
-  //volumeBarsSeries.setData(volumeBarsData);
+  return processedData;
 }
 
-async function preLoadHistoryCandles(symbol, timeframe) {
-  console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
-  const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}&startDate=2024-02-01&endDate=2024-03-12`;
-  const response = await fetch(apiUrl);
-  if (!response.ok) {
-    throw new Error(`Failed to load history candles! \nHTTP error! status: ${response.status}`);
+
+function processTimeFrames(data) {
+  data.sort((a, b) => a.start - b.start);
+  const processedData = [];
+  for (let i = 0; i < data.length; i++) {
+    const current = data[i];
+    const next = data[i + 1];
+    if (!next || current.end <= next.start) {
+      processedData.push(current);
+    } else {
+      let merged = {
+        start: current.start,
+        end: Math.max(current.end, next.end),
+        startValue: current.startValue,
+        endValue: next.endValue ? Math.max(current.endValue, next.endValue) : current.endValue
+      };
+      i++; // Skip next as it's merged
+      processedData.push(merged);
+    }
   }
-  const data = await response.json();
-  return data;
-
+  return processedData;
 }
 
-async function fetchCandleData(symbol, timeframe) {
-  try{
-    const apiUrl = `https://test-api-one-phi.vercel.app/api/rdata?symbol=${symbol}&timeframe=${timeframe}`; // Replace with your API endpoint
-    const response = await fetch(apiUrl)
-      if (!response.ok) {
-        throw new Error(`Failed to fetch recent candles!\nHTTP error! status: ${response.status}`);
-      }
-    
 
-     const data = await response.json();
-      const formattedData = data.map(candle => ({
-        time: candle.timestamp / 1000,
-        open: parseFloat(candle.open),
-        high: parseFloat(candle.high),
-        low: parseFloat(candle.low),
-        close: parseFloat(candle.close),
-      }));
-      const volumeData = data.map( candle => ({
-        time: candle.timestamp / 1000,
-        value: parseFloat(candle.volume)
-      }));
-      lastCandle = formattedData[formattedData.length - 1];
-      candleSeries.setData(formattedData);
-      volumeSeries.setData(volumeData)
-      globalCandleData = formattedData;
-      globalVolumeData = volumeData
-    } catch(error) {
-      console.error('Fetch error:', error);
-    }
-}
-
-async function fetchAllLineData(symbol, timeframe) {
-  const apiUrl = `https://test-api-one-phi.vercel.app/api/lines?symbol=${symbol}&timeframe=${timeframe}`;
-  try {
-    const response = await fetch(apiUrl);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    // Function to log null values in an array of objects
-    const logNullValues = (array, name) => {
-      array.forEach((item, index) => {
-        Object.entries(item).forEach(([key, value]) => {
-          if (value === null) {
-            console.log(`${name} item ${index}, key '${key}' is null`);
-          }
-        });
-      });
-    }
-
-    // Check and log null values in extremum, wave, and trends
-    if (data.extremum) {
-      logNullValues(data.extremum, 'Extremum');
-      updateChartWithData(data.extremum);
-    }
-
-    if (data.wave) {
-      logNullValues(data.wave, 'Wave');
-      console.log(data.wave);
-      updateWaveSeries(data.wave);
-    }
-
-    if (data.trends) {
-      logNullValues(data.trends, 'Trends');
-      console.log(data.trends);
-      updateChartWithTrendData(data.trends);
-    }
-  } catch (error) {
-    console.error('Fetch error:', error);
-  };
-}
 
 
 // Function to parse query parameters
-async function getQueryParams() {
-  try{
- // console.log(`Getting query parameters`)
-  const queryParams = {};
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  for (const [key, value] of urlSearchParams.entries()) {
-    queryParams[key] = value;
-  }
- // console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
-  return queryParams;
-} catch (error) {
-  console.error('Error getting query parameters:', error);
- }
-}
+
 
 // Function to initialize the chart with data based on URL parameters
 async function initializeChartWithData() {
