@@ -1,0 +1,34 @@
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* To prevent scrollbars */
+  }
+  
+  #tvchart {
+    width: 100%;
+    height: 100%;
+  }
+
+  #loadDataButton {
+    position: absolute;
+    top: 100px; /* Adjust as needed */
+    right: 100px; /* Adjust as needed */
+    z-index: 1000; /* Ensure the button is above the chart elements */
+    opacity: 0; /* Make button invisible by default */
+    transition: opacity 0.2s ease; /* Smooth transition for the opacity change */
+}
+#loadDataButton:hover {
+  opacity: 1; /* Make button fully visible when hovered */
+  visibility: visible; /* Make button visible when hovered */
+  transition-delay: 0.5s; /* Apply transitions immediately when hovered */
+}
+
+  #tooltip {
+    pointer-events: none;
+    z-index: 1000; /* Ensure it's above other elements */
+    /* Other styles */
+}
+
