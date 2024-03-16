@@ -154,5 +154,3 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         ]);
     });
 }
-
-export { updateChartWithTrendData, updateChartWithExtremaData, updateChartWithWaveData };
