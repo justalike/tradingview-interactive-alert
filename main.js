@@ -1,6 +1,6 @@
 
 import {createSeries, setChartSize, getQueryParams} from './utils/utils.js';
-import {waveSeriesConfig, candleSeriesConfig, lineSeriesConfig, volumeSeriesConfig} from './config/seriesConfig.js';
+import { breakTrendLineSeriesConfig, trendLineSeriesConfig, rangesSeriesConfig, waveSeriesConfig, candleSeriesConfig, lineSeriesConfig, volumeSeriesConfig} from './config/seriesConfig.js';
 import { chartProperties, myPriceFormatter} from './config/chartConfig.js';
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
@@ -18,14 +18,16 @@ chart.applyOptions({
 });
 
 // Creating series
+const candleSeries = createSeries(chart, 'candlestick', candleSeriesConfig);
 const volumeSeries = createSeries(chart, 'histogram', volumeSeriesConfig);
 const lineSeries =   createSeries(chart, 'line', lineSeriesConfig);
 const waveSeries =   createSeries(chart, 'line', waveSeriesConfig);
-const candleSeries = createSeries(chart, 'candlestick', candleSeriesConfig);
-
-
+const trendSeries =  createSeries(chart, 'line', trendLineSeriesConfig);
+const breakTrendSeries =  createSeries(chart, 'line', breakTrendLineSeriesConfig);
+const rangesSeries =  createSeries(chart, 'line', rangesSeriesConfig);
+const series = { candles_series: candleSeries, volume_series: volumeSeries, line_series: lineSeries, wave_series: waveSeries, trend_series: trendSeries, breaktrend_series: breakTrendSeries, ranges_series: rangesSeries};
 window.addEventListener('resize', setChartSize(chart));
-document.addEventListener('DOMContentLoaded', initializeChartWithData(chart));
+document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
 
 
 document.getElementById('dataFile').addEventListener('change', (event) => {

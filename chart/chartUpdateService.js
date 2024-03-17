@@ -3,7 +3,7 @@ import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../utils/
 import { trendLineSeriesConfig, breakTrendLineSeriesConfig, rangesSeriesConfig } from '../config/seriesConfig.js';
 import {fetchCandleData,    fetchAllLineData} from '../api/dataService.js';
 
-export const initializeChartWithData = async (chart, sym = 'BTC/USDT', tf = '1h')  => {
+export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', tf = '1h')  => {
 
    try{
     const { symbol, timeframe } = await getQueryParams();
@@ -17,7 +17,6 @@ export const initializeChartWithData = async (chart, sym = 'BTC/USDT', tf = '1h'
     const candles = await fetchCandleData(qsymbol, qtimeframe);
     const {extremum, wave, trends} = await fetchAllLineData(qsymbol, qtimeframe);
   
-    const series = {candles_series, extrema_series, waves_series, trends_series, ranges_series, breaktrend_series}
    const dataSources = {
             candles: candles,
             extrema: extremum, 
