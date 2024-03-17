@@ -1,4 +1,4 @@
-
+import { validateObject } from './utils.js';
 /**
  * Validates trend data using the generic validation utility.
  * @param {Object} trend - The trend data to validate.
