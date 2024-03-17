@@ -103,7 +103,7 @@ export function updateChartWithExtremaData(chart, series, data) {
         shape: 'circle',
     }));
 
-    chart.series.setMarkers(markersData);
+    series.setMarkers(markersData);
 }
 
 export function updateChartWithWaveData(chart, waveseries, data) {
