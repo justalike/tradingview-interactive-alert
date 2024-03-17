@@ -7,7 +7,7 @@ export const initializeChartWithData = async (chart, sym = 'BTC/USDT', tf = '1h'
 
    try{
     const { symbol, timeframe } = await getQueryParams();
-    console.log(qsymbol, qtimeframe)
+  
     const qsymbol = symbol || sym;
     const qtimeframe = timeframe || tf;
 
