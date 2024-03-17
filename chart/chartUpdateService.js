@@ -52,7 +52,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
            updateChartWithTrendData(chart, series.trend_series, series.ranges_series, series.breaktrend_series, data);
        }
    }
-   console.log(`chart:\n` + JSON.stringify(chart))
+  
   chart.applyOptions({
       watermark: {
           visible: true,
