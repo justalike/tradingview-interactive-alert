@@ -3,18 +3,19 @@ import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../utils/
 import { trendLineSeriesConfig, breakTrendLineSeriesConfig, rangesSeriesConfig } from '../config/seriesConfig.js';
 import {fetchCandleData,    fetchAllLineData} from '../api/dataService.js';
 
-export const initializeChartWithData = async (chart, sym = 'BTCUSDT', tf = '1h')  => {
+export const initializeChartWithData = async (chart, sym = 'BTC/USDT', tf = '1h')  => {
 
    try{
-    const { qsymbol, qtimeframe } = await getQueryParams();
-    const symbol = qsymbol || sym;
-    const timeframe = qtimeframe || tf;
+    const { symbol, timeframe } = await getQueryParams();
+    console.log(qsymbol, qtimeframe)
+    const qsymbol = symbol || sym;
+    const qtimeframe = timeframe || tf;
 
     if (!qsymbol || !qtimeframe) {
         console.error('None symbol or timeframe set in query. \n Initializing BTCUSDT/1h chart');
     }
-    const candles = await fetchCandleData(symbol, timeframe);
-    const {extremum, wave, trends} = await fetchAllLineData(symbol, timeframe);
+    const candles = await fetchCandleData(qsymbol, qtimeframe);
+    const {extremum, wave, trends} = await fetchAllLineData(qsymbol, qtimeframe);
   
     const series = {candles_series, extrema_series, waves_series, trends_series, ranges_series, breaktrend_series}
    const dataSources = {
@@ -50,7 +51,7 @@ export const initializeChartWithData = async (chart, sym = 'BTCUSDT', tf = '1h')
           horzAlign: 'center',
           vertAlign: 'top',
           color: 'rgba(255, 255, 255, 0.7)',
-          text: `${symbol}:${timeframe}`,
+          text: `${qsymbol}:${qtimeframe}`,
       },
   });
     //  console.log(symbol, timeframe)

@@ -5,8 +5,7 @@ import { chartProperties, myPriceFormatter} from './config/chartConfig.js';
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
 
-console.log('Im in main')
-console.log(`__..--`.repeat(5))
+console.log(`__..--`.repeat(10))
 
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);

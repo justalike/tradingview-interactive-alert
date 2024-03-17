@@ -52,13 +52,13 @@ export const updateSeriesData = (series, data) => {
 
   export const getQueryParams = async function() {
     try{
-   // console.log(`Getting query parameters`)
+   console.log(`Getting query parameters`)
     const queryParams = {};
     const urlSearchParams = new URLSearchParams(window.location.search);
     for (const [key, value] of urlSearchParams.entries()) {
       queryParams[key] = value;
     }
-   // console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
+   console.log(`Query parameters: ${JSON.stringify(queryParams)}`)
     return queryParams;
   } catch (error) {
     console.error('Error getting query parameters:', error);
