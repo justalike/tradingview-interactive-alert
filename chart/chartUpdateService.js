@@ -1,4 +1,4 @@
-import { createSeries, updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
+import { calculateNextTrendEndTime, updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
 import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import { trendLineSeriesConfig, breakTrendLineSeriesConfig, rangesSeriesConfig } from '../config/seriesConfig.js';
 import {fetchCandleData,    fetchAllLineData} from '../api/dataService.js';
