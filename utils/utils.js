@@ -2,36 +2,20 @@
 
 export function processTimeFrames(data) {
   data.sort((a, b) => a.start - b.start);
-
   const processedData = [];
-
   for (let i = 0; i < data.length; i++) {
-
-
-    
-
     const current = data[i];
-      // If it's the last wave and has end or endValue as null
-      if (i === data.length - 1) {
-        if (current.end == null) {
-          current.end = Date.now(); // Assuming end should be the current timestamp
-        }
-        if (current.endValue == null) {
-          current.endValue = current.startValue; // Set endValue to startValue when endValue is null
-        }
-      }
-      let merged = { ...current };
-  
-      while (i < data.length - 1 && merged.end > data[i + 1].start) {
-        const next = data[i + 1];
-        merged = {
-          start: merged.start,
-          end: Math.max(merged.end, next.end),
-          startValue: merged.startValue,
-          endValue: next.endValue != null ? Math.max(merged.endValue, next.endValue) : merged.endValue,
-        };
-        i++; // Move to the next wave since it's been merged
-      }
+    let merged = current;
+    while (i < data.length - 1 && current.end > data[i + 1].start) {
+      const next = data[i + 1];
+      merged = {
+        start: current.start,
+        end: Math.max(merged.end, next.end),
+        startValue: current.startValue,
+        endValue: next.endValue ? Math.max(merged.endValue, next.endValue) : merged.endValue
+      };
+      i++;
+    }
     processedData.push(merged);
   }
   return processedData;
@@ -108,21 +92,21 @@ export function validateObject(object, conditions) {
 
 
 export function calculateNextTrendEndTime(trend, index, data) {
-  let nextTrendEndTime;
+    let nextTrendEndTime;
 
-  if (index === data.length - 1) {
-      // If it's the last trend, there's no "next" trend. Use an alternative reference for end time.
-      // For example, this could be the last known candle time or simply the end time of the current trend.
-      nextTrendEndTime = trend.endTrend.timestamp / 1000;
-  } else if (trend.breakTrend && trend.breakTrend.timestamp > trend.endTrend.timestamp) {
-      // If the break trend timestamp is later than the end trend timestamp,
-      // it suggests an extension beyond the simple end to end trend line.
-      // Use the start timestamp of the next trend in the sequence, ensuring continuity.
-      nextTrendEndTime = data[index + 1].startTrend.timestamp / 1000;
-  } else {
-      // Otherwise, use the end timestamp of the current trend for a continuous line to the next.
-      nextTrendEndTime = trend.endTrend.timestamp / 1000;
-  }
+    if (index === data.length - 1) {
+        // If it's the last trend, there's no "next" trend. Use an alternative reference for end time.
+        // For example, this could be the last known candle time or simply the end time of the current trend.
+        nextTrendEndTime = trend.endTrend.timestamp / 1000;
+    } else if (trend.breakTrend && trend.breakTrend.timestamp > trend.endTrend.timestamp) {
+        // If the break trend timestamp is later than the end trend timestamp,
+        // it suggests an extension beyond the simple end to end trend line.
+        // Use the start timestamp of the next trend in the sequence, ensuring continuity.
+        nextTrendEndTime = data[index + 1].startTrend.timestamp / 1000;
+    } else {
+        // Otherwise, use the end timestamp of the current trend for a continuous line to the next.
+        nextTrendEndTime = trend.endTrend.timestamp / 1000;
+    }
 
-  return nextTrendEndTime;
+    return nextTrendEndTime;
 }
