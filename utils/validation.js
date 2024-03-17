@@ -38,8 +38,8 @@ export function isValidExtremaData(extrema) {
     const conditions = [
       { property: 'start', validator: value => typeof value === 'number' },
       { property: 'startValue', validator: value => typeof value === 'number' },
-      { property: 'end', validator: value => typeof value === 'number' },
-      { property: 'endValue', validator: value => typeof value === 'number' },
+      // { property: 'end', validator: value => typeof value === 'number' },
+      // { property: 'endValue', validator: value => typeof value === 'number' },
       // Conditions for optional properties like `maxVolCandle` could be added here
     ];
   

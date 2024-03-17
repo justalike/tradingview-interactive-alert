@@ -49,7 +49,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
        } else if (name === 'trends') {
         console.log('trendsSeries')
         console.log(series.trend_series)
-           updateChartWithTrendData(chart, series.trend_series, ranges_series, breaktrend_series, data);
+           updateChartWithTrendData(chart, series.trend_series, series.ranges_series, series.breaktrend_series, data);
        }
    }
    console.log(`chart:\n` + JSON.stringify(chart))
