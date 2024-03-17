@@ -37,7 +37,6 @@ export const createSeries = (chart, type, config) => {
       return seriesTypes[type]();
     };
 
-
 export const updateSeriesData = (series, data) => {
     series.setData(data);
   };
@@ -77,14 +76,13 @@ export const updateSeriesData = (series, data) => {
     });
   }
 
-
   /**
  * Checks if an object meets all specified conditions.
  * @param {Object} object - The object to validate.
  * @param {Array} conditions - An array of conditions, each an object specifying the property to check and a function to validate it.
  * @returns {boolean} - True if all conditions are met, false otherwise.
  */
-function validateObject(object, conditions) {
+export function validateObject(object, conditions) {
   return conditions.every(condition => {
     const { property, validator } = condition;
     const value = object[property];

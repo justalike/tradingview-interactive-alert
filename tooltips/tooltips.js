@@ -1,5 +1,3 @@
-
-Tooltips:
 chart.subscribeCrosshairMove(async function(param) {
 
 

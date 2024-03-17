@@ -1,4 +1,4 @@
-import { updateSeriesData } from '../utils/utils'; // Assuming this utility exists
+import { updateSeriesData } from '../utils/utils.js'; // Assuming this utility exists
 
 // Utility function to read and parse file content
 const readFile = (file, onSuccess, onError) => {

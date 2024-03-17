@@ -1,9 +1,12 @@
 
-import {createSeries, updateSeriesData, myPriceFormatter} from './utils/utils.js';
+import {createSeries, setChartSize, getQueryParams} from './utils/utils.js';
 import {waveSeriesConfig, candleSeriesConfig, lineSeriesConfig, volumeSeriesConfig} from './config/seriesConfig.js';
-import {chartProperties} from './config/chartConfig.js';
+import { chartProperties, myPriceFormatter} from './config/chartConfig.js';
 import { initializeChartWithData } from './chart/chartUpdateService.js';
+import { handleCandleDataUpload } from './local/localHandler.js';
 
+console.log('Im in main')
+console.log(`__..--`.repeat(5))
 
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);

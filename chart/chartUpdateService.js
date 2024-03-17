@@ -1,7 +1,7 @@
-import { createSeries, updateSeriesData, processTimeFrames } from '../utils/utils'; 
-import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../validation';
-import { trendLineSeriesConfig, breakTrendLineSeriesConfig, rangesSeriesConfig } from '../config/seriesConfig';
-import {fetchCandleData, fetchExtremaData, fetchTrendData, fetchWaveData} from '../api/dataService';
+import { createSeries, updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
+import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../utils/validation.js';
+import { trendLineSeriesConfig, breakTrendLineSeriesConfig, rangesSeriesConfig } from '../config/seriesConfig.js';
+import {fetchCandleData,    fetchAllLineData} from '../api/dataService.js';
 
 export const initializeChartWithData = async (chart, sym = 'BTCUSDT', tf = '1h')  => {
 
@@ -13,14 +13,15 @@ export const initializeChartWithData = async (chart, sym = 'BTCUSDT', tf = '1h')
     if (!qsymbol || !qtimeframe) {
         console.error('None symbol or timeframe set in query. \n Initializing BTCUSDT/1h chart');
     }
-
-
-   const series = {candles_series, extrema_series, waves_series, trends_series, ranges_series, breaktrend_series}
+    const candles = await fetchCandleData(symbol, timeframe);
+    const {extremum, wave, trends} = await fetchAllLineData(symbol, timeframe);
+  
+    const series = {candles_series, extrema_series, waves_series, trends_series, ranges_series, breaktrend_series}
    const dataSources = {
-            candles: (await fetchCandleData(symbol, timeframe)),
-            extrema: (await fetchExtremaData(symbol, timeframe)),
-            waves:   (await fetchWaveData(symbol, timeframe)),
-            trends:  (await fetchTrendData(symbol, timeframe))
+            candles: candles,
+            extrema: extremum, 
+            waves:   wave,
+            trends:  trends,
   };
   
 
