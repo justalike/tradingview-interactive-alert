@@ -45,11 +45,11 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
        } else if (name === 'waves') {
         console.log('wavesSeries')
         console.log(series.wave_series)
-           updateChartWithWaveData(chart, series.wave_series, data);
+         //  updateChartWithWaveData(chart, series.wave_series, data);
        } else if (name === 'trends') {
         console.log('trendsSeries')
         console.log(series.trend_series)
-           updateChartWithTrendData(chart, series.trend_series, series.ranges_series, series.breaktrend_series, data);
+           //updateChartWithTrendData(chart, series.trend_series, series.ranges_series, series.breaktrend_series, data);
        }
    }
   
@@ -132,31 +132,31 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             console.log('Missing or invalid data for trend:', trend);
             return;
         }
-        const trendSeries = chart.addLineSeries({
+         trends.applyOptions({
             ...trendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
-        trendSeries.setData([
+        trends.setData([
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
         ]);
 
         let nextTrendEndTime = calculateNextTrendEndTime(trend, index, data);
 
-        const breakSeries = chart.addLineSeries({
+        breaks.applyOptions({
             ...breakTrendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
-        breakSeries.setData([
+        breaks.setData([
             { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
             { time: nextTrendEndTime, value: trend.breakTrend.value },
         ]);
 
-        const rangeSeries = chart.addLineSeries({
+        ranges.applyOptions({
             ...rangesSeriesConfig,
             color: trend.direction === "U" ? 'lime' : 'red',
         });
-        rangeSeries.setData([
+        ranges.setData([
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
