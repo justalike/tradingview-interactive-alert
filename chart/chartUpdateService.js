@@ -44,15 +44,15 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
            updateChartWithExtremaData(chart, series.extrema_series, data);
        } else if (name === 'waves') {
         console.log('wavesSeries')
-        console.log(series.waves_series)
-           updateChartWithWaveData(chart, series.waves_series, data);
+        console.log(series.wave_series)
+           updateChartWithWaveData(chart, series.wave_series, data);
        } else if (name === 'trends') {
         console.log('trendsSeries')
-        console.log(series.trends_series)
-           updateChartWithTrendData(chart, series.trends_series, ranges_series, breaktrend_series, data);
+        console.log(series.trend_series)
+           updateChartWithTrendData(chart, series.trend_series, ranges_series, breaktrend_series, data);
        }
    }
-
+   console.log(`chart:\n` + JSON.stringify(chart))
   chart.applyOptions({
       watermark: {
           visible: true,
