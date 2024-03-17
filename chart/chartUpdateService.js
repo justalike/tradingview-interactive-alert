@@ -5,7 +5,9 @@ import {fetchCandleData,    fetchAllLineData} from '../api/dataService.js';
 
 export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', tf = '1h')  => {
 
+    
    try{
+
     const { symbol, timeframe } = await getQueryParams();
   
     const qsymbol = symbol || sym;
@@ -32,13 +34,17 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
        }
 
        if (name === 'candles') {
+        console.log(series.candles_series)
         updateSeriesData(series.candles_series, data)
            //updateCandleSeries(data);
        } else if (name === 'extrema') {
+        console.log(series.extrema_series)
            updateChartWithExtremaData(chart, series.extrema_series, data);
        } else if (name === 'waves') {
+        console.log(series.waves_series)
            updateChartWithWaveData(chart, series.waves_series, data);
        } else if (name === 'trends') {
+        console.log(series.trends_series)
            updateChartWithTrendData(chart, series.trends_series, ranges_series, breaktrend_series, data);
        }
    }
