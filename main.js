@@ -25,7 +25,7 @@ const waveSeries =   createSeries(chart, 'line', waveSeriesConfig);
 const trendSeries =  createSeries(chart, 'line', trendLineSeriesConfig);
 const breakTrendSeries =  createSeries(chart, 'line', breakTrendLineSeriesConfig);
 const rangesSeries =  createSeries(chart, 'line', rangesSeriesConfig);
-const series = { candles_series: candleSeries, volume_series: volumeSeries, line_series: lineSeries, wave_series: waveSeries, trend_series: trendSeries, breaktrend_series: breakTrendSeries, ranges_series: rangesSeries};
+const series = { candles_series: candleSeries, volume_series: volumeSeries, extrema_series: lineSeries, wave_series: waveSeries, trend_series: trendSeries, breaktrend_series: breakTrendSeries, ranges_series: rangesSeries};
 window.addEventListener('resize', setChartSize(chart));
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
 
