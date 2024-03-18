@@ -174,9 +174,9 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
           );
         });
         
-        trendSeries.setData(trendData);
-        breakSeries.setData(breakData);
-        rangeSeries.setData(rangeData);
+        trends.setData(trendData);
+        breaks.setData(breakData);
+        ranges.setData(rangeData);
       }
       
 
