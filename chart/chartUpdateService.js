@@ -183,9 +183,11 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
       })
     
       trends.setData(trendData);
+      console.log(`breakdata`)
       console.log(breakData)
       breaks.setData(breakData);
-
+      console.log(`rangeData`)
+      console.log(rangeData)
         ranges.setData(rangeData);
     }
 
