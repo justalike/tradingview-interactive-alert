@@ -181,7 +181,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         // });
         
         trends.setData(trendData);
-        // breaks.setData(breakData);
+        breaks.setData(breakData);
         // ranges.setData(rangeData);
       }
       )}
