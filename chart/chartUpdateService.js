@@ -171,22 +171,22 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             { time: nextTrendEndTime, value: trend.breakTrend.value }
           );
       
-        //   rangeData.push(
-        //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-        //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
-        //     { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
-        //     { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-        //     { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
-        //   );
-        // });
+          rangeData.push(
+            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
+            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
+            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
+          );
+      
     
       })
     
       trends.setData(trendData);
       console.log(breakData)
-      //breaks.setData(breakData);
+      breaks.setData(breakData);
 
-        // ranges.setData(rangeData);
+        ranges.setData(rangeData);
     }
 
       
