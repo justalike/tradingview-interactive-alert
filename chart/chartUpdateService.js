@@ -133,7 +133,15 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         const breakData = [];
         const rangeData = [];
       
-        trends.applyOptions({
+        
+
+        data.forEach((trend, index) => {
+          if (!isValidTrendData(trend)) {
+            console.log('Missing or invalid data for trend:', trend);
+            return;
+          }
+          
+          trends.applyOptions({
             ...trendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
@@ -147,13 +155,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             ...rangesSeriesConfig,
             color: trend.direction === "U" ? 'lime' : 'red',
         });
-
-        data.forEach((trend, index) => {
-          if (!isValidTrendData(trend)) {
-            console.log('Missing or invalid data for trend:', trend);
-            return;
-          }
-          
+        
           trendData.push(
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }
