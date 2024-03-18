@@ -180,11 +180,12 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         //   );
         // });
     
-        // ranges.setData(rangeData);
       })
     
       trends.setData(trendData);
       breaks.setData(breakData);
+
+        // ranges.setData(rangeData);
     }
 
       
