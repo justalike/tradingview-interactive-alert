@@ -136,7 +136,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             ...trendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
-        trends.setData([
+        trends.update([
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
         ]);
@@ -147,7 +147,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             ...breakTrendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
-        breaks.setData([
+        breaks.update([
             { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
             { time: nextTrendEndTime, value: trend.breakTrend.value },
         ]);
@@ -156,7 +156,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             ...rangesSeriesConfig,
             color: trend.direction === "U" ? 'lime' : 'red',
         });
-        ranges.setData([
+        ranges.update([
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
