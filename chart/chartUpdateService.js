@@ -127,41 +127,57 @@ export function updateChartWithWaveData(chart, waveseries, data) {
  * @param {Array} data - The trend data to use for updating the chart.
  */
 export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
-    data.forEach((trend, index) => {
-        if (!isValidTrendData(trend)) {
-            console.log('Missing or invalid data for trend:', trend);
-            return;
-        }
-         trends.applyOptions({
+
+    
+        const trendData = [];
+        const breakData = [];
+        const rangeData = [];
+      
+        trends.applyOptions({
             ...trendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
-        trends.update([
-            { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
-            { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
-        ]);
-
-        let nextTrendEndTime = calculateNextTrendEndTime(trend, index, data);
-
+        
         breaks.applyOptions({
             ...breakTrendLineSeriesConfig,
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
-        breaks.update([
-            { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-            { time: nextTrendEndTime, value: trend.breakTrend.value },
-        ]);
 
         ranges.applyOptions({
             ...rangesSeriesConfig,
             color: trend.direction === "U" ? 'lime' : 'red',
         });
-        ranges.update([
+
+        data.forEach((trend, index) => {
+          if (!isValidTrendData(trend)) {
+            console.log('Missing or invalid data for trend:', trend);
+            return;
+          }
+          
+          trendData.push(
+            { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
+            { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }
+          );
+      
+          const nextTrendEndTime = calculateNextTrendEndTime(trend, index, data);
+          breakData.push(
+            { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
+            { time: nextTrendEndTime, value: trend.breakTrend.value }
+          );
+      
+          rangeData.push(
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-        ]);
-    });
-}
+            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
+          );
+        });
+        
+        trendSeries.setData(trendData);
+        breakSeries.setData(breakData);
+        rangeSeries.setData(rangeData);
+      }
+      
+
+
