@@ -3,6 +3,9 @@ import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../utils/
 import { trendLineSeriesConfig, breakTrendLineSeriesConfig, rangesSeriesConfig } from '../config/seriesConfig.js';
 import {fetchCandleData,    fetchAllLineData} from '../api/dataService.js';
 
+
+var lastCandle;
+
 export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', tf = '1h')  => {
 
     
@@ -36,6 +39,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
        if (name === 'candles') {
         console.log('candlesSeries')
         console.log(series.candles_series)
+        lastCandle = data[data.length - 1];
         updateSeriesData(series.candles_series, data)
            //updateCandleSeries(data);
        } else if (name === 'extrema') {
@@ -161,11 +165,11 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }
           );
       
-          const nextTrendEndTime = calculateNextTrendEndTime(trend, index, data);
-        //   breakData.push(
-        //     { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-        //     { time: nextTrendEndTime, value: trend.breakTrend.value }
-        //   );
+          const nextTrendEndTime = calculateNextTrendEndTime(trend, index, data, lastCandle);
+          breakData.push(
+            { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
+            { time: nextTrendEndTime, value: trend.breakTrend.value }
+          );
       
         //   rangeData.push(
         //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
