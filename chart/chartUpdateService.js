@@ -150,10 +150,10 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
         
-        // breaks.applyOptions({
-        //     ...breakTrendLineSeriesConfig,
-        //     color: trend.direction === "U" ? 'white' : 'yellow',
-        // });
+        breaks.applyOptions({
+            ...breakTrendLineSeriesConfig,
+            color: trend.direction === "U" ? 'white' : 'yellow',
+        });
 
         // ranges.applyOptions({
         //     ...rangesSeriesConfig,
@@ -179,12 +179,14 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         //     { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
         //   );
         // });
-        
-        trends.setData(trendData);
-        breaks.setData(breakData);
+    
         // ranges.setData(rangeData);
-      }
-      )}
+      })
+    
+      trends.setData(trendData);
+      breaks.setData(breakData);
+    }
+
       
 
 
