@@ -146,40 +146,41 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
         
-        breaks.applyOptions({
-            ...breakTrendLineSeriesConfig,
-            color: trend.direction === "U" ? 'white' : 'yellow',
-        });
+        // breaks.applyOptions({
+        //     ...breakTrendLineSeriesConfig,
+        //     color: trend.direction === "U" ? 'white' : 'yellow',
+        // });
 
-        ranges.applyOptions({
-            ...rangesSeriesConfig,
-            color: trend.direction === "U" ? 'lime' : 'red',
-        });
-        
+        // ranges.applyOptions({
+        //     ...rangesSeriesConfig,
+        //     color: trend.direction === "U" ? 'lime' : 'red',
+        // });
+
           trendData.push(
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }
           );
       
           const nextTrendEndTime = calculateNextTrendEndTime(trend, index, data);
-          breakData.push(
-            { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-            { time: nextTrendEndTime, value: trend.breakTrend.value }
-          );
+        //   breakData.push(
+        //     { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
+        //     { time: nextTrendEndTime, value: trend.breakTrend.value }
+        //   );
       
-          rangeData.push(
-            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
-            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
-            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
-          );
-        });
+        //   rangeData.push(
+        //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+        //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
+        //     { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
+        //     { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+        //     { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
+        //   );
+        // });
         
         trends.setData(trendData);
-        breaks.setData(breakData);
-        ranges.setData(rangeData);
+        // breaks.setData(breakData);
+        // ranges.setData(rangeData);
       }
+      )}
       
 
 
