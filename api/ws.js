@@ -2,7 +2,7 @@ import { getQueryParams, updateSeriesData } from '../utils/utils.js';
 
 
 export async function connectWebSocket(candleSeries) {
-
+    console.log(`im inside connect websocket`)
  
     
     function formatSymbol(symbol) {
