@@ -146,20 +146,46 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             return;
           }
           
-          trends.applyOptions({
-            ...trendLineSeriesConfig,
-            color: trend.direction === "U" ? 'white' : 'yellow',
-        });
+        //   trends.applyOptions({
+        //     ...trendLineSeriesConfig,
+        //     color: trend.direction === "U" ? 'white' : 'yellow',
+        // });
         
-        breaks.applyOptions({
-            ...breakTrendLineSeriesConfig,
-            color: trend.direction === "U" ? 'white' : 'yellow',
-        });
+        // breaks.applyOptions({
+        //     ...breakTrendLineSeriesConfig,
+        //     color: trend.direction === "U" ? 'white' : 'yellow',
+        // });
 
-        ranges.applyOptions({
-            ...rangesSeriesConfig,
-            color: trend.direction === "U" ? 'lime' : 'red',
+        // ranges.applyOptions({
+        //     ...rangesSeriesConfig,
+        //     color: trend.direction === "U" ? 'lime' : 'red',
+        // });
+        trends = chart.addLineSeries({
+            color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
+            lineWidth: 2,
+            priceLineVisible: false,
+            crosshairMarkerVisible: false,
         });
+  
+          breaks = chart.addLineSeries({
+            color: trend.direction == "U" ? 'white' : 'yellow',
+            lineWidth: 2,
+            lineStyle: 2,
+            lastValueVisible: false,
+            priceLineVisible: false,
+            crosshairMarkerVisible: false,
+            overlay: true
+          })
+  
+          ranges = chart.addLineSeries({
+            color: trend.direction === "U" ? 'lime' : 'red',
+            lineWidth: 2,
+            lineStyle: 1,
+            lastValueVisible: false,
+            priceLineVisible: false,
+            crosshairMarkerVisible: false,
+            overlay: true
+          })
 
           trendData.push(
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
@@ -188,15 +214,15 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             
           );
         
-      
+          console.log(trendData)
+          if (trendData.length > 0) trends.setData(trendData);
+            console.log(breakData)
+          //if (breakData.length > 0) breaks.setData(breakData);
+          console.log(rangeData)
+          if (rangeData.length > 0) ranges.setData(rangeData);
     
       })
-      console.log(trendData)
-    if (trendData.length > 0) trends.setData(trendData);
-      console.log(breakData)
-    //if (breakData.length > 0) breaks.setData(breakData);
-    console.log(rangeData)
-    if (rangeData.length > 0) ranges.setData(rangeData);
+    
     }
 
       
