@@ -187,7 +187,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             overlay: true
           })
 
-          trendData.push(
+          trendData.setData(
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }
           );
@@ -198,13 +198,13 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             return; // Skip this iteration due to calculation failure
         }
         if (nextTrendEndTime && trend.breakTrend  && trend.breakTrend.value != null) {
-          breakData.push(
+          breakData.setData(
             { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
             { time: nextTrendEndTime, value: trend.breakTrend.value }
           );
         }
        
-          rangeData.push(
+          rangeData.setData(
             
             { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.maxVolumeZone.start  / 1000, value: trend.maxVolumeZone.endPrice },
