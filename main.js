@@ -10,7 +10,7 @@ import { connectWebSocket } from './api/ws.js';
 console.log(`_..--.._`.repeat(10))
 
 const chartContainer = document.getElementById('tvchart');
-const chart = LightweightCharts.createChart(chartContainer, chartProperties);
+const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties);
 
 // Applying global chart options
 chart.applyOptions({
