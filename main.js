@@ -5,7 +5,7 @@ import { chartProperties, myPriceFormatter} from './config/chartConfig.js';
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
 
-console.log(`__..--`.repeat(10))
+console.log(`_..--.._`.repeat(10))
 
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, chartProperties);
@@ -25,6 +25,7 @@ const waveSeries =   createSeries(chart, 'line', waveSeriesConfig);
 const trendSeries =  createSeries(chart, 'line', trendLineSeriesConfig);
 const breakTrendSeries =  createSeries(chart, 'line', breakTrendLineSeriesConfig);
 const rangesSeries =  createSeries(chart, 'line', rangesSeriesConfig);
+
 const series = { candles_series: candleSeries, volume_series: volumeSeries, extrema_series: lineSeries, wave_series: waveSeries, trend_series: trendSeries, breaktrend_series: breakTrendSeries, ranges_series: rangesSeries};
 
 

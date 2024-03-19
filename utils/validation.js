@@ -8,6 +8,8 @@ export function isValidTrendData(trend) {
     const conditions = [
       { property: 'startTrend', validator: value => value !== undefined && value.timestamp !== undefined },
       { property: 'endTrend', validator: value => value !== undefined && value.timestamp !== undefined },
+      { property: 'direction', validator: value => typeof value === 'string' && (value === 'U' || value === 'D') },
+   
       // Add more conditions as needed for your trend validation
     ];
   
