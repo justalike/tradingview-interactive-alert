@@ -1,5 +1,5 @@
 
-import * as cfg from './config'
+import * as cfg from './config/index.js';
 import {createSeries, setChartSize} from './utils/utils.js';
 
 import { initializeChartWithData } from './chart/chartUpdateService.js';
