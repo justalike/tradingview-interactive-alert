@@ -189,7 +189,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
     
       })
       if (trendData.length > 0) trends.setData(trendData);
-      if (breakData.length > 0) breaks.setData(breakData);
+    //  if (breakData.length > 0) breaks.setData(breakData);
       if (rangeData.length > 0) ranges.setData(rangeData);
     }
 
