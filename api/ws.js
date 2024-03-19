@@ -1,20 +1,14 @@
-import { updateSeriesData } from '../utils/utils.js';
+import { getQueryParams, updateSeriesData } from '../utils/utils.js';
 
 
-export function connectWebSocket(candleSeries) {
+export async function connectWebSocket(candleSeries) {
 
-    function getQueryParams() {
-        const queryParams = new URLSearchParams(window.location.search);
-        return {
-            symbol: queryParams.get('symbol'),
-            timeframe: queryParams.get('timeframe'),
-        };
-    }
+ 
     
     function formatSymbol(symbol) {
         return symbol.replace('/', '').toLowerCase();
     }
-    const { symbol, timeframe } = getQueryParams();
+    const { symbol, timeframe } = await getQueryParams();
     if (!symbol || !timeframe) {
         console.error('Symbol or timeframe missing in URL');
         return;
@@ -25,6 +19,9 @@ export function connectWebSocket(candleSeries) {
 
     const binanceWs = new WebSocket(wsUrl);
 
+    binanceWs.onopen = () => {
+        console.log('Connected to Binance WebSocket for', symbol, 'with timeframe', timeframe);
+    }
     binanceWs.onmessage = (event) => {
         const message = JSON.parse(event.data);
 
@@ -37,7 +34,7 @@ export function connectWebSocket(candleSeries) {
             close: parseFloat(candle.c),
         };
 
-        updateSeriesData(candleSeries,candlestickData);
+        updateSeriesData(candleSeries, candlestickData);
     };
 
     binanceWs.onopen = () => {

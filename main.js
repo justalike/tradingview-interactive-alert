@@ -4,7 +4,7 @@ import {createSeries, setChartSize, getQueryParams} from './utils/utils.js';
 
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
-import { preLoadHistoryCandles } from './api/dataService.js';
+import { getHistoryCandles, preLoadHistoryCandles } from './api/dataService.js';
 import { connectWebSocket } from './api/ws.js';
 
 console.log(`_..--.._`.repeat(10))
@@ -54,6 +54,13 @@ window.addEventListener('resize', setChartSize(chart));
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
 document.addEventListener('DOMContentLoaded',  connectWebSocket(series.candles_series));
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
+
+
+
+document.getElementById('loadDataButton').addEventListener('click', async () => {
+await getHistoryCandles(symbol, timeframe)
+//merge current candles with loaded data
+})
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
     const file = event.target.files[0];
