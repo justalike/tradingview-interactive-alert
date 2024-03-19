@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
     const file = event.target.files[0];
-    if (file) handleCandleDataUpload(file, candleSeries);
+    if (file) handleCandleDataUpload(file, series.candles_series);
   });
 
  
