@@ -3,7 +3,7 @@ import { getQueryParams, updateSeriesData } from '../utils/utils.js';
 
 export async function connectWebSocket(candleSeries) {
     console.log(`im inside connect websocket`)
- 
+    console.log(candleSeries)
     
     function formatSymbol(symbol) {
         return symbol.replace('/', '').toLowerCase();
@@ -19,9 +19,7 @@ export async function connectWebSocket(candleSeries) {
 
     const binanceWs = new WebSocket(wsUrl);
 
-    binanceWs.onopen = () => {
-        console.log('Connected to Binance WebSocket for', symbol, 'with timeframe', timeframe);
-    }
+
     binanceWs.onmessage = (event) => {
         const message = JSON.parse(event.data);
 
@@ -33,12 +31,16 @@ export async function connectWebSocket(candleSeries) {
             low: parseFloat(candle.l),
             close: parseFloat(candle.c),
         };
+        console.log ( candlestickData )
 
         updateSeriesData(candleSeries, candlestickData);
     };
 
     binanceWs.onopen = () => {
         console.log('Connected to Binance WebSocket for', symbol, 'with timeframe', timeframe);
+    };
+    binanceWs.onclose = () => {
+        console.log('Disconnected from Binance WebSocket for', symbol, 'with timeframe', timeframe);
     };
 
     binanceWs.onerror = (error) => {
