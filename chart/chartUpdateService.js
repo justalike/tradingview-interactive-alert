@@ -135,14 +135,14 @@ export function updateChartWithTrendData(chart, data) {
       console.log('Missing or invalid data for trend:', trend);
       return;
     }
-         trendLineSeries = chart.addLineSeries({
+         let trendLineSeries = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
             lineWidth: 2,
             priceLineVisible: false,
             crosshairMarkerVisible: false,
         });
   
-          breakTrendLineSeries = chart.addLineSeries({
+         let breakTrendLineSeries = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow',
             lineWidth: 2,
             lineStyle: 2,
@@ -152,7 +152,7 @@ export function updateChartWithTrendData(chart, data) {
             overlay: true
           })
   
-          rangesSeries = chart.addLineSeries({
+          let rangesSeries = chart.addLineSeries({
             color: trend.direction === "U" ? 'lime' : 'red',
             lineWidth: 2,
             lineStyle: 1,
