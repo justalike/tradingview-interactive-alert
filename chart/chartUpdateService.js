@@ -122,7 +122,7 @@ export function updateChartWithWaveData(chart, waveseries, data) {
  * @param {Object} chart - The chart instance to update.
  * @param {Array} data - The trend data to use for updating the chart.
  */
-// export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
+export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
 
 
         data.forEach((trend, index) => {
@@ -204,7 +204,7 @@ export function updateChartWithWaveData(chart, waveseries, data) {
     
       })
     
-    
+}
 
 
 // export function updateChartWithTrendData(chart, data) {
