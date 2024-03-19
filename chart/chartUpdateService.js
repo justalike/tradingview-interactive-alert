@@ -170,7 +170,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             console.error('Next trend end time calculation failed');
             return; // Skip this iteration due to calculation failure
         }
-        if (nextTrendEndTime && trend.breakTrend && trend.breakTrend.value != null) {
+        if (nextTrendEndTime && trend.breakTrend  && trend.breakTrend.value != null) {
           breakData.push(
             { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
             { time: nextTrendEndTime, value: trend.breakTrend.value }
@@ -178,11 +178,12 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         }
         if (trend.maxVolumeZone && trend.maxVolumeZone.startPrice != null && trend.maxVolumeZone.endPrice != null) {
           rangeData.push(
-            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
-            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
-            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
+            { time: trend.maxVolumezone.start / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.maxVolumezone.start  / 1000, value: trend.maxVolumeZone.endPrice },
+            { time: trend.maxVolumezone.end / 1000, value: trend.maxVolumeZone.endPrice },
+            { time: trend.maxVolumezone.end / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.maxVolumezone.start / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.maxVolumezone.end } //whitespace
           );
         }
       
