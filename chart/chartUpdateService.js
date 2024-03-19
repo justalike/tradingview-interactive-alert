@@ -185,6 +185,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: (trend.maxVolumeZone.end / 1000) + 1 }
           );
         
       
