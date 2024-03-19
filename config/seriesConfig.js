@@ -1,6 +1,6 @@
 // Configuration for the line series used for trends
 export const trendLineSeriesConfig = {
-  color: 'white', // Default color, can be overridden when creating the series
+  //color: 'white', // Default color, can be overridden when creating the series
   lineWidth: 2,
   priceLineVisible: false,
   crosshairMarkerVisible: false,
@@ -8,7 +8,7 @@ export const trendLineSeriesConfig = {
 
 // Configuration for the break trend line series
 export const breakTrendLineSeriesConfig = {
-  color: 'white', // Default color, similar to trendLineSeriesConfig, can be overridden
+  //color: 'white', // Default color, similar to trendLineSeriesConfig, can be overridden
   lineWidth: 2,
   lineStyle: 2, // Assuming this implies a dashed line
   lastValueVisible: false,
@@ -19,7 +19,7 @@ export const breakTrendLineSeriesConfig = {
 
 // Configuration for the ranges series (used for volume zones, etc.)
 export const rangesSeriesConfig = {
-  color: 'lime', // Default color, to be overridden based on trend direction
+  //color: 'lime', // Default color, to be overridden based on trend direction
   lineWidth: 2,
   lineStyle: 1, // Assuming this implies a solid line
   lastValueVisible: false,

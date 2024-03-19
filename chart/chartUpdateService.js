@@ -137,9 +137,10 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         const breakData = [];
         const rangeData = [];
       
-        
+        console.log(data)
 
         data.forEach((trend, index) => {
+            console.log(trend, index)
           if (!isValidTrendData(trend)) {
             console.log('Missing or invalid data for trend:', trend);
             return;
