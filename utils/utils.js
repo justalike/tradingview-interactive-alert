@@ -40,7 +40,10 @@ export const createSeries = (chart, type, config) => {
 export const updateSeriesData = (series, data) => {
     series.setData(data);
   };
-  
+  export function updateCandleSeries(data) {
+  candleSeries.update(data);
+}
+
   export const updateSeriesOptions = (series, options) => {
     series.applyOptions(options);
   };

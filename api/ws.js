@@ -1,7 +1,7 @@
-import { updateCandleSeries } from './index.js';
+import { updateSeriesData } from '../utils/utils.js';
 
 
-export function connectWebSocket() {
+export function connectWebSocket(candleSeries) {
 
     function getQueryParams() {
         const queryParams = new URLSearchParams(window.location.search);
@@ -37,7 +37,7 @@ export function connectWebSocket() {
             close: parseFloat(candle.c),
         };
 
-        updateCandleSeries(candlestickData);
+        updateSeriesData(candleSeries,candlestickData);
     };
 
     binanceWs.onopen = () => {
