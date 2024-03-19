@@ -50,7 +50,7 @@ const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {
 window.addEventListener('resize', setChartSize(chart));
 
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
-document.addEventListener('DOMContentLoaded',  connectWebSocket(candleSeries));
+document.addEventListener('DOMContentLoaded',  connectWebSocket(series.candles_series));
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
