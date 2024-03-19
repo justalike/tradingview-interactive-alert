@@ -160,14 +160,14 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         //     ...rangesSeriesConfig,
         //     color: trend.direction === "U" ? 'lime' : 'red',
         // });
-        trends = chart.addLineSeries({
+        trends2 = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
             lineWidth: 2,
             priceLineVisible: false,
             crosshairMarkerVisible: false,
         });
   
-          breaks = chart.addLineSeries({
+          breaks2 = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow',
             lineWidth: 2,
             lineStyle: 2,
@@ -177,7 +177,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             overlay: true
           })
   
-          ranges = chart.addLineSeries({
+          ranges2 = chart.addLineSeries({
             color: trend.direction === "U" ? 'lime' : 'red',
             lineWidth: 2,
             lineStyle: 1,
@@ -187,7 +187,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             overlay: true
           })
 
-          trends.setData(
+          trends2.setData(
           [  { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }]
           );
@@ -198,13 +198,13 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             return; // Skip this iteration due to calculation failure
         }
         if (nextTrendEndTime && trend.breakTrend  && trend.breakTrend.value != null) {
-          breaks.setData([
+          breaks2.setData([
             { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
             { time: nextTrendEndTime, value: trend.breakTrend.value }]
           );
         }
        
-          ranges.setData(
+          ranges2.setData(
             
           [  { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.maxVolumeZone.start  / 1000, value: trend.maxVolumeZone.endPrice },
