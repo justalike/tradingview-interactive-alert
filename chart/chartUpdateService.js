@@ -155,10 +155,10 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             color: trend.direction === "U" ? 'white' : 'yellow',
         });
 
-        // ranges.applyOptions({
-        //     ...rangesSeriesConfig,
-        //     color: trend.direction === "U" ? 'lime' : 'red',
-        // });
+        ranges.applyOptions({
+            ...rangesSeriesConfig,
+            color: trend.direction === "U" ? 'lime' : 'red',
+        });
 
           trendData.push(
             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
@@ -178,12 +178,13 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
         }
         if (trend.maxVolumeZone && trend.maxVolumeZone.startPrice != null && trend.maxVolumeZone.endPrice != null) {
           rangeData.push(
+            
             { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.maxVolumeZone.start  / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.endPrice },
             { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.maxVolumeZone.end } //whitespace
+            { time: trend.maxVolumeZone.end /1000 } //whitespace
           );
         }
       
