@@ -1,5 +1,5 @@
 
-import {createSeries, setChartSize, getQueryParams} from './utils/utils.js';
+import {createSeries, setChartSize} from './utils/utils.js';
 import { breakTrendLineSeriesConfig, trendLineSeriesConfig, rangesSeriesConfig, waveSeriesConfig, candleSeriesConfig, lineSeriesConfig, volumeSeriesConfig} from './config/seriesConfig.js';
 import { chartProperties, myPriceFormatter} from './config/chartConfig.js';
 import { initializeChartWithData } from './chart/chartUpdateService.js';
@@ -28,12 +28,13 @@ const rangesSeries =  createSeries(chart, 'line', rangesSeriesConfig);
 
 const series = { candles_series: candleSeries, volume_series: volumeSeries, extrema_series: lineSeries, wave_series: waveSeries, trend_series: trendSeries, breaktrend_series: breakTrendSeries, ranges_series: rangesSeries};
 
-
 window.addEventListener('resize', setChartSize(chart));
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
-
+document.addEventListener('DOMContentLoaded',  connectWebSocket());
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) handleCandleDataUpload(file, candleSeries);
   });
+
+ 
