@@ -92,7 +92,12 @@ export function validateObject(object, conditions) {
 
 
 export function calculateNextTrendEndTime(trend, index, data, lastCandle) {
-    let nextTrendEndTime;
+   
+  if (!lastCandle || typeof lastCandle.time !== 'number') {
+    console.error('Last candle or its time is undefined');
+    return null; // Or a default value, depending on your use case
+}
+  let nextTrendEndTime;
 
     if (index === data.length - 1) {
         // If it's the last trend, there's no "next" trend. Use an alternative reference for end time.

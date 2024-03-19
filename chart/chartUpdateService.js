@@ -166,11 +166,17 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
           );
       
           const nextTrendEndTime = calculateNextTrendEndTime(trend, index, data, lastCandle);
+        if (nextTrendEndTime == null) {
+            console.error('Next trend end time calculation failed');
+            return; // Skip this iteration due to calculation failure
+        }
+        if (nextTrendEndTime && trend.breakTrend && trend.breakTrend.value != null) {
           breakData.push(
             { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
             { time: nextTrendEndTime, value: trend.breakTrend.value }
           );
-      
+        }
+        if (trend.maxVolumeZone && trend.maxVolumeZone.startPrice != null && trend.maxVolumeZone.endPrice != null) {
           rangeData.push(
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice },
@@ -178,17 +184,13 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
             { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice }
           );
+        }
       
     
       })
-    
-      trends.setData(trendData);
-      console.log(`breakdata`)
-      console.log(breakData)
-      breaks.setData(breakData);
-      console.log(`rangeData`)
-      console.log(rangeData)
-        ranges.setData(rangeData);
+      if (trendData.length > 0) trends.setData(trendData);
+      if (breakData.length > 0) breaks.setData(breakData);
+      if (rangeData.length > 0) ranges.setData(rangeData);
     }
 
       
