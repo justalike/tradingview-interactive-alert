@@ -122,38 +122,27 @@ export function updateChartWithWaveData(chart, waveseries, data) {
  * @param {Object} chart - The chart instance to update.
  * @param {Array} data - The trend data to use for updating the chart.
  */
-export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
 
 
-        data.forEach((trend, index) => {
-            console.log(trend, index)
-          if (!isValidTrendData(trend)) {
-            console.log('Missing or invalid data for trend:', trend);
-            return;
-          }
-          
-        //   trends.applyOptions({
-        //     ...trendLineSeriesConfig,
-        //     color: trend.direction === "U" ? 'white' : 'yellow',
-        // });
-        
-        // breaks.applyOptions({
-        //     ...breakTrendLineSeriesConfig,
-        //     color: trend.direction === "U" ? 'white' : 'yellow',
-        // });
 
-        // ranges.applyOptions({
-        //     ...rangesSeriesConfig,
-        //     color: trend.direction === "U" ? 'lime' : 'red',
-        // });
-        let trends2 = chart.addLineSeries({
+export function updateChartWithTrendData(chart, data) {
+    data.forEach((trend, index) => {
+     // console.log(trend)
+      if (!trend.startTrend || !trend.endTrend ||
+        !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
+        !trend.breakTrend.timestamp || !trend.breakTrend.value ||
+        typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number' || typeof trend.breakTrend.value !== 'number') {
+      console.log('Missing or invalid data for trend:', trend);
+      return;
+    }
+         trendLineSeries = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
             lineWidth: 2,
             priceLineVisible: false,
             crosshairMarkerVisible: false,
         });
   
-        let breaks2 = chart.addLineSeries({
+          breakTrendLineSeries = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow',
             lineWidth: 2,
             lineStyle: 2,
@@ -163,7 +152,7 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             overlay: true
           })
   
-          let ranges2 = chart.addLineSeries({
+          rangesSeries = chart.addLineSeries({
             color: trend.direction === "U" ? 'lime' : 'red',
             lineWidth: 2,
             lineStyle: 1,
@@ -172,126 +161,55 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
             crosshairMarkerVisible: false,
             overlay: true
           })
-
-          trends2.setData(
-          [  { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
-            { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value }]
-          );
-      
-          const nextTrendEndTime = calculateNextTrendEndTime(trend, index, data, lastCandle);
-        if (nextTrendEndTime == null) {
-            console.error('Next trend end time calculation failed');
-            return; // Skip this iteration due to calculation failure
-        }
-        if (nextTrendEndTime && trend.breakTrend  && trend.breakTrend.value != null) {
-          breaks2.setData([
-            { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-            { time: nextTrendEndTime, value: trend.breakTrend.value }]
-          );
-        }
-       
-          ranges2.setData(
-            
-          [  { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.maxVolumeZone.start  / 1000, value: trend.maxVolumeZone.endPrice },
-            { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.endPrice },
-            { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },]
-            
-          );
-        
-         
-    
-      })
-    
-}
-
-
-// export function updateChartWithTrendData(chart, data) {
-//     data.forEach((trend, index) => {
-//      // console.log(trend)
-//       if (!trend.startTrend || !trend.endTrend ||
-//         !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
-//         !trend.breakTrend.timestamp || !trend.breakTrend.value ||
-//         typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number' || typeof trend.breakTrend.value !== 'number') {
-//       console.log('Missing or invalid data for trend:', trend);
-//       return;
-//     }
-//          trendLineSeries = chart.addLineSeries({
-//             color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
-//             lineWidth: 2,
-//             priceLineVisible: false,
-//             crosshairMarkerVisible: false,
-//         });
   
-//           breakTrendLineSeries = chart.addLineSeries({
-//             color: trend.direction == "U" ? 'white' : 'yellow',
-//             lineWidth: 2,
-//             lineStyle: 2,
-//             lastValueVisible: false,
-//             priceLineVisible: false,
-//             crosshairMarkerVisible: false,
-//             overlay: true
-//           })
+           rangesSeries.setData([
+            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+        ]);
   
-//           rangesSeries = chart.addLineSeries({
-//             color: trend.direction === "U" ? 'lime' : 'red',
-//             lineWidth: 2,
-//             lineStyle: 1,
-//             lastValueVisible: false,
-//             priceLineVisible: false,
-//             crosshairMarkerVisible: false,
-//             overlay: true
-//           })
+        // Set the data for the trend line series
+        trendLineSeries.setData([
+            { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
+            { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
+        ]);
   
-//            rangesSeries.setData([
-//             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-//             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
-//             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
-//             { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-//             { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-//         ]);
+          let nextTrendEndTime;
   
-//         // Set the data for the trend line series
-//         trendLineSeries.setData([
-//             { time: trend.startTrend.timestamp / 1000, value: trend.startTrend.value },
-//             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
-//         ]);
+          if (index === data.length - 1) {
+              // If it's the last trend, use the current timestamp
   
-//           let nextTrendEndTime;
-  
-//           if (index === data.length - 1) {
-//               // If it's the last trend, use the current timestamp
-  
-//               //nextTrendEndTime = Math.floor(Date.now()) / 1000;
-//               nextTrendEndTime = lastCandle.time
-//           }
-//           else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
-//               // if breaktrend is further than the endTrend extremum
-//             nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
-//           }
+              //nextTrendEndTime = Math.floor(Date.now()) / 1000;
+              nextTrendEndTime = lastCandle.time
+          }
+          else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
+              // if breaktrend is further than the endTrend extremum
+            nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
+          }
           
-//           else {
-//               // Otherwise, use the end time of the next trend
+          else {
+              // Otherwise, use the end time of the next trend
             
-//               nextTrendEndTime =  trend.endTrend.timestamp / 1000;
-//           }
+              nextTrendEndTime =  trend.endTrend.timestamp / 1000;
+          }
           
   
   
-//           breakTrendLineSeries.setData([
-//           { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
-//           { time: nextTrendEndTime, value: trend.breakTrend.value },
-//         ])
+          breakTrendLineSeries.setData([
+          { time: trend.breakTrend.timestamp / 1000, value: trend.breakTrend.value },
+          { time: nextTrendEndTime, value: trend.breakTrend.value },
+        ])
   
-//           let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
-//           let startTrendMarkerPos = trend.direction == "D"  ? 'aboveBar' : 'belowBar';
-//         // Set the markers on the trend line series
-//         trendLineSeries.setMarkers([
-//             { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.startTrend.value},
-//             { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.endTrend?.value},
-//           ])
-//     });
-//   }      
+          let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
+          let startTrendMarkerPos = trend.direction == "D"  ? 'aboveBar' : 'belowBar';
+        // Set the markers on the trend line series
+        trendLineSeries.setMarkers([
+            { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.startTrend.value},
+            { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.endTrend?.value},
+          ])
+    });
+  }      
 
 
