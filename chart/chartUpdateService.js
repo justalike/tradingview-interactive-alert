@@ -45,7 +45,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
            updateChartWithExtremaData(chart, series.extrema_series, data);
        } else if (name === 'waves') {
       
-       //   updateChartWithWaveData(chart, series.wave_series, data);
+         updateChartWithWaveData(chart, series.wave_series, data);
        } else if (name === 'trends') {
        
            updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
@@ -126,6 +126,9 @@ export function updateChartWithWaveData(chart, waveseries, data) {
 
 
 export function updateChartWithTrendData(chart, data) {
+
+// We have to create new series for each trend lines we are pushing. otherwise it wont work
+// because it tries to connect dots {}'s between each trend line / range / breaktrend
     data.forEach((trend, index) => {
      // console.log(trend)
       if (!trend.startTrend || !trend.endTrend ||
