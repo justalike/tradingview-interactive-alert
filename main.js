@@ -1,6 +1,6 @@
 
 import * as cfg from './config/index.js';
-import {createSeries, setChartSize} from './utils/utils.js';
+import {createSeries, setChartSize, getQueryParams} from './utils/utils.js';
 
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
@@ -45,6 +45,8 @@ const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {
     acc[key] = createSeries(chart, type, config);
     return acc;
 }, {});
+
+const { symbol, timeframe } = await getQueryParams();
 
 
 window.addEventListener('resize', setChartSize(chart));
