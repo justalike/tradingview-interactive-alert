@@ -178,17 +178,16 @@ export function updateChartWithTrendData(chart, trends, ranges, breaks, data) {
           );
         }
        
-        if (trend.maxVolumeZone) {
-            rangeData = rangeData.concat([
-                { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
-                { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.endPrice },
-                { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.endPrice },
-                { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.startPrice },
-                { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
-           
-            ]);
-        }
-
+          rangeData.push(
+            
+            { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.maxVolumeZone.start  / 1000, value: trend.maxVolumeZone.endPrice },
+            { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.endPrice },
+            { time: trend.maxVolumeZone.end / 1000, value: trend.maxVolumeZone.startPrice },
+            { time: trend.maxVolumeZone.start / 1000, value: trend.maxVolumeZone.startPrice },
+            
+          );
+        
       
     
       })
