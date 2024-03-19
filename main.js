@@ -15,7 +15,7 @@ const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties)
 // Applying global chart options
 chart.applyOptions({
   localization: {
-    priceFormatter: myPriceFormatter,
+    priceFormatter: cfg.myPriceFormatter,
   },
 });
 
