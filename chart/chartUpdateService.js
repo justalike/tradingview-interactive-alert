@@ -103,12 +103,14 @@ export function updateChartWithExtremaData(chart, series, data) {
 }
 
 export function updateChartWithWaveData(chart, waveseries, data) {
-    if (!data.every(item => isValidWaveData(item))) {
-        console.log('Invalid wave data');
-        return;
-    }
+    // if (!data.every(item => isValidWaveData(item))) {
+    //     console.log('Invalid wave data');
+    //     return;
+    // }
 
-    const processedData = processTimeFrames(data).flatMap(wave => ({
+    const validData = data.filter(item => isValidWaveData(item));
+
+    const processedData = processTimeFrames(validData).flatMap(wave => ({
         time: wave.start / 1000,
         value: wave.startValue,
         color: wave.startValue < wave.endValue ? 'green' : 'red',
