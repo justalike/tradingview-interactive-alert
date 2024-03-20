@@ -4,7 +4,7 @@ import {fetchCandleData, fetchAllLineData} from '../api/dataService.js';
 
 
 var lastCandle;
-
+var fetchedCandles;
 export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', tf = '1h')  => {
    try{
 
