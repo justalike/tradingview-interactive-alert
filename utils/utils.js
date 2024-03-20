@@ -41,9 +41,10 @@ export const updateSeriesData = (series, data) => {
   console.log('Updating series data:',series, data);
     series.setData(data);
   };
-  export function updateCandle(series,data) {
+  export function updateOne(series,data) {
   series.update(data);
 }
+
 
   export const updateSeriesOptions = (series, options) => {
     series.applyOptions(options);

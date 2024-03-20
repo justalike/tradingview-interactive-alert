@@ -52,7 +52,7 @@ const { symbol, timeframe } = await getQueryParams();
 window.addEventListener('resize', setChartSize(chart));
 
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
-document.addEventListener('DOMContentLoaded',  connectWebSocket(series.candles_series));
+document.addEventListener('DOMContentLoaded',  connectWebSocket(series));
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
 
 

@@ -1,10 +1,9 @@
 import { getQueryParams, updateCandle } from '../utils/utils.js';
 
 
-export async function connectWebSocket(candleSeries) {
-    console.log(`im inside connect websocket`)
-    console.log(candleSeries)
+export async function connectWebSocket(series) {
     
+    const { candles_series, volume_series} = series;
     function formatSymbol(symbol) {
         return symbol.replace('/', '').toLowerCase();
     }
@@ -31,9 +30,13 @@ export async function connectWebSocket(candleSeries) {
             low: parseFloat(candle.l),
             close: parseFloat(candle.c),
         };
-        console.log ( candleSeries )
+        const volumeData = {
+            time: candle.t / 1000, // Convert ms to s to draw candles in the chart
+            value: parseFloat(candle.v),
+        };
 
-        updateCandle(candleSeries, candlestickData);
+        updateOne(candles_series, candlestickData);
+        updateOne(volume_series, volumeData)
     };
 
     binanceWs.onopen = () => {
