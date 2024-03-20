@@ -77,11 +77,11 @@ async function fetchCandleData(symbol, timeframe) {
       const data = await response.json();
       return data.map(candle => ({
         time: candle.timestamp / 1000, // Convert to seconds
-        open: candle.open,
-        high: candle.high,
-        low: candle.low,
-        close: candle.close,
-        volume: candle.volume
+        open:  parseFloat(candle.open),
+        high:  parseFloat(candle.high),
+        low:   parseFloat(candle.low),
+        close: parseFloat(candle.close),
+        volume:parseFloat(candle.volume)
       }));
     } catch (error) {
       console.error(`Failed to preload history candles: ${error.message}`);

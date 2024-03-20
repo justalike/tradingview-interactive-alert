@@ -1,5 +1,5 @@
-import { calculateNextTrendEndTime, updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
-import { isValidTrendData, isValidExtremaData, isValidWaveData } from '../utils/validation.js';
+import { updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
+import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData} from '../api/dataService.js';
 
 
@@ -36,7 +36,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
        }
 
        if (name === 'candles') {
-        
+        fetchedCandles = data
         lastCandle = data[data.length - 1];
         const volData = data.map(({ time, volume }) => ({ time: time, value:volume }));
         
@@ -194,9 +194,7 @@ export function updateChartWithTrendData(chart, data) {
           let nextTrendEndTime;
   
           if (index === data.length - 1) {
-              // If it's the last trend, use the current timestamp
-  
-              //nextTrendEndTime = Math.floor(Date.now()) / 1000;
+              // If it's the last trend, use the last candle timestamp
               nextTrendEndTime = lastCandle.time
           }
           else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
