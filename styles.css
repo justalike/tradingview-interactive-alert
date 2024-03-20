@@ -17,13 +17,13 @@ html, body {
     top: 100px; /* Adjust as needed */
     right: 100px; /* Adjust as needed */
     z-index: 1000; /* Ensure the button is above the chart elements */
-    opacity: 0; /* Make button invisible by default */
+    opacity: 10; /* Make button invisible by default */
     transition: opacity 0.2s ease; /* Smooth transition for the opacity change */
 }
 #loadDataButton:hover {
   opacity: 1; /* Make button fully visible when hovered */
   visibility: visible; /* Make button visible when hovered */
-  transition-delay: 0.5s; /* Apply transitions immediately when hovered */
+  transition-delay: 0.2s; /* Apply transitions immediately when hovered */
 }
 
   #tooltip {

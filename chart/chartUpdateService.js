@@ -39,6 +39,14 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
         
         lastCandle = data[data.length - 1];
         const volData = data.map(({ time, volume }) => ({ time: time, value:volume }));
+        
+        series.volume_series.priceScale().applyOptions({
+            scaleMargins: {
+                top: 0.7,
+                bottom: 0,
+            },
+        })
+
         updateSeriesData(series.candles_series, data)
         updateSeriesData(series.volume_series, volData )
            //updateCandleSeries(data);
