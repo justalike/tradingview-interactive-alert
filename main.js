@@ -60,9 +60,9 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   const existingCandles = await getHistoryCandles(symbol, timeframe);
   const fetchedCandles = await fetchCandleData(symbol, timeframe);
   console.log(existingCandles.length)
-  console.log(fetchCandles.length)
+  console.log(fetchedCandles.length)
   const mergedCandles = [...existingCandles
-                              .filter(candle => candle.time >= fetchedCandles[0].time),
+                              .filter(candle => candle.time <= fetchedCandles[0].time),
                          ...fetchedCandles];
                          console.log(mergedCandles.length)
   const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));

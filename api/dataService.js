@@ -75,6 +75,7 @@ async function fetchCandleData(symbol, timeframe) {
         throw new Error(`Failed to load history candles! HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log(`Loaded history ${data.length} candles for ${symbol} with timeframe ${timeframe}`);
       return data.map(candle => ({
         time: candle.timestamp / 1000, // Convert to seconds
         open:  parseFloat(candle.open),
