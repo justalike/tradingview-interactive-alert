@@ -68,6 +68,7 @@ async function fetchCandleData(symbol, timeframe) {
   
   }
   async function getHistoryCandles(symbol, timeframe) {
+    
     console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
   
     const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;

@@ -57,8 +57,11 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 
 
 document.getElementById('loadDataButton').addEventListener('click', async () => {
+  try{ 
+
+  
   const existingCandles = await getHistoryCandles(symbol, timeframe);
-  const fetchedCandles = await fetchCandleData(symbol, timeframe);
+  const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
   console.log(existingCandles.length)
   console.log(fetchedCandles.length)
   const mergedCandles = [...existingCandles
@@ -71,7 +74,12 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   updateSeriesData(series.candles_series, mergedCandles)
   updateSeriesData(series.volume_series, volumes )
   
-  });
+  } 
+  catch (error) {
+    console.error(error);
+  }
+
+});
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
     const file = event.target.files[0];

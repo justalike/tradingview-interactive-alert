@@ -135,8 +135,6 @@ export function updateChartWithWaveData(chart, waveseries, data) {
  * @param {Array} data - The trend data to use for updating the chart.
  */
 
-
-
 export function updateChartWithTrendData(chart, data) {
 
 // We have to create new series for each trend lines we are pushing. otherwise it wont work
