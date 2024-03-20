@@ -1,4 +1,4 @@
-
+import { getCurrentYYMMDD } from '../utils/utils.js';
 /**
  * Fetches historical candle data for a given symbol and timeframe.
  * @param {string} symbol - The symbol to fetch data for.
@@ -68,7 +68,8 @@ async function fetchCandleData(symbol, timeframe) {
   }
   async function getHistoryCandles(symbol, timeframe) {
     console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
-    const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}&startDate=2024-02-01&endDate=2024-03-12`;
+    const endDate = getCurrentYYMMDD()
+    const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}&startDate=2024-03-01&endDate=${endDate}`;
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) {

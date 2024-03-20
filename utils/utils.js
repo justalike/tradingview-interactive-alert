@@ -54,7 +54,14 @@ export const updateSeriesData = (series, data) => {
   export const toggleSeriesVisibility = (series, isVisible) => {
     series.applyOptions({ visible: isVisible });
   };
+  export function getCurrentYYMMDD() {
+    const date = new Date(); // This will be the current date
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get 1-12
+    const day = date.getDate().toString().padStart(2, '0');
 
+    return `${year}-${month}-${day}`;
+}
   export const getQueryParams = async function() {
     try{
    console.log(`Getting query parameters`)
