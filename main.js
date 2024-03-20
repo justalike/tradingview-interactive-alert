@@ -1,6 +1,6 @@
 
 import * as cfg from './config/index.js';
-import {createSeries, setChartSize, getQueryParams} from './utils/utils.js';
+import {createSeries, updateSeriesData,  setChartSize, getQueryParams} from './utils/utils.js';
 
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
@@ -59,15 +59,20 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   const existingCandles = await getHistoryCandles(symbol, timeframe);
   const fetchedCandles = await fetchCandleData(symbol, timeframe);
+  console.log(existingCandles.length)
+  console.log(fetchCandles.length)
   const mergedCandles = [...existingCandles
                               .filter(candle => candle.time >= fetchedCandles[0].time),
                          ...fetchedCandles];
+                         console.log(mergedCandles.length)
   const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
   
-  series.candles_series.setData(mergedCandles);
-  series.volume_series.setData(volumes);
-  });
+
+  updateSeriesData(series.candles_series, mergedCandles)
+  updateSeriesData(series.volume_series, volumes )
   
+  });
+
 document.getElementById('dataFile').addEventListener('change', (event) => {
     const file = event.target.files[0];
     if (file) handleCandleDataUpload(file, series.candles_series);
