@@ -69,7 +69,8 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
                          ...fetchedCandles];
                          console.log(mergedCandles.length)
   const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
-  
+  console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
+  console.log(`Last existingCandle timestamp : ${existingCandles[existingCandles.length-1].time}`)
 
   updateSeriesData(series.candles_series, mergedCandles)
   updateSeriesData(series.volume_series, volumes )
