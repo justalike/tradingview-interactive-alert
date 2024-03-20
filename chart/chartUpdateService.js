@@ -36,9 +36,11 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
        }
 
        if (name === 'candles') {
-       
+        
         lastCandle = data[data.length - 1];
+        const volData = data.map(({ time, value }) => ({ time, value }));
         updateSeriesData(series.candles_series, data)
+        updateSeriesData(series.volume_series, volData )
            //updateCandleSeries(data);
        } else if (name === 'extrema') {
        
