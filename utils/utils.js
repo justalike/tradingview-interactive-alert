@@ -28,7 +28,7 @@ export const createSeries = (chart, type, config) => {
       candlestick: () => chart.addCandlestickSeries(config),
       line: () => chart.addLineSeries(config),
       histogram: () => chart.addHistogramSeries(config),
-      // Add more as needed
+      custom: () => chart.addCustomSeries(config),
     };
     if (!seriesTypes[type]) {
         throw new Error(`Unsupported series type: ${type}`);
@@ -41,8 +41,8 @@ export const updateSeriesData = (series, data) => {
   console.log('Updating series data:',series, data);
     series.setData(data);
   };
-  export function updateCandleSeries(data) {
-  candleSeries.update(data);
+  export function updateCandle(series,data) {
+  series.update(data);
 }
 
   export const updateSeriesOptions = (series, options) => {

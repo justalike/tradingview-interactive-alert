@@ -1,4 +1,4 @@
-import { getQueryParams, updateSeriesData } from '../utils/utils.js';
+import { getQueryParams, updateCandle } from '../utils/utils.js';
 
 
 export async function connectWebSocket(candleSeries) {
@@ -31,9 +31,9 @@ export async function connectWebSocket(candleSeries) {
             low: parseFloat(candle.l),
             close: parseFloat(candle.c),
         };
-        console.log ( candlestickData )
+        console.log ( candleSeries )
 
-        updateSeriesData(candleSeries, candlestickData);
+        updateCandle(candleSeries, candlestickData);
     };
 
     binanceWs.onopen = () => {
