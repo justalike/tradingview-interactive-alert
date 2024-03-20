@@ -1,4 +1,4 @@
-import { getQueryParams, updateCandle } from '../utils/utils.js';
+import { getQueryParams, updateOne } from '../utils/utils.js';
 
 
 export async function connectWebSocket(series) {
