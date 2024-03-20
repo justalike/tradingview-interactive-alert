@@ -39,6 +39,8 @@ const seriesTypesAndConfigs = [
     { key: 'trend_series', type: 'line', config: cfg.trendLineSeriesConfig },
     { key: 'breaktrend_series', type: 'line', config: cfg.breakTrendLineSeriesConfig },
     { key: 'ranges_series', type: 'line', config: cfg.rangesSeriesConfig },
+    { key: 'historycandles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
+    { key: 'historyvolume_series', type: 'histogram', config: cfg.candleSeriesConfig },
 ];
 
 const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {
@@ -66,14 +68,14 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   console.log(fetchedCandles.length)
   const mergedCandles = [...existingCandles
                               .filter(candle => candle.time < fetchedCandles[0].time),
-                         ...fetchedCandles];
+                        ]//...fetchedCandles];
                          console.log(mergedCandles.length)
   const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
   console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
   console.log(`Last existingCandle timestamp : ${existingCandles[existingCandles.length-1].time}`)
-
-  updateSeriesData(series.candles_series, mergedCandles)
-  updateSeriesData(series.volume_series, volumes )
+  
+  updateSeriesData(series.historycandles_series, mergedCandles)
+  updateSeriesData(series.historyvolume_series, volumes )
   
   } 
   catch (error) {
