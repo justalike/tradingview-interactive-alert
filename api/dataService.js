@@ -56,8 +56,9 @@ async function fetchCandleData(symbol, timeframe) {
    */
 
   async function preLoadHistoryCandles(symbol, timeframe) {
+    const endDate = getCurrentYYMMDD()
     console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
-    const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}&startDate=2024-02-01&endDate=2024-03-12`;
+    const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}&startDate=2024-03-01&endDate=${endDate}`;
     const response = await fetch(apiUrl);
     if (!response.ok) {
       throw new Error(`Failed to load history candles! \nHTTP error! status: ${response.status}`);
@@ -68,8 +69,8 @@ async function fetchCandleData(symbol, timeframe) {
   }
   async function getHistoryCandles(symbol, timeframe) {
     console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
-    const endDate = getCurrentYYMMDD()
-    const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}&startDate=2024-03-01&endDate=${endDate}`;
+  
+    const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;
     try {
       const response = await fetch(apiUrl);
       if (!response.ok) {
