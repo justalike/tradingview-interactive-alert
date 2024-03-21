@@ -50,16 +50,16 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
         updateSeriesData(series.candles_series, data)
         updateSeriesData(series.volume_series, volData )
            //updateCandleSeries(data);
-       } else if (name === 'extrema') {
+    //    } else if (name === 'extrema') {
        
-           updateChartWithExtremaData(chart, series.extrema_series, data);
-       } else if (name === 'waves') {
+    //        updateChartWithExtremaData(chart, series.extrema_series, data);
+    //    } else if (name === 'waves') {
       
-         updateChartWithWaveData(chart, series.wave_series, data);
-       } else if (name === 'trends') {
+    //      updateChartWithWaveData(chart, series.wave_series, data);
+    //    } else if (name === 'trends') {
        
-           updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
-       }
+    //        updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
+    //    }
    }
   
   chart.applyOptions({
