@@ -59,7 +59,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
     //    } else if (name === 'trends') {
        
     //        updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
-    //    }
+  }
    }
   
   chart.applyOptions({
