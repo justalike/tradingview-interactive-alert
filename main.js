@@ -68,7 +68,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   console.log(fetchedCandles.length)
   const mergedCandles = [...existingCandles
                               .filter(candle => candle.time < fetchedCandles[0].time),
-                        ]//...fetchedCandles];
+                        ...fetchedCandles];
                          console.log(mergedCandles.length)
   const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
   //console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
