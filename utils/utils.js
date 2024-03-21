@@ -50,14 +50,17 @@ export const removeSeries = (chart, series) => {
     chart.removeSeries(series);
   };
 
-export const removeAllSeries = (chart, allSeries) => {
-  for (const serie of allSeries) {
-    if (serie.key.startsWith(`history`)) return
-    chart.removeSeries(serie);  
-  }
-    
-  
-  };
+  export const removeAllSeries = (chart, series) => {
+    // Iterate through the object entries ([key, value] pairs)
+    Object.entries(series).forEach(([key, serie]) => {
+        // Check if the key starts with 'history'
+        if (key.startsWith('history')) return;
+
+        // If not, remove the series from the chart
+        chart.removeSeries(serie);
+    });
+};
+
 
   export const updateSeriesOptions = (series, options) => {
     series.applyOptions(options);
