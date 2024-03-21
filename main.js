@@ -1,6 +1,6 @@
 
 import * as cfg from './config/index.js';
-import {createSeries, updateSeriesData,  setChartSize, getQueryParams} from './utils/utils.js';
+import {createSeries, removeSeries, updateSeriesData,  setChartSize, getQueryParams, removeAllSeries} from './utils/utils.js';
 
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
@@ -53,7 +53,7 @@ const { symbol, timeframe } = await getQueryParams();
 
 window.addEventListener('resize', setChartSize(chart));
 
-//document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
+document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
 //document.addEventListener('DOMContentLoaded',  connectWebSocket(series));
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
 
@@ -71,9 +71,10 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
                         ...fetchedCandles];
                          console.log(mergedCandles.length)
   const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+  console.log(volumes)
   //console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
   console.log(`Last existingCandle timestamp : ${existingCandles[existingCandles.length-1].time}`)
-  
+  removeAllSeries(chart, series)
   updateSeriesData(series.historycandles_series, mergedCandles)
   updateSeriesData(series.historyvolume_series, volumes )
   

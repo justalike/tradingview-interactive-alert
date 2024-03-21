@@ -46,6 +46,19 @@ export const updateSeriesData = (series, data) => {
 }
 
 
+export const removeSeries = (chart, series) => {
+    chart.removeSeries(series);
+  };
+
+export const removeAllSeries = (chart, allSeries) => {
+  for (const serie of allSeries) {
+    if (serie.key.startsWith(`history`)) return
+    chart.removeSeries(serie);  
+  }
+    
+  
+  };
+
   export const updateSeriesOptions = (series, options) => {
     series.applyOptions(options);
   };
