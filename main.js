@@ -74,7 +74,14 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   console.log(volumes)
   //console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
   console.log(`Last existingCandle timestamp : ${existingCandles[existingCandles.length-1].time}`)
-  removeAllSeries(chart, series)
+  removeSeries(chart, series.candles_series);
+  removeSeries(chart, series.volume_series)
+  removeSeries(chart, series.extrema_series)
+  removeSeries(chart, series.wave_series)
+  removeSeries(chart, series.trend_series)
+  removeSeries(chart, series.breaktrend_series)
+  removeSeries(chart, series.ranges_series)
+  
   updateSeriesData(series.historycandles_series, mergedCandles)
   updateSeriesData(series.historyvolume_series, volumes )
   

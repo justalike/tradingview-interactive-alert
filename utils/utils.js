@@ -59,6 +59,7 @@ export const removeSeries = (chart, series) => {
 };
 
 
+
   export const updateSeriesOptions = (series, options) => {
     series.applyOptions(options);
   };
