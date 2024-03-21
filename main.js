@@ -39,8 +39,8 @@ const seriesTypesAndConfigs = [
     { key: 'trend_series', type: 'line', config: cfg.trendLineSeriesConfig },
     { key: 'breaktrend_series', type: 'line', config: cfg.breakTrendLineSeriesConfig },
     { key: 'ranges_series', type: 'line', config: cfg.rangesSeriesConfig },
-    { key: 'historycandles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
-    { key: 'historyvolume_series', type: 'histogram', config: cfg.candleSeriesConfig },
+    // { key: 'historycandles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
+    // { key: 'historyvolume_series', type: 'histogram', config: cfg.candleSeriesConfig },
 ];
 
 const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {
@@ -74,16 +74,32 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   console.log(volumes)
   //console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
   console.log(`Last existingCandle timestamp : ${existingCandles[existingCandles.length-1].time}`)
-  removeSeries(chart, series.candles_series);
-  removeSeries(chart, series.volume_series)
-  removeSeries(chart, series.extrema_series)
-  removeSeries(chart, series.wave_series)
-  removeSeries(chart, series.trend_series)
-  removeSeries(chart, series.breaktrend_series)
-  removeSeries(chart, series.ranges_series)
-  
-  updateSeriesData(series.historycandles_series, mergedCandles)
-  updateSeriesData(series.historyvolume_series, volumes )
+  LightweightCharts.remove(chart)  
+  const historyChart = LightweightCharts.createChart(chartContainer, cfg.chartProperties);
+  historyChart.applyOptions({
+    localization: {
+      priceFormatter: cfg.myPriceFormatter,
+    },
+  });
+
+const seriesTypesAndConfigs_history = [
+  // { key: 'candles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
+  // { key: 'volume_series', type: 'histogram', config: cfg.volumeSeriesConfig },
+  { key: 'extrema_series', type: 'line', config: cfg.lineSeriesConfig },
+  { key: 'wave_series', type: 'line', config: cfg.waveSeriesConfig },
+  { key: 'trend_series', type: 'line', config: cfg.trendLineSeriesConfig },
+  { key: 'breaktrend_series', type: 'line', config: cfg.breakTrendLineSeriesConfig },
+  { key: 'ranges_series', type: 'line', config: cfg.rangesSeriesConfig },
+  { key: 'historycandles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
+  { key: 'historyvolume_series', type: 'histogram', config: cfg.candleSeriesConfig },
+];
+
+const history_series = seriesTypesAndConfigs_history.reduce((acc, { key, type, config }) => {
+  acc[key] = createSeries(chart, type, config);
+  return acc;
+}, {});
+  updateSeriesData(history_series.historycandles_series, mergedCandles)
+  updateSeriesData(history_series.historyvolume_series, volumes )
   
   } 
   catch (error) {
