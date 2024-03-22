@@ -53,7 +53,7 @@ function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
 }
 
 let lastCallTime;
-const throttleInterval = 250; // Throttle interval in milliseconds
+const throttleInterval = 1000; // Throttle interval in milliseconds
 
 function onVisibleLogicalRangeChangedThrottled(newVisibleLogicalRange) {
     const now = new Date().getTime();
