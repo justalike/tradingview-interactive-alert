@@ -143,9 +143,11 @@ export function calculateNextTrendEndTime(trend, index, data, lastCandle) {
     return nextTrendEndTime;
 }
 
-
 export function subtractDays(dateStr, days) {
-  const date = new Date(dateStr);
+  let date = new Date(dateStr);
+  if (isNaN(date.getTime())) { // Check if date is invalid
+    date = new Date(); // Fallback to current date
+  }
   date.setDate(date.getDate() - days);
   return date.toISOString().split('T')[0];
 }
