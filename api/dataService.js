@@ -55,7 +55,7 @@ async function fetchCandleData(symbol, timeframe) {
    * @returns {Promise<Array>} - The preloaded historical candle data.
    */
 
-  async function preLoadHistoryCandles(symbol, timeframe, startDate , endDate = getCurrentYYMMDD()) {
+  async function preLoadHistoryCandles(symbol, timeframe, startDate , endDate = getCurrentYYMMDD(Date.now())) {
     
     console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
     let daysToSubtract;
