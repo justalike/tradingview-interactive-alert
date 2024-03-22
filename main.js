@@ -13,6 +13,12 @@ console.log(`_..--.._`.repeat(10))
 const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties);
 
+
+const throttleInterval = 2000; // Throttle interval in milliseconds
+const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, throttleInterval);
+const throttledpreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
+const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
+
 // Applying global chart options
 chart.applyOptions({
   localization: {
@@ -41,23 +47,9 @@ const { symbol, timeframe } = await getQueryParams();
 
 
 window.addEventListener('resize', setChartSize(chart));
-
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
-//document.addEventListener('DOMContentLoaded',  connectWebSocket(series));
+document.addEventListener('DOMContentLoaded',  connectWebSocket(series));
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
-
-
-let debounceTimer;
-function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 250); // 500 ms debounce period
-}
-
-
-const throttleInterval = 2000; // Throttle interval in milliseconds
-const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 2000);
-const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
-
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
@@ -66,15 +58,15 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   if (barsInfo !== null && barsInfo.barsBefore < 50) {
       // Logic to determine the start date for the next data fetch
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
-      console.log(`EarliestVisibleTime${earliestVisibleTime}`)
+      //console.log(`EarliestVisibleTime${earliestVisibleTime}`)
       // Convert chart's internal time format to a usable date string if needed
       // This assumes you have a function to convert from chart time to Date or string
-      const existingCandles = await getHistoryCandles(symbol, timeframe);
+      const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
       const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
 
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
       // Load historical data starting from startDateForFetch
-      const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe, startDateForFetch)
+      const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
       
     
       const mergedCandles = [...existingCandles
@@ -107,7 +99,7 @@ chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChang
 
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
-    const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe)
+    const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe)
     const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
     //const existingCandles = await getHistoryCandles(symbol, timeframe);
     const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];

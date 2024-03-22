@@ -32,4 +32,10 @@ function throttle(func, interval) {
   }
 
   
+
+// let debounceTimer;
+// function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
+//     clearTimeout(debounceTimer);
+//     debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 250); // 500 ms debounce period
+// }
   export { throttle, asyncThrottle }
