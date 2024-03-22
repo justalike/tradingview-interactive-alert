@@ -53,7 +53,11 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 
 
 
-
+let debounceTimer;
+function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 500); // 500 ms debounce period
+}
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
@@ -62,12 +66,12 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   if (barsInfo !== null && barsInfo.barsBefore < 50) {
       // Logic to determine the start date for the next data fetch
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
-      console.log`EarliestVisibleTime${earliestVisibleTime}`
+      console.log(`EarliestVisibleTime${earliestVisibleTime}`)
       // Convert chart's internal time format to a usable date string if needed
       // This assumes you have a function to convert from chart time to Date or string
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime);
       // Load historical data starting from startDateForFetch
-      const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe)
+      const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe, startDateForFetch)
       const existingCandles = await getHistoryCandles(symbol, timeframe);
       const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
     
@@ -94,7 +98,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   }
 
 
-chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChangedDebounced);
 
 
 
