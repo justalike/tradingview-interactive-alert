@@ -54,13 +54,12 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
   const barsInfo = series.candles_series.barsInLogicalRange(newVisibleLogicalRange);
-  // If there are less than 50 bars to the left of the visible area, load more data
-  if (barsInfo !== null && barsInfo.barsBefore < 50) {
+  // If there are less than 150 bars to the left of the visible area, load more data
+  if (barsInfo !== null && barsInfo.barsBefore < 150) {
       // Logic to determine the start date for the next data fetch
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
       //console.log(`EarliestVisibleTime${earliestVisibleTime}`)
-      // Convert chart's internal time format to a usable date string if needed
-      // This assumes you have a function to convert from chart time to Date or string
+      
       const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
       const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
 
