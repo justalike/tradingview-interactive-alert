@@ -6,6 +6,7 @@ import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
 import { fetchCandleData, getHistoryCandles, preLoadHistoryCandles } from './api/dataService.js';
 import { connectWebSocket } from './api/ws.js';
+import { throttle, asyncThrottle } from './utils/throttle.js';
 
 console.log(`_..--.._`.repeat(10))
 
@@ -52,54 +53,10 @@ function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
     debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 250); // 500 ms debounce period
 }
 
-let lastCallTime;
-const throttleInterval = 5000; // Throttle interval in milliseconds
 
-
-function throttle(func, interval) {
-  let lastCall = 0;
-  return function(...args) {
-    const now = Date.now();
-    if (now - lastCall >= interval) {
-      lastCall = now;
-      func.apply(this, args);
-    }
-  };
-}
-
-function asyncThrottle(func, interval) {
-  let lastCall = 0;
-  let pendingPromise = null;
-
-  return async function(...args) {
-    const now = Date.now();
-    if (now - lastCall < interval) {
-      return pendingPromise; // Return the pending promise if within the interval
-    }
-    lastCall = now;
-    pendingPromise = func.apply(this, args);
-    try {
-      const result = await pendingPromise;
-      return result;
-    } catch (error) {
-      throw error;
-    } finally {
-      pendingPromise = null; // Reset after completion
-    }
-  };
-}
-
-const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 5000);
-
-
-// function onVisibleLogicalRangeChangedThrottled(newVisibleLogicalRange) {
-//     const now = new Date().getTime();
-//     if (!lastCallTime || now - lastCallTime >= throttleInterval) {
-//         lastCallTime = now;
-//         onVisibleLogicalRangeChanged(newVisibleLogicalRange);
-//     }
-// }
-const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, 1000);
+const throttleInterval = 2000; // Throttle interval in milliseconds
+const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 2000);
+const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
 
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {

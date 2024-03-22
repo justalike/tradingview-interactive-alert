@@ -57,7 +57,7 @@ async function fetchCandleData(symbol, timeframe) {
 
   async function preLoadHistoryCandles(symbol, timeframe, startDate , endDate = getCurrentYYMMDD()) {
     
-    console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
+    console.log(`Trying to LOAD and CONVERT history candles for ${symbol} with timeframe ${timeframe}`);
     let daysToSubtract;
 
     switch (timeframe) {
@@ -99,7 +99,7 @@ async function fetchCandleData(symbol, timeframe) {
   }
   async function getHistoryCandles(symbol, timeframe) {
     
-    console.log(`Trying to load history candles for ${symbol} with timeframe ${timeframe}`);
+    console.log(`Trying to GET history candles for ${symbol} with timeframe ${timeframe}`);
   
     const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_candles?symbol=${symbol}&timeframe=${timeframe}`;
     try {
