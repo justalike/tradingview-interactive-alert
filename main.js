@@ -65,7 +65,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
 
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
       // Load historical data starting from startDateForFetch
-      const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
+      
       
     
       const mergedCandles = [...existingCandles
@@ -83,7 +83,9 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
             bottom: 0,
         },
     })
-   
+
+    
+    const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
   }
     } catch (error) {
       console.error(`Error loading historical data for ${symbol} on ${timeframe}:`, error);
