@@ -46,6 +46,59 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, ser
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
 
 
+
+
+
+
+
+
+
+
+
+async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
+  try{
+  const barsInfo = series.barsInLogicalRange(newVisibleLogicalRange);
+  // If there are less than 50 bars to the left of the visible area, load more data
+  if (barsInfo !== null && barsInfo.barsBefore < 50) {
+      // Logic to determine the start date for the next data fetch
+      const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
+      console.log`EarliestVisibleTime${earliestVisibleTime}`
+      // Convert chart's internal time format to a usable date string if needed
+      // This assumes you have a function to convert from chart time to Date or string
+      const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime);
+      // Load historical data starting from startDateForFetch
+      const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe)
+      const existingCandles = await getHistoryCandles(symbol, timeframe);
+      const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
+    
+      const mergedCandles = [...existingCandles
+                                  .filter(candle => candle.time < fetchedCandles[0].time),
+                            ...fetchedCandles];
+                             //console.log(mergedCandles.length)
+      const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+    
+      updateSeriesData(series.candles_series, mergedCandles)
+      updateSeriesData(series.volume_series, volumes )
+      
+      series.volume_series.priceScale().applyOptions({
+        scaleMargins: {
+            top: 0.7,
+            bottom: 0,
+        },
+    })
+   
+  }
+    } catch (error) {
+      console.error(`Error loading historical data for ${symbol} on ${timeframe}:`, error);
+    }
+  }
+
+
+chart.timeScale().subscribeVisibleLogicalRangeChange(onVisibleLogicalRangeChanged);
+
+
+
+
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
     const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe)

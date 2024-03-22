@@ -71,13 +71,13 @@ async function fetchCandleData(symbol, timeframe) {
             daysToSubtract = 14;
             break;
         case '1h':
-            daysToSubtract = 60;
+            daysToSubtract = 100;
             break;
         case '4h':
-            daysToSubtract = 120;
+            daysToSubtract = 365;
             break;
         case '1d':
-            daysToSubtract = 365;
+            daysToSubtract = 1000;
             break;
 
         default:
