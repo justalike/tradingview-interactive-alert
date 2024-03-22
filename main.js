@@ -2,7 +2,7 @@
 import * as cfg from './config/index.js';
 import {createSeries, removeSeries, updateSeriesData,  setChartSize, getQueryParams, removeAllSeries} from './utils/utils.js';
 
-import { initializeChartWithData } from './chart/chartUpdateService.js';
+import { initializeChartWithData, loadHistoryToChart } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
 import { fetchCandleData, getHistoryCandles, preLoadHistoryCandles } from './api/dataService.js';
 import { connectWebSocket } from './api/ws.js';
@@ -48,24 +48,25 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
-
+    const existingCandles = await getHistoryCandles(symbol, timeframe);
+    const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
   
-  const existingCandles = await getHistoryCandles(symbol, timeframe);
-  const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
-  console.log(existingCandles.length)
-  console.log(fetchedCandles.length)
-  const mergedCandles = [...existingCandles
-                              .filter(candle => candle.time < fetchedCandles[0].time),
-                        ...fetchedCandles];
-                         console.log(mergedCandles.length)
-  const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+    const mergedCandles = [...existingCandles
+                                .filter(candle => candle.time < fetchedCandles[0].time),
+                          ...fetchedCandles];
+                           //console.log(mergedCandles.length)
+    const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+  
+    updateSeriesData(series.candles_series, mergedCandles)
+    updateSeriesData(series.volume_series, volumes )
+  
+  // if (series.candles_series && series.volume_series) {
+  //   removeSeries(chart, series.candles_series);
+  //   removeSeries(chart, series.volume_series);
+  // }
+  
+  // await loadHistoryToChart(series, symbol, timeframe)
 
-  //console.log(`Last fetchedCandle timestamp : ${fetchedCandles[0].time}`)
-  console.log(`Last existingCandle timestamp : ${existingCandles[existingCandles.length-1].time}`)
-  removeSeries(chart, series.candles_series);
-  removeSeries(chart, series.volume_series);
-  updateSeriesData(series.historycandles_series, mergedCandles)
-  updateSeriesData(series.historyvolume_series, volumes )
   
   } 
   catch (error) {

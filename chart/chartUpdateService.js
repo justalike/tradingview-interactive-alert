@@ -224,3 +224,104 @@ export function updateChartWithTrendData(chart, data) {
   }      
 
 
+  export async function loadHistoryToChart(series, symbol, timeframe) {
+    const existingCandles = await getHistoryCandles(symbol, timeframe);
+    const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
+  
+    const mergedCandles = [...existingCandles
+                                .filter(candle => candle.time < fetchedCandles[0].time),
+                          ...fetchedCandles];
+                           //console.log(mergedCandles.length)
+    const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+  
+    updateSeriesData(series.historycandles_series, mergedCandles)
+    updateSeriesData(series.historyvolume_series, volumes )
+    
+  }
+  
+//   export async function loadHistoryDrawingsToChart(chart, series, symbol = 'BTC/USDT', timeframe ='1h') {
+//     const { extrema, waves, trends } = await getHistoryDrawings(symbol, timeframe);
+
+//         try{
+//          if (!symbol || !timeframe) {
+//              console.error('None symbol or timeframe set in query.');
+//          }
+     
+//          //Get data required to fill the chart
+//          const {extremum, wave, trends} = await fetchAllLineData(symbol, timeframe);
+//          const { historyextremum, historywave, historytrends} = await fetchAllHistoryLines(symbol, timeframe);
+//         const dataSources = {
+//                  candles: candles,
+//                  extrema: extremum, 
+//                  waves:   wave,
+//                  trends:  trends,
+//        };
+       
+//        const historyDataSources = {
+//         historycandles: historycandles,
+//         historyextrema: historyextremum, 
+//         historywaves:   historywave,
+//         historytrends:  historytrends,
+//        };
+
+       
+     
+//         for (const [name, data] of Object.entries(dataSources)) {
+//             if (!data) {
+//                 console.error('Failed to fetch data from source ' + name);
+//                // return;
+//             }
+     
+//             if (name === 'candles') {
+//              fetchedCandles = data
+//              lastCandle = data[data.length - 1];
+//              const volData = data.map(({ time, volume }) => ({ time: time, value:volume }));
+             
+//              series.volume_series.priceScale().applyOptions({
+//                  scaleMargins: {
+//                      top: 0.7,
+//                      bottom: 0,
+//                  },
+//              })
+     
+            
+              
+//              if (name === 'extrema') {
+            
+//                 updateChartWithExtremaData(chart, series.extrema_series, data);
+//             } else if (name === 'waves') {
+           
+//               updateChartWithWaveData(chart, series.wave_series, data);
+//             } else if (name === 'trends') {
+            
+//                 updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
+//        }
+//         }
+       
+//        chart.applyOptions({
+//            watermark: {
+//                visible: true,
+//                fontSize: 52,
+//                horzAlign: 'center',
+//                vertAlign: 'top',
+//                color: 'rgba(255, 255, 255, 0.7)',
+//                text: `${qsymbol}:${qtimeframe}`,
+//            },
+//        });
+        
+         
+//        } catch (error) {
+//          console.error('Error initializing chart with data:', error);
+//        }
+//      }
+        
+
+
+
+
+
+
+//   }
+
+
+
