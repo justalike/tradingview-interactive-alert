@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
+    const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe)
     const existingCandles = await getHistoryCandles(symbol, timeframe);
     const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
   
