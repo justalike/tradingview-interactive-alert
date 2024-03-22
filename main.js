@@ -15,8 +15,8 @@ const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties)
 
 
 const throttleInterval = 2000; // Throttle interval in milliseconds
-const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, throttleInterval);
-const throttledpreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
+const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 250 );
+const throttledpreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval*2);
 const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
 
 // Applying global chart options
@@ -59,7 +59,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       // Logic to determine the start date for the next data fetch
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
       //console.log(`EarliestVisibleTime${earliestVisibleTime}`)
-      
+
       const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
       const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
 
