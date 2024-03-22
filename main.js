@@ -53,7 +53,7 @@ function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
 }
 
 let lastCallTime;
-const throttleInterval = 1000; // Throttle interval in milliseconds
+const throttleInterval = 5000; // Throttle interval in milliseconds
 
 
 function throttle(func, interval) {
@@ -89,7 +89,7 @@ function asyncThrottle(func, interval) {
   };
 }
 
-const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 1000);
+const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 5000);
 
 
 // function onVisibleLogicalRangeChangedThrottled(newVisibleLogicalRange) {
