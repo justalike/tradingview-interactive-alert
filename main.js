@@ -69,7 +69,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       console.log(`EarliestVisibleTime${earliestVisibleTime}`)
       // Convert chart's internal time format to a usable date string if needed
       // This assumes you have a function to convert from chart time to Date or string
-      const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime);
+      const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
       // Load historical data starting from startDateForFetch
       const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe, startDateForFetch)
       const existingCandles = await getHistoryCandles(symbol, timeframe);
