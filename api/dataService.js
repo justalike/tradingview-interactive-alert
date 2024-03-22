@@ -1,4 +1,4 @@
-import { getCurrentYYMMDD } from '../utils/utils.js';
+import { getCurrentYYMMDD,subtractDays } from '../utils/utils.js';
 /**
  * Fetches historical candle data for a given symbol and timeframe.
  * @param {string} symbol - The symbol to fetch data for.

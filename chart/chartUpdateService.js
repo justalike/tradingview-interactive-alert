@@ -1,6 +1,6 @@
 import { updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
-import {fetchCandleData, fetchAllLineData} from '../api/dataService.js';
+import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
 
 var lastCandle;
