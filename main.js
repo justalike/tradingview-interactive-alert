@@ -52,6 +52,18 @@ function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
     debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 250); // 500 ms debounce period
 }
 
+let lastCallTime;
+const throttleInterval = 250; // Throttle interval in milliseconds
+
+function onVisibleLogicalRangeChangedThrottled(newVisibleLogicalRange) {
+    const now = new Date().getTime();
+    if (!lastCallTime || now - lastCallTime >= throttleInterval) {
+        lastCallTime = now;
+        onVisibleLogicalRangeChanged(newVisibleLogicalRange);
+    }
+}
+
+
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
   const barsInfo = series.candles_series.barsInLogicalRange(newVisibleLogicalRange);
@@ -62,11 +74,13 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       console.log(`EarliestVisibleTime${earliestVisibleTime}`)
       // Convert chart's internal time format to a usable date string if needed
       // This assumes you have a function to convert from chart time to Date or string
+      const existingCandles = await getHistoryCandles(symbol, timeframe);
+      const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
+
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
       // Load historical data starting from startDateForFetch
       const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe, startDateForFetch)
-      const existingCandles = await getHistoryCandles(symbol, timeframe);
-      const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
+      
     
       const mergedCandles = [...existingCandles
                                   .filter(candle => candle.time < fetchedCandles[0].time),
@@ -91,7 +105,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   }
 
 
-chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChangedDebounced);
+chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChangedThrottled);
 
 
 
