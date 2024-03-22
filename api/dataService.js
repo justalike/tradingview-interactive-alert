@@ -85,7 +85,8 @@ async function fetchCandleData(symbol, timeframe) {
             break;
     }
 
-    startDate = startDate || subtractDays(endDate, daysToSubtract);
+    startDate = subtractDays(startDate, daysToSubtract) || // preLoadHistory loading
+                subtractDays(endDate, daysToSubtract); // regular init loading
       
     const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history?symbol=${symbol}&timeframe=${timeframe}&startDate=${startDate}&endDate=${endDate}`;
     const response = await fetch(apiUrl);

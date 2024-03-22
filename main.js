@@ -63,7 +63,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
   const barsInfo = series.candles_series.barsInLogicalRange(newVisibleLogicalRange);
   // If there are less than 50 bars to the left of the visible area, load more data
-  if (barsInfo !== null && barsInfo.barsBefore < 50) {
+  if (barsInfo !== null && barsInfo.barsBefore < 20) {
       // Logic to determine the start date for the next data fetch
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
       console.log(`EarliestVisibleTime${earliestVisibleTime}`)
