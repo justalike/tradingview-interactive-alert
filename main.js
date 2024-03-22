@@ -55,13 +55,51 @@ function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
 let lastCallTime;
 const throttleInterval = 1000; // Throttle interval in milliseconds
 
-function onVisibleLogicalRangeChangedThrottled(newVisibleLogicalRange) {
-    const now = new Date().getTime();
-    if (!lastCallTime || now - lastCallTime >= throttleInterval) {
-        lastCallTime = now;
-        onVisibleLogicalRangeChanged(newVisibleLogicalRange);
+
+function throttle(func, interval) {
+  let lastCall = 0;
+  return function(...args) {
+    const now = Date.now();
+    if (now - lastCall >= interval) {
+      lastCall = now;
+      func.apply(this, args);
     }
+  };
 }
+
+function asyncThrottle(func, interval) {
+  let lastCall = 0;
+  let pendingPromise = null;
+
+  return async function(...args) {
+    const now = Date.now();
+    if (now - lastCall < interval) {
+      return pendingPromise; // Return the pending promise if within the interval
+    }
+    lastCall = now;
+    pendingPromise = func.apply(this, args);
+    try {
+      const result = await pendingPromise;
+      return result;
+    } catch (error) {
+      throw error;
+    } finally {
+      pendingPromise = null; // Reset after completion
+    }
+  };
+}
+
+const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 1000);
+
+
+// function onVisibleLogicalRangeChangedThrottled(newVisibleLogicalRange) {
+//     const now = new Date().getTime();
+//     if (!lastCallTime || now - lastCallTime >= throttleInterval) {
+//         lastCallTime = now;
+//         onVisibleLogicalRangeChanged(newVisibleLogicalRange);
+//     }
+// }
+const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, 1000);
 
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
@@ -113,7 +151,8 @@ chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChang
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
     const candlePreloadResult = await preLoadHistoryCandles(symbol, timeframe)
-    const existingCandles = await getHistoryCandles(symbol, timeframe);
+    const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
+    //const existingCandles = await getHistoryCandles(symbol, timeframe);
     const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
   
     const mergedCandles = [...existingCandles
