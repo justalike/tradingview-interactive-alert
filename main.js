@@ -1,8 +1,8 @@
 
 import * as cfg from './config/index.js';
-import {createSeries, removeSeries, updateSeriesData,  setChartSize, getQueryParams, removeAllSeries} from './utils/utils.js';
+import {createSeries, updateSeriesData,  setChartSize, getQueryParams, getCurrentYYMMDD} from './utils/utils.js';
 
-import { initializeChartWithData, loadHistoryToChart } from './chart/chartUpdateService.js';
+import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
 import { fetchCandleData, getHistoryCandles, preLoadHistoryCandles } from './api/dataService.js';
 import { connectWebSocket } from './api/ws.js';
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, time
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
-  const barsInfo = series.barsInLogicalRange(newVisibleLogicalRange);
+  const barsInfo = series.candles_series.barsInLogicalRange(newVisibleLogicalRange);
   // If there are less than 50 bars to the left of the visible area, load more data
   if (barsInfo !== null && barsInfo.barsBefore < 50) {
       // Logic to determine the start date for the next data fetch
