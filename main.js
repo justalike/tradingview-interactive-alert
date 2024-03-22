@@ -60,7 +60,13 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   
     updateSeriesData(series.candles_series, mergedCandles)
     updateSeriesData(series.volume_series, volumes )
-  
+    
+    series.volume_series.priceScale().applyOptions({
+      scaleMargins: {
+          top: 0.7,
+          bottom: 0,
+      },
+  })
   // if (series.candles_series && series.volume_series) {
   //   removeSeries(chart, series.candles_series);
   //   removeSeries(chart, series.volume_series);

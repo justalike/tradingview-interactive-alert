@@ -62,19 +62,19 @@ async function fetchCandleData(symbol, timeframe) {
 
     switch (timeframe) {
         case '1m':
-            daysToSubtract = 1;
-            break;
-        case '5m':
             daysToSubtract = 3;
             break;
-        case '15m':
+        case '5m':
             daysToSubtract = 7;
             break;
-        case '1h':
+        case '15m':
             daysToSubtract = 14;
             break;
+        case '1h':
+            daysToSubtract = 60;
+            break;
         case '4h':
-            daysToSubtract = 30;
+            daysToSubtract = 120;
             break;
         case '1d':
             daysToSubtract = 365;
