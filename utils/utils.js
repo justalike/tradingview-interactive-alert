@@ -69,7 +69,7 @@ export const removeSeries = (chart, series) => {
     series.applyOptions({ visible: isVisible });
   };
   export function getCurrentYYMMDD(timestamp) {
-    const date = new Date(timestamp) || new Date(); // This will be the current date
+    const date = timestamp ? new Date(timestamp) : new Date();; // This will be the current date
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed, add 1 to get 1-12
     const day = date.getDate().toString().padStart(2, '0');

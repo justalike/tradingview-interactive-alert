@@ -46,17 +46,10 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, ser
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
 
 
-
-
-
-
-
-
-
 let debounceTimer;
 function onVisibleLogicalRangeChangedDebounced(newVisibleLogicalRange) {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 500); // 500 ms debounce period
+    debounceTimer = setTimeout(() => onVisibleLogicalRangeChanged(newVisibleLogicalRange), 250); // 500 ms debounce period
 }
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
