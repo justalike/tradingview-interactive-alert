@@ -122,6 +122,39 @@ async function fetchCandleData(symbol, timeframe) {
       throw error;
     }
   }
+
+  async function getHistoryLines(symbol, timeframe) {
+
+    console.log(`Trying to GET history LINES for ${symbol} with timeframe ${timeframe}`);
   
-  export { fetchCandleData, fetchAllLineData, preLoadHistoryCandles, getHistoryCandles };
+    const apiUrl = `https://test-api-one-phi.vercel.app/api/get_history_lines?symbol=${symbol}&timeframe=${timeframe}`;
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      return data; // Return the raw data; transformation or further processing can be handled by the caller
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw error;
+    }
+  }
+ 
+ 
+   async function preLoadHistoryLines(symbol, timeframe) {
+    
+    console.log(`Trying to CALCULATE and LOAD history LINES for ${symbol} with timeframe ${timeframe}`);
+    
+    const apiUrl = `https://test-api-one-phi.vercel.app/api/load_history_lines?symbol=${symbol}&timeframe=${timeframe}`;
+    const response = await fetch(apiUrl);
+    if (!response.ok) {
+      throw new Error(`Failed to load history lines! \nHTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+    return data;
+  
+  }
+  
+  export { fetchCandleData, fetchAllLineData, preLoadHistoryCandles, getHistoryCandles, getHistoryLines, preLoadHistoryLines };
   

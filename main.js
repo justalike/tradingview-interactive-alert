@@ -4,7 +4,7 @@ import {createSeries, updateSeriesData,  setChartSize, getQueryParams, getCurren
 
 import { initializeChartWithData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
-import { fetchCandleData, getHistoryCandles, preLoadHistoryCandles } from './api/dataService.js';
+import { fetchCandleData, getHistoryCandles, preLoadHistoryCandles, getHistoryLines, preLoadHistoryLines } from './api/dataService.js';
 import { connectWebSocket } from './api/ws.js';
 import { throttle, asyncThrottle } from './utils/throttle.js';
 
@@ -14,9 +14,13 @@ const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties);
 
 
-const throttleInterval = 2000; // Throttle interval in milliseconds
-const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, 250 );
-const throttledpreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval*2);
+const throttleInterval = 1000; // Throttle interval in milliseconds
+
+const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, throttleInterval );
+const throttledpreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
+const throttledGetHistoryLines = asyncThrottle(getHistoryLines, throttleInterval * 3);
+const throttledPreLoadHistoryLines = asyncThrottle(preLoadHistoryLines, throttleInterval * 3 );
+
 const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
 
 // Applying global chart options
@@ -84,7 +88,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
         },
     })
 
-    
+
     const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
   }
     } catch (error) {
@@ -101,8 +105,11 @@ chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChang
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
     const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe)
+    const linesPreloadResult = await throttledPreLoadHistoryLines(symbol, timeframe)
+
+    const { extrema, waves, trends } = await throttledGetHistoryLines(symbol, timeframe);
+
     const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
-    //const existingCandles = await getHistoryCandles(symbol, timeframe);
     const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
   
     const mergedCandles = [...existingCandles
@@ -110,10 +117,18 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
                           ...fetchedCandles];
                            //console.log(mergedCandles.length)
     const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
-  
+    
+  if (existingCandles && fetchedCandles){
     updateSeriesData(series.candles_series, mergedCandles)
     updateSeriesData(series.volume_series, volumes )
-    
+  }
+
+    if ( extrema && waves && trends) {
+    updateSeriesData(series.extrema_series, extrema)
+    updateSeriesData(series.wave_series, waves)
+    updateSeriesData(series.trend_series, trends)
+    }
+
     series.volume_series.priceScale().applyOptions({
       scaleMargins: {
           top: 0.7,
@@ -132,7 +147,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   catch (error) {
     console.error(error);
   }
-
+  
 });
 
 document.getElementById('dataFile').addEventListener('change', (event) => {
