@@ -107,7 +107,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe)
     const linesPreloadResult = await throttledPreLoadHistoryLines(symbol, timeframe)
 
-    const { extrema, waves, trends } = await throttledGetHistoryLines(symbol, timeframe);
+    const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
 
     const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
     const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
@@ -117,7 +117,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
                           ...fetchedCandles];
                            //console.log(mergedCandles.length)
     const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
-    
+
   if (existingCandles && fetchedCandles){
     updateSeriesData(series.candles_series, mergedCandles)
     updateSeriesData(series.volume_series, volumes )
