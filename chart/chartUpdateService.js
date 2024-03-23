@@ -193,7 +193,7 @@ export function updateChartWithTrendData(chart, data) {
   
           if (index === data.length - 1) {
               // If it's the last trend, use the last candle timestamp
-              nextTrendEndTime = lastCandle.time
+              nextTrendEndTime = Date.now() / 1000
           }
           else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
               // if breaktrend is further than the endTrend extremum
