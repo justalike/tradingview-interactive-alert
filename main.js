@@ -2,7 +2,7 @@
 import * as cfg from './config/index.js';
 import {createSeries, updateSeriesData,  setChartSize, getQueryParams, getCurrentYYMMDD} from './utils/utils.js';
 
-import { initializeChartWithData } from './chart/chartUpdateService.js';
+import { initializeChartWithData, updateChartWithExtremaData, updateChartWithTrendData, updateChartWithWaveData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
 import { fetchCandleData, getHistoryCandles, preLoadHistoryCandles, getHistoryLines, preLoadHistoryLines } from './api/dataService.js';
 import { connectWebSocket } from './api/ws.js';
@@ -124,9 +124,9 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   }
 
     if ( extremum && wave && trends) {
-    updateSeriesData(series.extrema_series, extremum)
-    updateSeriesData(series.wave_series, wave)
-    updateSeriesData(series.trend_series, trends)
+    updateChartWithExtremaData(chart, series.extrema_series, extremum)
+    updateChartWithWaveData(chart, series.wave_series, wave)
+    updateChartWithTrendData(chart, trends)
     }
 
     series.volume_series.priceScale().applyOptions({
