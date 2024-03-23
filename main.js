@@ -123,9 +123,9 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     updateSeriesData(series.volume_series, volumes )
   }
 
-    if ( extrema && waves && trends) {
-    updateSeriesData(series.extrema_series, extrema)
-    updateSeriesData(series.wave_series, waves)
+    if ( extremum && wave && trends) {
+    updateSeriesData(series.extrema_series, extremum)
+    updateSeriesData(series.wave_series, wave)
     updateSeriesData(series.trend_series, trends)
     }
 
