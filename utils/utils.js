@@ -1,5 +1,6 @@
 // Utility functions for series creation
-
+var cachedWaveSeries = [];
+var keyBarLineList = [];
 export function processTimeFrames(data) {
   data.sort((a, b) => a.start - b.start);
   const processedData = [];
@@ -23,9 +24,15 @@ export function processTimeFrames(data) {
 
 
 export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData, data){
-  console.log(candleSeriesData)
+
+  keyBarLineList.forEach(series => chart.removeSeries(series));
+  //waveSeries.forEach(series => chart.removeSeries(series));
+  keyBarLineList = [];
+  
+
+  //console.log(candleSeriesData)
   const lastCandle = candleSeriesData[candleSeriesData.length-1]
-  console.log(lastCandle.time)
+  //console.log(lastCandle.time)
   // Loop through each wave in the data
   
   for (let i = 0; i < data.length; i++) {
@@ -43,6 +50,8 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
         { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
         { time: /*Date.now()*/ lastCandle.time, value: wave.startValue, color: 'blue' }
         );
+
+    
 
         continue;  // Skip to the next iteration
     }
@@ -82,6 +91,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
            overlay: true
          });
          keyBarlineSeries.setData(data);
+         keyBarLineList.push(keyBarlineSeries);
        }
 
       const lineData = [

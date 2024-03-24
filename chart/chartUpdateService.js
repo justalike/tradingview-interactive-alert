@@ -3,6 +3,7 @@ import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
 var trendSeries = [];
+
 var lastCandle;
 var fetchedCandles;
 export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', tf = '1h')  => {
@@ -117,6 +118,8 @@ export function updateChartWithWaveData(chart, waveseries, candleSeries, candleS
     //     console.log('Invalid wave data');
     //     return;
     // }
+
+   
 
     const validData = data.filter(item => isValidWaveData(item));
 
