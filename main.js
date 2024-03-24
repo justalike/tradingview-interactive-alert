@@ -62,31 +62,32 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
   const barsInfo = series.candles_series.barsInLogicalRange(newVisibleLogicalRange);
   // If there are less than 150 bars to the left of the visible area, load more data
-  if (barsInfo !== null && barsInfo.barsBefore < 150) {
-      // Logic to determine the start date for the next data fetch
+  if (barsInfo !== null && barsInfo.barsBefore < 100) {
+      
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
-      //console.log(`EarliestVisibleTime${earliestVisibleTime}`)
 
-      const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
+      const historicalCandles = await throttledGetHistoryCandles(symbol, timeframe);
       const fetchedCandles = await fetchCandleData(symbol, timeframe) 
 
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
-      // Load historical data starting from startDateForFetch
+      
       
       const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
       
-    
-      const mergedCandles = fetchedCandles? [...existingCandles
+      const mergedCandles = fetchedCandles? [...historicalCandles
                                 .filter(candle => candle.time < fetchedCandles[0].time),
-                          ...fetchedCandles] : existingCandles;
+                          ...fetchedCandles] : historicalCandles;
 
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
       
-      if (existingCandles && fetchedCandles){
+      if (historicalCandles && fetchedCandles){
         updateSeriesData(series.candles_series, mergedCandles)
-        updateSeriesData(series.volume_series, volumes )
       } else { console.log('Existing or fetched candles are nullish') }
-    
+      
+      if (volumes) {
+        updateSeriesData(series.volume_series, volumes )
+      } else { console.log('Volumes are nullish') }
+      
         if ( extremum && wave && trends) {
         updateChartWithExtremaData(chart, series.extrema_series, extremum)
         updateChartWithWaveData(chart, series.wave_series, series.candles_series, mergedCandles,  wave);
@@ -113,8 +114,6 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
 chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChangedThrottled);
 
 
-
-
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
     const candlePreloadResult = await throttledPreLoadHistoryCandles(symbol, timeframe)
@@ -122,16 +121,16 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 
     const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
 
-    const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
+    const historicalCandles = await throttledGetHistoryCandles(symbol, timeframe);
     const fetchedCandles = await fetchCandleData(symbol, timeframe)
   
-    const mergedCandles = fetchedCandles? [...existingCandles
+    const mergedCandles = fetchedCandles? [...historicalCandles
                                 .filter(candle => candle.time < fetchedCandles[0].time),
-                          ...fetchedCandles] : existingCandles;
+                          ...fetchedCandles] : historicalCandles;
                        
     const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
 
-  if (existingCandles && fetchedCandles){
+  if (historicalCandles && fetchedCandles){
     updateSeriesData(series.candles_series, mergedCandles)
     updateSeriesData(series.volume_series, volumes )
   }
@@ -149,8 +148,6 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
       },
   })
 
-
-  
   } 
   catch (error) {
     console.error(error);
@@ -158,9 +155,9 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
   
 });
 
-document.getElementById('dataFile').addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    if (file) handleCandleDataUpload(file, series.candles_series);
-  });
+// document.getElementById('dataFile').addEventListener('change', (event) => {
+//     const file = event.target.files[0];
+//     if (file) handleCandleDataUpload(file, series.candles_series);
+//   });
 
  
