@@ -39,12 +39,12 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
     const wave = data[i];
     const keyBar = wave?.maxVolCandle
     if (wave.start == null || wave.startValue == null) {
-    console.log(`Found wave with null start at index ${i}:`, wave);
+    //console.log(`Found wave with null start at index ${i}:`, wave);
       continue; // Skip this wave as it has incomplete start data
     }
     // Skip this wave if it has no end or any value is null
     if (wave.end == null || wave.endValue == null) {
-    console.log(`Found last ongoing wave at index ${i}:`, wave);
+    //console.log(`Found last ongoing wave at index ${i}:`, wave);
     // console.log(lastCandle)
     waveSeries.push(
         { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
@@ -58,13 +58,13 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
     // Determine the color based on the start and end values
      const color = wave.startValue < wave.endValue ? 'green' : 'red';
      if (keyBar.maxVolumeBarMiddle == null || keyBar.volume == null) {
-      console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
+      //console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
       continue;
     }
     
     if (keyBar){
       const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
-      console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
+      //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
       const newCandles = []
       for (let candle of candleSeriesData) {
         if (candle.time === timestamp / 1000) {
@@ -99,7 +99,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
         { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'orange' }
       ];
       createAndSetLineSeries(lineData);
-      console.log(`supposedly created lineseries`)
+      console.log(`Created midbar lineseries`)
       
     }
 }
