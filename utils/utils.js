@@ -25,6 +25,7 @@ export function processTimeFrames(data) {
 export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData, data){
   
   const lastCandle = candleSeriesData[-1]
+  console.log(lastCandle.time)
   // Loop through each wave in the data
   
   for (let i = 0; i < data.length; i++) {
@@ -62,6 +63,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
           candle.wickColor = 'orange';
           candle.borderColor = 'orange';
           newCandles.push(candle);
+          console.log('painted orange candle at timestamp:', timestamp / 1000 );
         } else {
           newCandles.push(candle);
         }
@@ -87,6 +89,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
         { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'orange' }
       ];
       createAndSetLineSeries(lineData);
+      console.log(`supposedly created lineseries`)
       
     }
 }
