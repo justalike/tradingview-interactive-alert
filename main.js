@@ -68,7 +68,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       //console.log(`EarliestVisibleTime${earliestVisibleTime}`)
 
       const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
-      const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
+      const fetchedCandles = await fetchCandleData(symbol, timeframe) 
 
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
       // Load historical data starting from startDateForFetch
@@ -79,7 +79,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       const mergedCandles = fetchedCandles? [...existingCandles
                                 .filter(candle => candle.time < fetchedCandles[0].time),
                           ...fetchedCandles] : existingCandles;
-                          
+
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
       
       if (existingCandles && fetchedCandles){
@@ -128,7 +128,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     const mergedCandles = fetchedCandles? [...existingCandles
                                 .filter(candle => candle.time < fetchedCandles[0].time),
                           ...fetchedCandles] : existingCandles;
-                           //console.log(mergedCandles.length)
+                       
     const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
 
   if (existingCandles && fetchedCandles){
@@ -138,7 +138,6 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 
     if ( extremum && wave && trends) {
     updateChartWithExtremaData(chart, series.extrema_series, extremum)
-    // updateChartWithWaveData(chart, series.wave_series, wave)
     updateChartWithWaveData(chart, series.wave_series, series.candles_series, mergedCandles,  wave);
     updateChartWithTrendData(chart, trends)
     }
@@ -149,12 +148,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
           bottom: 0,
       },
   })
-  // if (series.candles_series && series.volume_series) {
-  //   removeSeries(chart, series.candles_series);
-  //   removeSeries(chart, series.volume_series);
-  // }
-  
-  // await loadHistoryToChart(series, symbol, timeframe)
+
 
   
   } 

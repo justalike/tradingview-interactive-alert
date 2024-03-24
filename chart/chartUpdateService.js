@@ -149,7 +149,7 @@ export function updateChartWithTrendData(chart, data) {
 // We have to create new series for each trend lines we are pushing. otherwise it wont work
 // because it tries to connect dots {}'s between each trend line / range / breaktrend
     data.forEach((trend, index) => {
-     console.log(trend)
+     //console.log(trend)
       if (!trend.startTrend || !trend.endTrend ||
         !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
         !trend.breakTrend.timestamp || !trend.breakTrend.value ||
