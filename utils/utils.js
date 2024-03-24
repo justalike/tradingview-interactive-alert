@@ -20,6 +20,77 @@ export function processTimeFrames(data) {
   }
   return processedData;
 }
+
+
+export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData, data){
+  
+  const lastCandle = candleSeriesData[-1]
+  // Loop through each wave in the data
+  
+  for (let i = 0; i < data.length; i++) {
+    const wave = data[i];
+    const keyBar = wave?.maxVolCandle
+    if (wave.start == null || wave.startValue == null) {
+    //  console.log(`Found wave with null start at index ${i}:`, wave);
+      continue; // Skip this wave as it has incomplete start data
+    }
+    // Skip this wave if it has no end or any value is null
+    if (wave.end == null || wave.endValue == null) {
+    //  console.log(`Found last ongoing wave at index ${i}:`, wave);
+    // console.log(lastCandle)
+    waveSeries.push(
+        { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
+        { time: /*Date.now()*/ lastCandle.time, value: wave.startValue, color: 'blue' }
+        );
+
+        continue;  // Skip to the next iteration
+    }
+    // Determine the color based on the start and end values
+     const color = wave.startValue < wave.endValue ? 'green' : 'red';
+     if (keyBar.maxVolumeBarMiddle == null || keyBar.volume == null) {
+      console.log(`Found wave with null maxVolumeBarMiddle or maxVolume at index ${i}:`, wave);
+      continue;
+    }
+    
+    if (keyBar){
+      const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
+      //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
+      const newCandles = []
+      for (let candle of candleSeriesData) {
+        if (candle.time === timestamp / 1000) {
+          candle.color = 'orange';
+          candle.wickColor = 'orange';
+          candle.borderColor = 'orange';
+          newCandles.push(candle);
+        } else {
+          newCandles.push(candle);
+        }
+      }
+      
+      candleSeries.setData(newCandles);
+
+       function createAndSetLineSeries(data) {
+         const lineSeries = chart.addLineSeries({
+           color: 'orange',
+           lineWidth: 2,
+           lineStyle: 2,
+           lastValueVisible: false,
+           priceLineVisible: false,
+           crosshairMarkerVisible: false,
+           overlay: true
+         });
+         lineSeries.setData(data);
+       }
+
+      const lineData = [
+        { time: timestamp / 1000, value:maxVolumeBarMiddle, color: 'orange' },
+        { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'orange' }
+      ];
+      createAndSetLineSeries(lineData);
+      
+    }
+}
+}
 export function setChartSize(chart) {
   chart.applyOptions({ width: window.innerWidth, height: window.innerHeight });
 }

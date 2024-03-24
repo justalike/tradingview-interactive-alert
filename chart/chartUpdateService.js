@@ -1,4 +1,4 @@
-import { updateSeriesData, processTimeFrames, getQueryParams} from '../utils/utils.js'; 
+import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars} from '../utils/utils.js'; 
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
@@ -52,10 +52,10 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
            //updateCandleSeries(data);
        } else if (name === 'extrema') {
        
-           updateChartWithExtremaData(chart, series.extrema_series, data);
+           updateChartWithExtremaData(chart, series.extrema_series,  data);
        } else if (name === 'waves') {
       
-         updateChartWithWaveData(chart, series.wave_series, data);
+         updateChartWithWaveData(chart, series.wave_series, series.candles_series, dataSources.candles, data);
        } else if (name === 'trends') {
        
            updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
@@ -112,7 +112,7 @@ export function updateChartWithExtremaData(chart, series, data) {
     series.setMarkers(markersData);
 }
 
-export function updateChartWithWaveData(chart, waveseries, data) {
+export function updateChartWithWaveData(chart, waveseries, candleSeries, candleSeriesData, data) {
     // if (!data.every(item => isValidWaveData(item))) {
     //     console.log('Invalid wave data');
     //     return;
@@ -125,6 +125,9 @@ export function updateChartWithWaveData(chart, waveseries, data) {
         value: wave.startValue,
         color: wave.startValue < wave.endValue ? 'green' : 'red',
     }));
+
+    const processedKeyBars = processKeyBars(chart, waveseries, candleSeries, candleSeriesData, processedData)
+
     updateSeriesData(waveseries, processedData)
     
 }

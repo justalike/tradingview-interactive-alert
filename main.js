@@ -89,7 +89,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
     
         if ( extremum && wave && trends) {
         updateChartWithExtremaData(chart, series.extrema_series, extremum)
-        updateChartWithWaveData(chart, series.wave_series, wave)
+        updateChartWithWaveData(chart, series.wave_series, series.candles_series, mergedCandles,  wave);
         updateChartWithTrendData(chart, trends)
         } else { console.log('Extrema or wave or trends are nullish') }
       
@@ -138,7 +138,8 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 
     if ( extremum && wave && trends) {
     updateChartWithExtremaData(chart, series.extrema_series, extremum)
-    updateChartWithWaveData(chart, series.wave_series, wave)
+    // updateChartWithWaveData(chart, series.wave_series, wave)
+    updateChartWithWaveData(chart, series.wave_series, series.candles_series, mergedCandles,  wave);
     updateChartWithTrendData(chart, trends)
     }
 
