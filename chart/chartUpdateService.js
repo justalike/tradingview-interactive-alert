@@ -2,7 +2,7 @@ import { updateSeriesData, processTimeFrames, getQueryParams} from '../utils/uti
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
-
+var trendSeries = [];
 var lastCandle;
 var fetchedCandles;
 export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', tf = '1h')  => {
@@ -137,6 +137,8 @@ export function updateChartWithWaveData(chart, waveseries, data) {
 
 export function updateChartWithTrendData(chart, data) {
 
+  trendSeries.forEach(series => chart.removeSeries(series));
+  trendSeries = []
 // We have to create new series for each trend lines we are pushing. otherwise it wont work
 // because it tries to connect dots {}'s between each trend line / range / breaktrend
     data.forEach((trend, index) => {
@@ -154,6 +156,8 @@ export function updateChartWithTrendData(chart, data) {
             priceLineVisible: false,
             crosshairMarkerVisible: false,
         });
+
+        trendSeries.push(trendLineSeries);
   
          let breakTrendLineSeries = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow',
@@ -164,6 +168,8 @@ export function updateChartWithTrendData(chart, data) {
             crosshairMarkerVisible: false,
             overlay: true
           })
+
+          trendSeries.push(breakTrendLineSeries);
   
           let rangesSeries = chart.addLineSeries({
             color: trend.direction === "U" ? 'lime' : 'red',
@@ -174,6 +180,8 @@ export function updateChartWithTrendData(chart, data) {
             crosshairMarkerVisible: false,
             overlay: true
           })
+
+          trendSeries.push(rangesSeries);
   
            rangesSeries.setData([
             { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
