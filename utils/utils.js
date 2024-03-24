@@ -23,8 +23,8 @@ export function processTimeFrames(data) {
 
 
 export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData, data){
-  
-  const lastCandle = candleSeriesData[-1]
+  console.log(candleSeriesData)
+  const lastCandle = candleSeriesData[candleSeriesData.length-1]
   console.log(lastCandle.time)
   // Loop through each wave in the data
   
