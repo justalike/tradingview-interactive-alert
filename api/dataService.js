@@ -23,7 +23,7 @@ async function fetchCandleData(symbol, timeframe) {
       }));
     } catch (error) {
       console.error('Fetch error:', error);
-      throw error; // Re-throw to allow calling function to handle
+      return null//throw error; // Re-throw to allow calling function to handle
     }
   }
   
