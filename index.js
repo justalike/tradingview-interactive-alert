@@ -580,6 +580,7 @@ async function fetchCandleData(symbol, timeframe) {
       globalVolumeData = volumeData
     } catch(error) {
       console.error('Fetch error:', error);
+      return null;
     }
 }
 
