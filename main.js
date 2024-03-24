@@ -18,8 +18,8 @@ const throttleInterval = 1000; // Throttle interval in milliseconds
 
 const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, throttleInterval );
 const throttledPreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
-const throttledGetHistoryLines = asyncThrottle(getHistoryLines, throttleInterval * 3);
-const throttledPreLoadHistoryLines = asyncThrottle(preLoadHistoryLines, throttleInterval * 3 );
+const throttledGetHistoryLines = asyncThrottle(getHistoryLines, throttleInterval);
+const throttledPreLoadHistoryLines = asyncThrottle(preLoadHistoryLines, throttleInterval );
 
 const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
 
@@ -81,9 +81,17 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
                             ...fetchedCandles];
                              //console.log(mergedCandles.length)
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+      
+      if (existingCandles && fetchedCandles){
+        updateSeriesData(series.candles_series, mergedCandles)
+        updateSeriesData(series.volume_series, volumes )
+      } else { console.log('Existing or fetched candles are nullish') }
     
-      updateSeriesData(series.candles_series, mergedCandles)
-      updateSeriesData(series.volume_series, volumes )
+        if ( extremum && wave && trends) {
+        updateChartWithExtremaData(chart, series.extrema_series, extremum)
+        updateChartWithWaveData(chart, series.wave_series, wave)
+        updateChartWithTrendData(chart, trends)
+        } else { console.log('Extrema or wave or trends are nullish') }
       
       series.volume_series.priceScale().applyOptions({
         scaleMargins: {
