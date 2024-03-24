@@ -17,7 +17,7 @@ const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties)
 const throttleInterval = 1000; // Throttle interval in milliseconds
 
 const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, throttleInterval );
-const throttledpreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
+const throttledPreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
 const throttledGetHistoryLines = asyncThrottle(getHistoryLines, throttleInterval * 3);
 const throttledPreLoadHistoryLines = asyncThrottle(preLoadHistoryLines, throttleInterval * 3 );
 
@@ -53,7 +53,10 @@ const { symbol, timeframe } = await getQueryParams();
 window.addEventListener('resize', setChartSize(chart));
 document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, series));
 document.addEventListener('DOMContentLoaded',  connectWebSocket(series));
+
+//Caching historical data for quick retrieval
 document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
+document.addEventListener('DOMContentLoaded', throttledPreLoadHistoryLines(symbol, timeframe))
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   try{
@@ -70,6 +73,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
       // Load historical data starting from startDateForFetch
       
+      const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
       
     
       const mergedCandles = [...existingCandles
@@ -89,7 +93,8 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
     })
 
 
-    const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
+    const candlePreloadResult = await throttledPreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
+    const linesPreloadResult = await throttledPreLoadHistoryLines(symbol, timeframe)
   }
     } catch (error) {
       console.error(`Error loading historical data for ${symbol} on ${timeframe}:`, error);
@@ -104,7 +109,7 @@ chart.timeScale().subscribeVisibleLogicalRangeChange( onVisibleLogicalRangeChang
 
 document.getElementById('loadDataButton').addEventListener('click', async () => {
   try{ 
-    const candlePreloadResult = await throttledpreLoadHistoryCandles(symbol, timeframe)
+    const candlePreloadResult = await throttledPreLoadHistoryCandles(symbol, timeframe)
     const linesPreloadResult = await throttledPreLoadHistoryLines(symbol, timeframe)
 
     const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);

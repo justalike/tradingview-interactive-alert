@@ -151,6 +151,9 @@ export function updateChartWithTrendData(chart, data) {
       console.log('Missing or invalid data for trend:', trend);
       return;
     }
+
+    trend.direction = trend.direction || trend.trendDirection; 
+
          let trendLineSeries = chart.addLineSeries({
             color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
             lineWidth: 2,
