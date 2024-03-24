@@ -123,11 +123,11 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
 
     const existingCandles = await throttledGetHistoryCandles(symbol, timeframe);
-    const fetchedCandles = await fetchCandleData(symbol, timeframe) || [];
+    const fetchedCandles = await fetchCandleData(symbol, timeframe)
   
-    const mergedCandles = [...existingCandles
+    const mergedCandles = fetchedCandles? [...existingCandles
                                 .filter(candle => candle.time < fetchedCandles[0].time),
-                          ...fetchedCandles];
+                          ...fetchedCandles] : existingCandles;
                            //console.log(mergedCandles.length)
     const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
 
