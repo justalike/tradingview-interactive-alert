@@ -126,7 +126,7 @@ export function updateChartWithWaveData(chart, waveseries, candleSeries, candleS
         color: wave.startValue < wave.endValue ? 'green' : 'red',
     }));
 
-    processKeyBars(chart, waveseries, candleSeries, candleSeriesData, processedData)
+    processKeyBars(chart, waveseries, candleSeries, candleSeriesData, validData)
  
     updateSeriesData(waveseries, processedData)
     
