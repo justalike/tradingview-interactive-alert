@@ -77,8 +77,8 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       
     
       const mergedCandles = [...existingCandles
-                                  .filter(candle => candle.time < fetchedCandles[0].time),
-                            ...fetchedCandles];
+                                  .filter(candle => candle.time < fetchedCandles[0]?.time),
+                            ...fetchedCandles] || existingCandles
                              //console.log(mergedCandles.length)
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
       
