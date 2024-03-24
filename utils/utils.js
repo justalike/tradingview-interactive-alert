@@ -32,12 +32,12 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
     const wave = data[i];
     const keyBar = wave?.maxVolCandle
     if (wave.start == null || wave.startValue == null) {
-    //  console.log(`Found wave with null start at index ${i}:`, wave);
+    console.log(`Found wave with null start at index ${i}:`, wave);
       continue; // Skip this wave as it has incomplete start data
     }
     // Skip this wave if it has no end or any value is null
     if (wave.end == null || wave.endValue == null) {
-    //  console.log(`Found last ongoing wave at index ${i}:`, wave);
+    console.log(`Found last ongoing wave at index ${i}:`, wave);
     // console.log(lastCandle)
     waveSeries.push(
         { time: wave.start / 1000, value: wave.startValue, color: 'blue' }, // Use a special color to indicate ongoing wave
@@ -55,7 +55,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
     
     if (keyBar){
       const { timestamp, high, low, open, close, maxVolumeBarMiddle, volume } = keyBar;
-      //console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
+      console.log(`timestamp: ${timestamp}, maxVolumeBarMiddle: ${maxVolumeBarMiddle}, maxVolume: ${volume}`)
       const newCandles = []
       for (let candle of candleSeriesData) {
         if (candle.time === timestamp / 1000) {
@@ -69,10 +69,10 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
         }
       }
       
-      candleSeries.setData(newCandles);
+      updateSeriesData(candleSeries, newCandles);
 
        function createAndSetLineSeries(data) {
-         const lineSeries = chart.addLineSeries({
+         const keyBarlineSeries = chart.addLineSeries({
            color: 'orange',
            lineWidth: 2,
            lineStyle: 2,
@@ -81,7 +81,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
            crosshairMarkerVisible: false,
            overlay: true
          });
-         lineSeries.setData(data);
+         keyBarlineSeries.setData(data);
        }
 
       const lineData = [
