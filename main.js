@@ -65,13 +65,14 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
   if (barsInfo !== null && barsInfo.barsBefore < 100) {
       
       const earliestVisibleTime = chart.timeScale().getVisibleRange().from;
+      const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
+    
+      const candlePreloadResult = await throttledPreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
+      const linesPreloadResult = await throttledPreLoadHistoryLines(symbol, timeframe)
 
       const historicalCandles = await throttledGetHistoryCandles(symbol, timeframe);
       const fetchedCandles = await fetchCandleData(symbol, timeframe) 
 
-      const startDateForFetch = getCurrentYYMMDD(earliestVisibleTime*1000); // back to ms
-      
-      
       const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
       
       const mergedCandles = fetchedCandles? [...historicalCandles
@@ -83,7 +84,7 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       if (historicalCandles && fetchedCandles){
         updateSeriesData(series.candles_series, mergedCandles)
       } else { console.log('Existing or fetched candles are nullish') }
-      
+
       if (volumes) {
         updateSeriesData(series.volume_series, volumes )
       } else { console.log('Volumes are nullish') }
@@ -101,9 +102,6 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
         },
     })
 
-
-    const candlePreloadResult = await throttledPreLoadHistoryCandles(symbol, timeframe, startDateForFetch)
-    const linesPreloadResult = await throttledPreLoadHistoryLines(symbol, timeframe)
   }
     } catch (error) {
       console.error(`Error loading historical data for ${symbol} on ${timeframe}:`, error);

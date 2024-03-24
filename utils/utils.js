@@ -122,7 +122,7 @@ export const createSeries = (chart, type, config) => {
     };
 
 export const updateSeriesData = (series, data) => {
-  console.log('Updating series data:',series, data);
+  //console.log('Updating series data:',series, data);
     series.setData(data);
   };
   export function updateOne(series,data) {
