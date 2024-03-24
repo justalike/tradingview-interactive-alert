@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', initializeChartWithData(chart, ser
 document.addEventListener('DOMContentLoaded',  connectWebSocket(series));
 
 //Caching historical data for quick retrieval
-document.addEventListener('DOMContentLoaded', preLoadHistoryCandles(symbol, timeframe))
+document.addEventListener('DOMContentLoaded', throttledPreLoadHistoryCandles(symbol, timeframe))
 document.addEventListener('DOMContentLoaded', throttledPreLoadHistoryLines(symbol, timeframe))
 
 async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
