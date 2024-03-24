@@ -76,10 +76,10 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       const { extremum, wave, trends } = await throttledGetHistoryLines(symbol, timeframe);
       
     
-      const mergedCandles = [...existingCandles
-                                  .filter(candle => candle.time < fetchedCandles[0]?.time),
-                            ...fetchedCandles] || existingCandles
-                             //console.log(mergedCandles.length)
+      const mergedCandles = fetchedCandles? [...existingCandles
+                                .filter(candle => candle.time < fetchedCandles[0].time),
+                          ...fetchedCandles] : existingCandles;
+                          
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
       
       if (existingCandles && fetchedCandles){

@@ -72,7 +72,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
           candle.wickColor = 'orange';
           candle.borderColor = 'orange';
           newCandles.push(candle);
-          console.log('painted orange candle at timestamp:', timestamp / 1000 );
+          //console.log('painted orange candle at timestamp:', timestamp / 1000 );
         } else {
           newCandles.push(candle);
         }
@@ -99,7 +99,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
         { time: wave.end / 1000, value: maxVolumeBarMiddle, color: 'orange' }
       ];
       createAndSetLineSeries(lineData);
-      console.log(`Created midbar lineseries`)
+     // console.log(`Created midbar lineseries`)
       
     }
 }
@@ -213,7 +213,7 @@ export function calculateNextTrendEndTime(trend, index, data, lastCandle) {
         // If it's the last trend, there's no "next" trend. Use an alternative reference for end time.
         // For example, this could be the last known candle time or simply the end time of the current trend.
         nextTrendEndTime = lastCandle.time
-        console.log(nextTrendEndTime)
+       // console.log(nextTrendEndTime)
     } else if (trend.breakTrend && trend.breakTrend.timestamp > trend.endTrend.timestamp) {
         // If the break trend timestamp is later than the end trend timestamp,
         // it suggests an extension beyond the simple end to end trend line.
