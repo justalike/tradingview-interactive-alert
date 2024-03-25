@@ -225,7 +225,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
               // Otherwise, use the end time of the next trend
              // nextTrendEndTime =  trend.endTrend.timestamp / 1000;
 
-              nextTrendEndTime = breakTrendEndCandle.timestamp / 1000
+              nextTrendEndTime = breakTrendEndCandle.timestamp / 1000 || trend.endTrend.timestamp / 1000;
           }
           
   
