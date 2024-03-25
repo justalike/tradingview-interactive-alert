@@ -242,10 +242,12 @@ export function findMatchingCandle(trend, candles) {
     // This step is optional if your candles are always pre-sorted
     //const sortedCandles = candles.sort((a, b) => a.timestamp - b.timestamp);
     const endTrendTimeInSeconds = trend.endTrend.timestamp / 1000;
+    const startTrendTimeInSeconds = trend.startTrend.timestamp / 1000;
+    const startBreakTrendTimeInSeconds = trend.breakTrend.timestamp / 1000;
     // Find the first candle that matches the criteria
   //console.log ('finding matching candle', trend, candles)
     const matchingCandle = candles.find(candle => {
-        const isAfterEndTrend = candle.time > endTrendTimeInSeconds;
+        const isAfterEndTrend = candle.time > startBreakTrendTimeInSeconds
         const isValidCloseValue = trend.direction === "U" ?
                                   candle.close < trend.breakTrend.value :
                                   candle.close > trend.breakTrend.value;

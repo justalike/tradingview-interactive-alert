@@ -216,10 +216,10 @@ export function updateChartWithTrendData(chart, candlesData, data) {
               nextTrendEndTime = lastCandle.time || Date.now() / 1000
               console.log(nextTrendEndTime, 'nextTrendEndTime')
           }
-          else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
-              // if breaktrend is further than the endTrend extremum
-            nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
-          }
+          // else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
+          //     // if breaktrend is further than the endTrend extremum
+          //   nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
+          // }
           
           else {
 
