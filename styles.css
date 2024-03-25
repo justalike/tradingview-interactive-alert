@@ -17,8 +17,8 @@ html, body {
     top: 100px; /* Adjust as needed */
     right: 100px; /* Adjust as needed */
     z-index: 1000; /* Ensure the button is above the chart elements */
-    opacity: 0.2; /* Make button invisible by default */
-    transition: opacity 0.2s ease; /* Smooth transition for the opacity change */
+    opacity: 0.1; /* Make button invisible by default */
+    transition: opacity 0.1s ease; /* Smooth transition for the opacity change */
 }
 #loadDataButton:hover {
   opacity: 1; /* Make button fully visible when hovered */
