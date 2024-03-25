@@ -194,12 +194,15 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
           trendSeries.push(rangesSeries);
   
-          const { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData) || { 
+          let { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData) || { 
             firstRangeCandle: trend.startTrend.timestamp/1000,
             lastRangeCandle: trend.endTrend.timestamp/1000
           }
           console.log(firstRangeCandle, lastRangeCandle)
-
+          if (!firstRangeCandle || !lastRangeCandle) {
+            firstRangeCandle = trend.startTrend.timestamp/1000
+            lastRangeCandle = trend.endTrend.timestamp/1000
+          }
 
         //    rangesSeries.setData([
         //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
