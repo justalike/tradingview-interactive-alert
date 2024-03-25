@@ -207,8 +207,6 @@ export function updateChartWithTrendData(chart, candlesData, data) {
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
         ]);
   
-
-        const breakTrendEndCandle = findMatchingCandle(trend, candlesData);
         const lastCandle = candlesData[candlesData.length - 1];
           let nextTrendEndTime;
   
@@ -222,10 +220,13 @@ export function updateChartWithTrendData(chart, candlesData, data) {
           // }
           
           else {
+
+
+        const breakTrendEndCandle = findMatchingCandle(trend, candlesData);
               // Otherwise, use the end time of the next trend
              // nextTrendEndTime =  trend.endTrend.timestamp / 1000;
 
-              nextTrendEndTime = breakTrendEndCandle.time || trend.endTrend.timestamp / 1000;
+              nextTrendEndTime = breakTrendEndCandle?.time || trend.endTrend.timestamp / 1000;
           }
           
   
