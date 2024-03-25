@@ -1,20 +1,13 @@
-import { updateCandleSeries } from './index.js';
+import { getQueryParams, updateOne } from '../utils/utils.js';
 
 
-export function connectWebSocket() {
-
-    function getQueryParams() {
-        const queryParams = new URLSearchParams(window.location.search);
-        return {
-            symbol: queryParams.get('symbol'),
-            timeframe: queryParams.get('timeframe'),
-        };
-    }
+export async function connectWebSocket(series) {
     
+    const { candles_series, volume_series} = series;
     function formatSymbol(symbol) {
         return symbol.replace('/', '').toLowerCase();
     }
-    const { symbol, timeframe } = getQueryParams();
+    const { symbol, timeframe } = await getQueryParams();
     if (!symbol || !timeframe) {
         console.error('Symbol or timeframe missing in URL');
         return;
@@ -24,6 +17,7 @@ export function connectWebSocket() {
     const wsUrl = `wss://stream.binance.com:9443/ws/${formattedSymbol}@kline_${timeframe}`;
 
     const binanceWs = new WebSocket(wsUrl);
+
 
     binanceWs.onmessage = (event) => {
         const message = JSON.parse(event.data);
@@ -36,12 +30,20 @@ export function connectWebSocket() {
             low: parseFloat(candle.l),
             close: parseFloat(candle.c),
         };
+        const volumeData = {
+            time: candle.t / 1000, // Convert ms to s to draw candles in the chart
+            value: parseFloat(candle.v),
+        };
 
-        updateCandleSeries(candlestickData);
+        updateOne(candles_series, candlestickData);
+        updateOne(volume_series, volumeData)
     };
 
     binanceWs.onopen = () => {
         console.log('Connected to Binance WebSocket for', symbol, 'with timeframe', timeframe);
+    };
+    binanceWs.onclose = () => {
+        console.log('Disconnected from Binance WebSocket for', symbol, 'with timeframe', timeframe);
     };
 
     binanceWs.onerror = (error) => {
@@ -49,5 +51,4 @@ export function connectWebSocket() {
     };
 }
 
-// Call the function to connect to the WebSocket
 
