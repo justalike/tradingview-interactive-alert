@@ -194,8 +194,8 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
           trendSeries.push(rangesSeries);
   
-          let { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData) 
-          
+          let { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData) || {firstRangeCandle: null, lastRangeCandle: null}
+
           console.log(firstRangeCandle, lastRangeCandle)
           if (!firstRangeCandle || !lastRangeCandle) {
             firstRangeCandle = trend.startTrend.timestamp/1000
