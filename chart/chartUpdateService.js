@@ -198,8 +198,8 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
           console.log(firstRangeCandle, lastRangeCandle)
           if (!firstRangeCandle || !lastRangeCandle) {
-            firstRangeCandle = trend.startTrend.timestamp/1000
-            lastRangeCandle = trend.endTrend.timestamp/1000
+            firstRangeCandle = { time: trend.startTrend.timestamp/1000}
+            lastRangeCandle = { time :trend.endTrend.timestamp/1000}
           }
 
         //    rangesSeries.setData([
