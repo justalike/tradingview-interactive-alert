@@ -237,30 +237,32 @@ export function subtractDays(dateStr, days) {
 }
 
 export function findRangeCandles(maxVolumeZone, candles) {
-
   if (!candles || candles.length === 0) {
-    console.log(`candles not found`)
+      console.log('candles not found');
+      return;
   }
   if (!maxVolumeZone) {
-    console.log(`maxVolumeZone not found`)
+      console.log('maxVolumeZone not found');
+      return;
   }
-  console.log(`candles`,candles)
-  console.log(`maxvolzone`, maxVolumeZone)
-    // Step 1: Filter candles by the maxVolumeZone time range
-    const filteredCandles = candles.filter(candle =>
-        candle.time >= maxVolumeZone.start / 1000 && candle.time <= maxVolumeZone.end / 1000
-    );
 
-    console.log(filteredCandles)
-    // Step 2: Find the first candle with a close above startPrice
-    const firstRangeCandle = filteredCandles.find(candle => candle.close > maxVolumeZone.startPrice);
+  // Filter candles by the maxVolumeZone time range
+  const timeFilteredCandles = candles.filter(candle =>
+      candle.time >= maxVolumeZone.start / 1000 && candle.time <= maxVolumeZone.end / 1000
+  );
 
-    // Step 3: Find the last candle with a close below endPrice
-    // Note: Reverse the filtered candles array to start checking from the end towards the start
-    const lastRangeCandle = filteredCandles.slice().reverse().find(candle => candle.close < maxVolumeZone.endPrice);
+  // Further filter the candles to only include those within the price range of startPrice and endPrice
+  const rangeFilteredCandles = timeFilteredCandles.filter(candle =>
+      candle.close >= maxVolumeZone.startPrice && candle.close <= maxVolumeZone.endPrice
+  );
 
-    return { firstRangeCandle, lastRangeCandle };
+  // Identify the first and last candles from the rangeFilteredCandles
+  const firstRangeCandle = rangeFilteredCandles[0]; // The first candle in the range
+  const lastRangeCandle = rangeFilteredCandles[rangeFilteredCandles.length - 1]; // The last candle in the range
+
+  return { firstRangeCandle, lastRangeCandle };
 }
+
 export function findMatchingCandle(trend, candles) {
     // Sort candles by timestamp to ensure they are in chronological order
     // This step is optional if your candles are always pre-sorted
@@ -278,7 +280,7 @@ export function findMatchingCandle(trend, candles) {
         return isAfterEndTrend && isValidCloseValue;
     });
 
-   console.log(matchingCandle)
+   //console.log(matchingCandle)
 
     return matchingCandle || null;
 }
