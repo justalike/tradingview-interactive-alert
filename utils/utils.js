@@ -250,16 +250,18 @@ export function findRangeCandles(maxVolumeZone, candles) {
   const timeFilteredCandles = candles.filter(candle =>
       candle.time >= maxVolumeZone.start / 1000 && candle.time <= maxVolumeZone.end / 1000
   );
-
+    console.log ('timeFilteredCandles', timeFilteredCandles)
   // Further filter the candles to only include those within the price range of startPrice and endPrice
   const rangeFilteredCandles = timeFilteredCandles.filter(candle =>
       candle.close >= maxVolumeZone.startPrice && candle.close <= maxVolumeZone.endPrice
   );
 
+  console.log ('rangeFilteredCandles', rangeFilteredCandles)
   // Identify the first and last candles from the rangeFilteredCandles
   const firstRangeCandle = rangeFilteredCandles[0]; // The first candle in the range
   const lastRangeCandle = rangeFilteredCandles[rangeFilteredCandles.length - 1]; // The last candle in the range
 
+  console.log ('firstRangeCandle', firstRangeCandle, 'lastRangeCandle', lastRangeCandle)
   return { firstRangeCandle, lastRangeCandle };
 }
 
