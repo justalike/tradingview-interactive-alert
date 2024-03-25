@@ -243,7 +243,7 @@ export function findMatchingCandle(trend, candles) {
     //const sortedCandles = candles.sort((a, b) => a.timestamp - b.timestamp);
 
     // Find the first candle that matches the criteria
-    //console.log ('finding matching candle', trend, candles)
+  console.log ('finding matching candle', trend, candles)
     const matchingCandle = candles.find(candle => {
         const isAfterEndTrend = candle.time > trend.endTrend.timestamp / 1000;
         const isValidCloseValue = trend.direction === "U" ?
@@ -252,7 +252,7 @@ export function findMatchingCandle(trend, candles) {
         return isAfterEndTrend && isValidCloseValue;
     });
 
-   // console.log( matchingCandle)
+   console.log( matchingCandle)
 
     return matchingCandle || null;
 }
