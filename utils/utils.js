@@ -235,3 +235,21 @@ export function subtractDays(dateStr, days) {
   date.setDate(date.getDate() - days);
   return date.toISOString().split('T')[0];
 }
+
+
+export function findMatchingCandle(trend, candles) {
+    // Sort candles by timestamp to ensure they are in chronological order
+    // This step is optional if your candles are always pre-sorted
+    //const sortedCandles = candles.sort((a, b) => a.timestamp - b.timestamp);
+
+    // Find the first candle that matches the criteria
+    const matchingCandle = candles.find(candle => {
+        const isAfterEndTrend = candle.timestamp > trend.endTrend.timestamp;
+        const isValidCloseValue = trend.direction === "U" ?
+                                  candle.close < trend.breakTrend.value :
+                                  candle.close > trend.breakTrend.value;
+        return isAfterEndTrend && isValidCloseValue;
+    });
+
+    return matchingCandle || null;
+}

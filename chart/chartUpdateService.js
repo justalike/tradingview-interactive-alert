@@ -1,4 +1,4 @@
-import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars} from '../utils/utils.js'; 
+import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars, findMatchingCandle} from '../utils/utils.js'; 
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
@@ -59,7 +59,7 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
          updateChartWithWaveData(chart, series.wave_series, series.candles_series, dataSources.candles, data);
        } else if (name === 'trends') {
        
-           updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
+           updateChartWithTrendData(chart, fetchedCandles, data);
   }
    }
   
@@ -141,7 +141,7 @@ export function updateChartWithWaveData(chart, waveseries, candleSeries, candleS
  * @param {Array} data - The trend data to use for updating the chart.
  */
 
-export function updateChartWithTrendData(chart, data) {
+export function updateChartWithTrendData(chart, candlesData, data) {
 
   trendSeries.forEach(series => chart.removeSeries(series));
   trendSeries.forEach(series => series.setMarkers([]));
@@ -157,7 +157,7 @@ export function updateChartWithTrendData(chart, data) {
       console.log('Missing or invalid data for trend:', trend);
       return;
     }
-
+    
     trend.direction = trend.direction || trend.trendDirection; 
 
          let trendLineSeries = chart.addLineSeries({
@@ -207,21 +207,25 @@ export function updateChartWithTrendData(chart, data) {
             { time: trend.endTrend?.timestamp / 1000, value: trend.endTrend?.value },
         ]);
   
+
+        const breakTrendEndCandle = findMatchingCandle(trend, candlesData);
+        const lastCandle = candlesData[candlesData.length - 1];
           let nextTrendEndTime;
   
           if (index === data.length - 1) {
               // If it's the last trend, use the last candle timestamp
-              nextTrendEndTime = Date.now() / 1000
+              nextTrendEndTime = lastCandle.timestamp / 1000
           }
-          else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
-              // if breaktrend is further than the endTrend extremum
-            nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
-          }
+          // else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
+          //     // if breaktrend is further than the endTrend extremum
+          //   nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
+          // }
           
           else {
               // Otherwise, use the end time of the next trend
-            
-              nextTrendEndTime =  trend.endTrend.timestamp / 1000;
+             // nextTrendEndTime =  trend.endTrend.timestamp / 1000;
+
+              nextTrendEndTime = breakTrendEndCandle.timestamp / 1000
           }
           
   
@@ -257,89 +261,3 @@ export function updateChartWithTrendData(chart, data) {
     
   }
   
-//   export async function loadHistoryDrawingsToChart(chart, series, symbol = 'BTC/USDT', timeframe ='1h') {
-//     const { extrema, waves, trends } = await getHistoryDrawings(symbol, timeframe);
-
-//         try{
-//          if (!symbol || !timeframe) {
-//              console.error('None symbol or timeframe set in query.');
-//          }
-     
-//          //Get data required to fill the chart
-//          const {extremum, wave, trends} = await fetchAllLineData(symbol, timeframe);
-//          const { historyextremum, historywave, historytrends} = await fetchAllHistoryLines(symbol, timeframe);
-//         const dataSources = {
-//                  candles: candles,
-//                  extrema: extremum, 
-//                  waves:   wave,
-//                  trends:  trends,
-//        };
-       
-//        const historyDataSources = {
-//         historycandles: historycandles,
-//         historyextrema: historyextremum, 
-//         historywaves:   historywave,
-//         historytrends:  historytrends,
-//        };
-
-       
-     
-//         for (const [name, data] of Object.entries(dataSources)) {
-//             if (!data) {
-//                 console.error('Failed to fetch data from source ' + name);
-//                // return;
-//             }
-     
-//             if (name === 'candles') {
-//              fetchedCandles = data
-//              lastCandle = data[data.length - 1];
-//              const volData = data.map(({ time, volume }) => ({ time: time, value:volume }));
-             
-//              series.volume_series.priceScale().applyOptions({
-//                  scaleMargins: {
-//                      top: 0.7,
-//                      bottom: 0,
-//                  },
-//              })
-     
-            
-              
-//              if (name === 'extrema') {
-            
-//                 updateChartWithExtremaData(chart, series.extrema_series, data);
-//             } else if (name === 'waves') {
-           
-//               updateChartWithWaveData(chart, series.wave_series, data);
-//             } else if (name === 'trends') {
-            
-//                 updateChartWithTrendData(chart, /*series.trend_series, series.ranges_series, series.breaktrend_series,*/ data);
-//        }
-//         }
-       
-//        chart.applyOptions({
-//            watermark: {
-//                visible: true,
-//                fontSize: 52,
-//                horzAlign: 'center',
-//                vertAlign: 'top',
-//                color: 'rgba(255, 255, 255, 0.7)',
-//                text: `${qsymbol}:${qtimeframe}`,
-//            },
-//        });
-        
-         
-//        } catch (error) {
-//          console.error('Error initializing chart with data:', error);
-//        }
-//      }
-        
-
-
-
-
-
-
-//   }
-
-
-
