@@ -246,6 +246,10 @@ export function findRangeCandles(maxVolumeZone, candles) {
       return;
   }
 
+  console.log(maxVolumeZone)
+  console.log(candles)
+
+
   // Filter candles by the maxVolumeZone time range
   const timeFilteredCandles = candles.filter(candle =>
       candle.time >= maxVolumeZone.start / 1000 && candle.time <= maxVolumeZone.end / 1000
