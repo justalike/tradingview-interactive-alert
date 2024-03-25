@@ -237,6 +237,13 @@ export function subtractDays(dateStr, days) {
 }
 
 export function findRangeCandles(maxVolumeZone, candles) {
+
+  if (!candles || candles.length === 0) {
+    console.log(`candles not found`)
+  }
+  if (!maxVolumeZone) {
+    console.log(`maxVolumeZone not found`)
+  }
   console.log(`candles`,candles)
   console.log(`maxvolzone`, maxVolumeZone)
     // Step 1: Filter candles by the maxVolumeZone time range
