@@ -153,6 +153,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
       if (!trend.startTrend || !trend.endTrend ||
         !trend.startTrend.timestamp || !trend.endTrend.timestamp ||
         !trend.breakTrend.timestamp || !trend.breakTrend.value ||
+        !trend.maxVolumeZone.start || !trend.maxVolumeZone.startPrice ||
         typeof trend.startTrend.value !== 'number' || typeof trend.endTrend.value !== 'number' || typeof trend.breakTrend.value !== 'number') {
       console.log('Missing or invalid data for trend:', trend);
       return;
@@ -193,8 +194,9 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
           trendSeries.push(rangesSeries);
   
-
-          const { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData);
+          const maxVolZone = trend.maxVolumeZone
+          console.log(maxVolZone)
+          const { firstRangeCandle, lastRangeCandle } = findRangeCandles(maxVolZone, candlesData);
           console.log(firstRangeCandle, lastRangeCandle)
 
 
