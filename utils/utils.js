@@ -253,13 +253,13 @@ export function findRangeCandles(maxVolumeZone, candles) {
 
     console.log(filteredCandles)
     // Step 2: Find the first candle with a close above startPrice
-    const firstCandle = filteredCandles.find(candle => candle.close > maxVolumeZone.startPrice);
-console.log(`firstCandle`, firstCandle)
+    const firstRangeCandle = filteredCandles.find(candle => candle.close > maxVolumeZone.startPrice);
+
     // Step 3: Find the last candle with a close below endPrice
     // Note: Reverse the filtered candles array to start checking from the end towards the start
-    const lastCandle = filteredCandles.slice().reverse().find(candle => candle.close < maxVolumeZone.endPrice);
-console.log(`lastCandle`, lastCandle)
-    return { firstCandle, lastCandle };
+    const lastRangeCandle = filteredCandles.slice().reverse().find(candle => candle.close < maxVolumeZone.endPrice);
+
+    return { firstRangeCandle, lastRangeCandle };
 }
 export function findMatchingCandle(trend, candles) {
     // Sort candles by timestamp to ensure they are in chronological order

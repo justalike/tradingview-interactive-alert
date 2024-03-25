@@ -194,9 +194,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
           trendSeries.push(rangesSeries);
   
-          const maxVolZone = trend.maxVolumeZone
-          console.log(maxVolZone)
-          const { firstRangeCandle, lastRangeCandle } = findRangeCandles(maxVolZone, candlesData);
+          const { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData);
           console.log(firstRangeCandle, lastRangeCandle)
 
 
