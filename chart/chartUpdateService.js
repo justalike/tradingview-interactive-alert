@@ -1,4 +1,4 @@
-import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars, findMatchingCandle} from '../utils/utils.js'; 
+import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars, findMatchingCandle, findRangeCandles} from '../utils/utils.js'; 
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
@@ -193,13 +193,26 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
           trendSeries.push(rangesSeries);
   
-           rangesSeries.setData([
-            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
-            { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
-            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
-            { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-            { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
-        ]);
+
+          const { firstRangeCandle, lastRangeCandle } = findRangeCandles(trend.maxVolumeZone, candlesData);
+
+
+
+        //    rangesSeries.setData([
+        //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.startPrice },
+        //     { time: trend.startTrend.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+        //     { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.endPrice},
+        //     { time: trend.endTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+        //     { time: trend.startTrend?.timestamp / 1000, value: trend.maxVolumeZone.startPrice},
+        // ]);
+
+        rangesSeries.setData([
+          { time: firstRangeCandle.time, value: trend.maxVolumeZone.startPrice },
+          { time: firstRangeCandle.time, value: trend.maxVolumeZone.endPrice},
+          { time: lastRangeCandle.time, value: trend.maxVolumeZone.endPrice},
+          { time: lastRangeCandle.time , value: trend.maxVolumeZone.startPrice},
+          { time: firstRangeCandle.time, value: trend.maxVolumeZone.startPrice},
+      ]);
   
         // Set the data for the trend line series
         trendLineSeries.setData([
