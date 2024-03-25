@@ -217,9 +217,13 @@ export function updateChartWithTrendData(chart, candlesData, data) {
               console.log(nextTrendEndTime, 'nextTrendEndTime')
           }
           else if (trend.breakTrend.timestamp > trend.endTrend.timestamp){
+
+            const breakTrendEndCandle = findMatchingCandle(trend, candlesData);
+            if (!breakTrendEndCandle) console.log(`breakTrendEndCandle is:` , breakTrendEndCandle)
               // if breaktrend is further than the endTrend extremum
               console.log(`trend ${trend} has breakTrend timestamp > endTrend timestamp`)
-            nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
+              nextTrendEndTime = breakTrendEndCandle?.time || lastCandle.time || Date.now() / 1000
+            //nextTrendEndTime = data[index+1].endTrend.timestamp / 1000
           }
           
           else {
