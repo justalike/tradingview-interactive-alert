@@ -260,7 +260,7 @@ export function findRangeCandles(maxVolumeZone, candles) {
       candle.close >= maxVolumeZone.startPrice && candle.close <= maxVolumeZone.endPrice
   );
 
-  if (!rangeFilteredCandles) {
+  if (rangeFilteredCandles.length < 2) {
       console.log('rangeFilteredCandles not found, trying to apply the timeFiltered first and last candle');
       return { firstRangeCandle: timeFilteredCandles[0], lastRangeCandle: timeFilteredCandles[timeFilteredCandles.length - 1] };
   }
