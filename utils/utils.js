@@ -237,18 +237,21 @@ export function subtractDays(dateStr, days) {
 }
 
 export function findRangeCandles(maxVolumeZone, candles) {
+  console.log(`candles`,candles)
+  console.log(`maxvolzone`, maxVolumeZone)
     // Step 1: Filter candles by the maxVolumeZone time range
     const filteredCandles = candles.filter(candle =>
         candle.time >= maxVolumeZone.start / 1000 && candle.time <= maxVolumeZone.end / 1000
     );
 
+    console.log(filteredCandles)
     // Step 2: Find the first candle with a close above startPrice
     const firstCandle = filteredCandles.find(candle => candle.close > maxVolumeZone.startPrice);
-
+console.log(`firstCandle`, firstCandle)
     // Step 3: Find the last candle with a close below endPrice
     // Note: Reverse the filtered candles array to start checking from the end towards the start
     const lastCandle = filteredCandles.slice().reverse().find(candle => candle.close < maxVolumeZone.endPrice);
-
+console.log(`lastCandle`, lastCandle)
     return { firstCandle, lastCandle };
 }
 export function findMatchingCandle(trend, candles) {
