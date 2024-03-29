@@ -14,7 +14,7 @@ const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties);
 
 
-const throttleInterval = 1500; // Throttle interval in milliseconds
+const throttleInterval = 750; // Throttle interval in milliseconds
 
 const throttledGetHistoryCandles     =  asyncThrottle(getHistoryCandles, throttleInterval );
 const throttledPreLoadHistoryCandles =  asyncThrottle(preLoadHistoryCandles, throttleInterval);
