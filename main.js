@@ -14,12 +14,12 @@ const chartContainer = document.getElementById('tvchart');
 const chart = LightweightCharts.createChart(chartContainer, cfg.chartProperties);
 
 
-const throttleInterval = 1000; // Throttle interval in milliseconds
+const throttleInterval = 1500; // Throttle interval in milliseconds
 
-const throttledGetHistoryCandles = asyncThrottle(getHistoryCandles, throttleInterval );
-const throttledPreLoadHistoryCandles = asyncThrottle(preLoadHistoryCandles, throttleInterval);
-const throttledGetHistoryLines = asyncThrottle(getHistoryLines, throttleInterval);
-const throttledPreLoadHistoryLines = asyncThrottle(preLoadHistoryLines, throttleInterval );
+const throttledGetHistoryCandles     =  asyncThrottle(getHistoryCandles, throttleInterval );
+const throttledPreLoadHistoryCandles =  asyncThrottle(preLoadHistoryCandles, throttleInterval);
+const throttledGetHistoryLines       =  asyncThrottle(getHistoryLines, throttleInterval);
+const throttledPreLoadHistoryLines   =  asyncThrottle(preLoadHistoryLines, throttleInterval );
 
 const onVisibleLogicalRangeChangedThrottled = throttle(onVisibleLogicalRangeChanged, throttleInterval);
 
@@ -31,15 +31,15 @@ chart.applyOptions({
 });
 
 const seriesTypesAndConfigs = [
-    { key: 'candles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
-    { key: 'volume_series', type: 'histogram', config: cfg.volumeSeriesConfig },
-    { key: 'extrema_series', type: 'line', config: cfg.lineSeriesConfig },
-    { key: 'wave_series', type: 'line', config: cfg.waveSeriesConfig },
-    { key: 'trend_series', type: 'line', config: cfg.trendLineSeriesConfig },
-    { key: 'breaktrend_series', type: 'line', config: cfg.breakTrendLineSeriesConfig },
-    { key: 'ranges_series', type: 'line', config: cfg.rangesSeriesConfig },
+    { key: 'candles_series',        type: 'candlestick', config: cfg.candleSeriesConfig },
+    { key: 'volume_series',         type: 'histogram',   config: cfg.volumeSeriesConfig },
+    { key: 'extrema_series',        type: 'line',        config: cfg.lineSeriesConfig },
+    { key: 'wave_series',           type: 'line',        config: cfg.waveSeriesConfig },
+    { key: 'trend_series',          type: 'line',        config: cfg.trendLineSeriesConfig },
+    { key: 'breaktrend_series',     type: 'line',        config: cfg.breakTrendLineSeriesConfig },
+    { key: 'ranges_series',         type: 'line',        config: cfg.rangesSeriesConfig },
     { key: 'historycandles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
-    { key: 'historyvolume_series', type: 'histogram', config: cfg.candleSeriesConfig },
+    { key: 'historyvolume_series',  type: 'histogram',   config: cfg.candleSeriesConfig },
 ];
 
 const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {
