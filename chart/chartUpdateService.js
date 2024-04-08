@@ -1,4 +1,7 @@
-import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars, findMatchingCandle, findRangeCandles, calculateVMA} from '../utils/utils.js'; 
+import { updateSeriesData, updateSeriesOptions, processTimeFrames,
+        getQueryParams, processKeyBars,
+        findMatchingCandle, findRangeCandles, 
+        calculateVMA} from '../utils/utils.js'; 
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
@@ -57,6 +60,8 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
         updateSeriesData(series.volume_series, volData )
         updateSeriesData(series.vma_200, VMA200)
         updateSeriesData(series.vma_5, VMA5)
+        updateSeriesOptions(series.vma_200, { color: '#2D1FF0'})
+        updateSeriesOptions(series.vma_5, {color: '#F49212'})
            //updateCandleSeries(data);
        } else if (name === 'extrema') {
        

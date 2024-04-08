@@ -165,8 +165,8 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     updateSeriesData(series.volume_series, volumes )
     updateSeriesData(series.vma_200 , VMA200)
     updateSeriesData(series.vma_5, VMA5)
-    updateSeriesOptions(series.vma_200, { color: '#090806'})
-    updateSeriesOptions(series.vma_5, {color: '#060909'})
+    updateSeriesOptions(series.vma_200, { color: '#2D1FF0'})
+    updateSeriesOptions(series.vma_5, {color: '#F49212'})
     
     
   }
