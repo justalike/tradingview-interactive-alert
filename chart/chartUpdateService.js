@@ -1,4 +1,4 @@
-import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars, findMatchingCandle, findRangeCandles} from '../utils/utils.js'; 
+import { updateSeriesData, processTimeFrames, getQueryParams, processKeyBars, findMatchingCandle, findRangeCandles, calculateVMA} from '../utils/utils.js'; 
 import {isValidExtremaData, isValidWaveData } from '../utils/validation.js';
 import {fetchCandleData, fetchAllLineData, getHistoryCandles} from '../api/dataService.js';
 
@@ -40,7 +40,12 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
         fetchedCandles = data
         lastCandle = data[data.length - 1];
         const volData = data.map(({ time, volume }) => ({ time: time, value:volume }));
-        
+         // calculate Volume moving average with length 200
+      const VMA200 = calculateVMA(volData, 200);
+      // calculate Volume moving average with length 5
+      
+      const VMA5 =  calculateVMA(volData, 5);
+  
         series.volume_series.priceScale().applyOptions({
             scaleMargins: {
                 top: 0.7,
@@ -50,6 +55,8 @@ export const initializeChartWithData = async (chart, series,  sym = 'BTC/USDT', 
 
         updateSeriesData(series.candles_series, data)
         updateSeriesData(series.volume_series, volData )
+        updateSeriesData(series.vma_200, VMA200)
+        updateSeriesData(series.vma_5, VMA5)
            //updateCandleSeries(data);
        } else if (name === 'extrema') {
        
