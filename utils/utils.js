@@ -302,10 +302,11 @@ export function calculateVMA(data, period) {
   for (let i = period - 1; i < data.length; i++) {
     let sum = 0;
     for (let j = 0; j < period; j++) {
-      sum += data[i - j].volume;
+      sum += data[i - j].value;
     }
     const avgVolume = sum / period;
-    vmaData.push({ time: data[i].time, volume: avgVolume });
+    console.log()
+    vmaData.push({ time: data[i].time, value: avgVolume });
   }
   console.log(vmaData)
   return vmaData;
