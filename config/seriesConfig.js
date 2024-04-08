@@ -72,13 +72,13 @@ export const vmaSeriesConfig =  {
   lineWidth: 2,
   lineStyle: 1,
   lineType: 2,
-  priceFormat: {
-    type: 'volume',
-  },
-  priceScaleId: '',
-  scaleMargins: {
-    top: 0.7,
-    bottom: 0,
-  },
+  // priceFormat: {
+  //   type: 'volume',
+  // },
+  // priceScaleId: '',
+  // scaleMargins: {
+  //   top: 0.7,
+  //   bottom: 0,
+  // },
 
 }

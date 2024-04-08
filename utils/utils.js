@@ -297,7 +297,7 @@ export function findMatchingCandle(trend, candles) {
 export function calculateVMA(data, period) {
   const vmaData = [];
 
-  console.log(`volume data length ${data.length}. period ${period}, data[0] ${data[0]}, data[last] ${data[data.length-1]}`)
+  console.log(`volume data length ${data.length}. period ${period}, data[0] ${JSON.stringify(data[0])}, data[last] ${JSON.stringify(data[data.length-1])}`)
   
   for (let i = period - 1; i < data.length; i++) {
     let sum = 0;
