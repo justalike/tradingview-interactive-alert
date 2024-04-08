@@ -84,9 +84,11 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
        // calculate Volume moving average with length 200
        const VMA200 = calculateVMA(volumes, 200);
+       console.log('VMA200', VMA200)
        // calculate Volume moving average with length 5
        
        const VMA5 =  calculateVMA(volumes, 5);
+       console.log('VMA200', VMA200)
    
       if (historicalCandles && fetchedCandles){
         updateSeriesData(series.candles_series, mergedCandles)
@@ -106,6 +108,20 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
         updateChartWithTrendData(chart, mergedCandles, trends)
         } else { console.log('Extrema or wave or trends are nullish') }
       
+    series.vma_200.priceScale().applyOptions({
+      scaleMargins: {
+          top: 0.7,
+          bottom: 0,
+      },
+  })
+
+
+  series.vma_5.priceScale().applyOptions({
+    scaleMargins: {
+        top: 0.7,
+        bottom: 0,
+    },
+})
       series.volume_series.priceScale().applyOptions({
         scaleMargins: {
             top: 0.7,
@@ -152,6 +168,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     updateSeriesOptions(series.vma_200, { color: '#090806'})
     updateSeriesOptions(series.vma_5, {color: '#060909'})
     
+    
   }
 
     if ( extremum && wave && trends) {
@@ -159,6 +176,22 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
     updateChartWithWaveData(chart, series.wave_series, series.candles_series, mergedCandles,  wave);
     updateChartWithTrendData(chart, mergedCandles, trends)
     }
+
+    series.vma_200.priceScale().applyOptions({
+      scaleMargins: {
+          top: 0.7,
+          bottom: 0,
+      },
+  })
+
+
+  series.vma_5.priceScale().applyOptions({
+    scaleMargins: {
+        top: 0.7,
+        bottom: 0,
+    },
+})
+
 
     series.volume_series.priceScale().applyOptions({
       scaleMargins: {

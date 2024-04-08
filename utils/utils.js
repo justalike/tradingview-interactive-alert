@@ -122,7 +122,7 @@ export const createSeries = (chart, type, config) => {
     };
 
 export const updateSeriesData = (series, data) => {
-  //console.log('Updating series data:',series, data);
+  console.log('Updating series data:',series, data);
     series.setData(data);
   };
   export function updateOne(series,data) {
@@ -245,9 +245,6 @@ export function findRangeCandles(maxVolumeZone, candles) {
       console.log('maxVolumeZone not found');
       return;
   }
-
-  console.log(maxVolumeZone)
-  console.log(candles)
 
 
   // Filter candles by the maxVolumeZone time range
