@@ -82,13 +82,22 @@ async function onVisibleLogicalRangeChanged(newVisibleLogicalRange) {
                           ...fetchedCandles] : historicalCandles;
 
       const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
-      
+       // calculate Volume moving average with length 200
+       const VMA200 = calculateVMA(volumes, 200);
+       // calculate Volume moving average with length 5
+       
+       const VMA5 =  calculateVMA(volumes, 5);
+   
       if (historicalCandles && fetchedCandles){
         updateSeriesData(series.candles_series, mergedCandles)
       } else { console.log('Existing or fetched candles are nullish') }
 
       if (volumes) {
         updateSeriesData(series.volume_series, volumes )
+        updateSeriesData(series.vma_200 , VMA200)
+        updateSeriesData(series.vma_5, VMA5)
+        updateSeriesOptions(series.vma_200, { color: '#090806'})
+        updateSeriesOptions(series.vma_5, {color: '#060909'})
       } else { console.log('Volumes are nullish') }
       
         if ( extremum && wave && trends) {
