@@ -67,3 +67,12 @@ export const candleSeriesConfig = {
   },
 };
 
+export const vmaSeriesConfig =  {
+  color: '#26a69a',
+  lineWidth: 2,
+  lineStyle: 1,
+  scaleMargins: {
+    top: 0.7,
+    bottom: 0,
+  },
+}

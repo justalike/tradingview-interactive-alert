@@ -296,3 +296,18 @@ export function findMatchingCandle(trend, candles) {
 
     return matchingCandle || null;
 }
+
+export function calculateVMA(data, period) {
+  const vmaData = [];
+  
+  for (let i = period - 1; i < data.length; i++) {
+    let sum = 0;
+    for (let j = 0; j < period; j++) {
+      sum += data[i - j].volume;
+    }
+    const avgVolume = sum / period;
+    vmaData.push({ time: data[i].time, volume: avgVolume });
+  }
+
+  return vmaData;
+}

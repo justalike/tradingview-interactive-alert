@@ -1,6 +1,6 @@
 
 import * as cfg from './config/index.js';
-import {createSeries, updateSeriesData,  setChartSize, getQueryParams, getCurrentYYMMDD} from './utils/utils.js';
+import {createSeries, updateSeriesData,  setChartSize, getQueryParams, getCurrentYYMMDD, calculateVMA, updateSeriesOptions} from './utils/utils.js';
 
 import { initializeChartWithData, updateChartWithExtremaData, updateChartWithTrendData, updateChartWithWaveData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
@@ -40,6 +40,8 @@ const seriesTypesAndConfigs = [
     { key: 'ranges_series', type: 'line', config: cfg.rangesSeriesConfig },
     { key: 'historycandles_series', type: 'candlestick', config: cfg.candleSeriesConfig },
     { key: 'historyvolume_series', type: 'histogram', config: cfg.candleSeriesConfig },
+    { key: 'vma_200', type: 'line', config: cfg.vmaSeriesConfig },
+    { key: 'vma_5', type: 'line', config: cfg.vmaSeriesConfig },
 ];
 
 const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {
@@ -127,10 +129,19 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
                           ...fetchedCandles] : historicalCandles;
                        
     const volumes = mergedCandles.map(({ time, volume }) => ({ time, value: volume }));
+    // calculate Volume moving average with length 200
+      const VMA200 = calculateVMA(volumes, 200);
+    // calculate Volume moving average with length 5
+    
+    const VMA5 =  calculateVMA(volumes, 5);
 
   if (historicalCandles && fetchedCandles){
     updateSeriesData(series.candles_series, mergedCandles)
     updateSeriesData(series.volume_series, volumes )
+    updateSeriesData(series.vma_200 , VMA200)
+    updateSeriesOptions(series.vma_200, { color: '#090806'})
+    updateSeriesOptions(series.vma_5, {color: '#060909'})
+    updateSeriesData(series.vma_5, VMA5)
   }
 
     if ( extremum && wave && trends) {
