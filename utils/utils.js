@@ -305,7 +305,6 @@ export function calculateVMA(data, period) {
       sum += data[i - j].value;
     }
     const avgVolume = sum / period;
-    console.log()
     vmaData.push({ time: data[i].time, value: avgVolume });
   }
   console.log(vmaData)
