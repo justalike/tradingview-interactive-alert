@@ -67,3 +67,17 @@ export const candleSeriesConfig = {
   },
 };
 
+export const vmaSeriesConfig = {
+  color: '#EBA500',
+  lineWidth: 2,
+  lineType: 2,
+  priceFormat: {
+    type: 'volume',
+  },
+  priceScaleId: '',
+  scaleMargins: {
+    top: 0.7,
+    bottom: 0,
+  },
+
+}
