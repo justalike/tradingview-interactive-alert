@@ -1,3 +1,6 @@
+import { CandlestickSeries, HistogramSeries, LineSeries } from 'lightweight-charts';
+
+
 // Utility functions for series creation
 var cachedWaveSeries = [];
 var keyBarLineList = [];
