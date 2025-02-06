@@ -1,7 +1,7 @@
 
 import * as cfg from './config/index.js';
 import { createSeries, updateSeriesData, setChartSize, getQueryParams, getCurrentYYMMDD, calculateVMA, updateSeriesOptions } from './utils/utils.js';
-import { CandlestickSeries, HistogramSeries, LineSeries } from 'lightweight-charts';
+
 
 import { initializeChartWithData, updateChartWithExtremaData, updateChartWithTrendData, updateChartWithWaveData } from './chart/chartUpdateService.js';
 import { handleCandleDataUpload } from './local/localHandler.js';
@@ -32,17 +32,17 @@ chart.applyOptions({
 });
 
 const seriesTypesAndConfigs = [
-  { key: 'candles_series', type: CandlestickSeries, config: cfg.candleSeriesConfig },
-  { key: 'volume_series', type: HistogramSeries, config: cfg.volumeSeriesConfig },
-  { key: 'extrema_series', type: LineSeries, config: cfg.lineSeriesConfig },
-  { key: 'wave_series', type: LineSeries, config: cfg.waveSeriesConfig },
-  { key: 'trend_series', type: LineSeries, config: cfg.trendLineSeriesConfig },
-  { key: 'breaktrend_series', type: LineSeries, config: cfg.breakTrendLineSeriesConfig },
-  { key: 'ranges_series', type: LineSeries, config: cfg.rangesSeriesConfig },
-  { key: 'historycandles_series', type: CandlestickSeries, config: cfg.candleSeriesConfig },
-  { key: 'historyvolume_series', type: HistogramSeries, config: cfg.candleSeriesConfig },
-  { key: 'vma_200', type: LineSeries, config: cfg.vmaSeriesConfig },
-  { key: 'vma_5', type: LineSeries, config: cfg.vmaSeriesConfig },
+  { key: 'candles_series', type: LightweightCharts.CandlestickSeries, config: cfg.candleSeriesConfig },
+  { key: 'volume_series', type: LightweightCharts.HistogramSeries, config: cfg.volumeSeriesConfig },
+  { key: 'extrema_series', type: LightweightCharts.LineSeries, config: cfg.lineSeriesConfig },
+  { key: 'wave_series', type: LightweightCharts.LineSeries, config: cfg.waveSeriesConfig },
+  { key: 'trend_series', type: LightweightCharts.LineSeries, config: cfg.trendLineSeriesConfig },
+  { key: 'breaktrend_series', type: LightweightCharts.LineSeries, config: cfg.breakTrendLineSeriesConfig },
+  { key: 'ranges_series', type: LightweightCharts.LineSeries, config: cfg.rangesSeriesConfig },
+  { key: 'historycandles_series', type: LightweightCharts.CandlestickSeries, config: cfg.candleSeriesConfig },
+  { key: 'historyvolume_series', type: LightweightCharts.HistogramSeries, config: cfg.candleSeriesConfig },
+  { key: 'vma_200', type: LightweightCharts.LineSeries, config: cfg.vmaSeriesConfig },
+  { key: 'vma_5', type: LightweightCharts.LineSeries, config: cfg.vmaSeriesConfig },
 ];
 
 const series = seriesTypesAndConfigs.reduce((acc, { key, type, config }) => {

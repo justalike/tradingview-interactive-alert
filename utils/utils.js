@@ -1,4 +1,3 @@
-import { CandlestickSeries, HistogramSeries, LineSeries } from 'lightweight-charts';
 
 
 // Utility functions for series creation
@@ -112,10 +111,10 @@ export function setChartSize(chart) {
 }
 export const createSeries = (chart, type, config) => {
   const seriesTypes = {
-    candlestick: () => chart.addSeries(CandlestickSeries, config),
-    line: () => chart.addSeries(LineSeries, config),
-    histogram: () => chart.addSeries(HistogramSeries, config),
-    custom: () => chart.addSeries(CustomSeries, config),
+    candlestick: () => chart.addSeries(LightweightCharts.CandlestickSeries, config),
+    line: () => chart.addSeries(LightweightCharts.LineSeries, config),
+    histogram: () => chart.addSeries(LightweightCharts.HistogramSeries, config),
+    custom: () => chart.addSeries(LightweightCharts.CustomSeries, config),
   };
   if (!seriesTypes[type]) {
     throw new Error(`Unsupported series type: ${type}`);
