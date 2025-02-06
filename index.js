@@ -22,7 +22,7 @@ var lastCandle = null;
 
 
 // Series configuration
-volumeSeries = chart.addHistogramSeries({
+volumeSeries = chart.addSeries(HistogramSeries, {
   color: '#26a69a',
   priceFormat: {
     type: 'volume',
@@ -56,7 +56,7 @@ volumeBarsSeries = chart.addLineSeries({
 
 
 
-const candleSeries = chart.addCandlestickSeries()
+const candleSeries = chart.addSeries(CandlestickSeries, {})
 
 candleSeries.priceScale().applyOptions({
   scaleMargins: {

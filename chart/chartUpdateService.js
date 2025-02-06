@@ -175,7 +175,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
     trend.direction = trend.direction || trend.trendDirection;
 
-    let trendLineSeries = chart.addLineSeries({
+    let trendLineSeries = chart.addSeries(LineSeries, {
       color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
       lineWidth: 2,
       priceLineVisible: false,
@@ -184,7 +184,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
     trendSeries.push(trendLineSeries);
 
-    let breakTrendLineSeries = chart.addLineSeries({
+    let breakTrendLineSeries = chart.addSeries(LineSeries, {
       color: trend.direction == "U" ? 'white' : 'yellow',
       lineWidth: 2,
       lineStyle: 2,
@@ -196,7 +196,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
 
     trendSeries.push(breakTrendLineSeries);
 
-    let rangesSeries = chart.addLineSeries({
+    let rangesSeries = chart.addSeries(LineSeries, {
       color: trend.direction === "U" ? 'lime' : 'red',
       lineWidth: 2,
       lineStyle: 1,
