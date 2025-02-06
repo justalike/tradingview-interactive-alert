@@ -109,10 +109,10 @@ export function setChartSize(chart) {
 }
 export const createSeries = (chart, type, config) => {
   const seriesTypes = {
-    candlestick: () => chart.addCandlestickSeries(config),
-    line: () => chart.addLineSeries(config),
-    histogram: () => chart.addHistogramSeries(config),
-    custom: () => chart.addCustomSeries(config),
+    candlestick: () => chart.addSeries(CandlestickSeries, config),
+    line: () => chart.addSeries(LineSeries, config),
+    histogram: () => chart.addSeries(HistogramSeries, config),
+    custom: () => chart.addSeries(CustomSeries, config),
   };
   if (!seriesTypes[type]) {
     throw new Error(`Unsupported series type: ${type}`);
