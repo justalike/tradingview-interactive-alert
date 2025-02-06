@@ -158,7 +158,7 @@ export function updateChartWithWaveData(chart, waveseries, candleSeries, candleS
 export function updateChartWithTrendData(chart, candlesData, data) {
 
   trendSeries.forEach(series => chart.removeSeries(series));
-  trendSeries.forEach(series => createSeriesMarkers(series, []));
+  trendSeries.forEach(series => LightweightCharts.createSeriesMarkers(series, []));
   trendSeries = []
   // We have to create new series for each trend lines we are pushing. otherwise it wont work
   // because it tries to connect dots {}'s between each trend line / range / breaktrend

@@ -334,7 +334,7 @@ function updateChartWithData(data) {
   console.log(markersData)
 
   // Set the markers on the line series
-  createSeriesMarkers(lineSeries, markersData);
+  LightweightCharts.createSeriesMarkers(lineSeries, markersData);
 }
 function updateWaveSeries(chart, data) {
   if (!data.every(item => isValidWaveData(item))) {
