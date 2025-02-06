@@ -124,7 +124,7 @@ export function updateChartWithExtremaData(chart, series, data) {
     shape: 'circle',
   }));
 
-  series.setMarkers(markersData);
+  createSeriesMarkers(series, markersData);
 }
 
 export function updateChartWithWaveData(chart, waveseries, candleSeries, candleSeriesData, data) {
@@ -158,7 +158,7 @@ export function updateChartWithWaveData(chart, waveseries, candleSeries, candleS
 export function updateChartWithTrendData(chart, candlesData, data) {
 
   trendSeries.forEach(series => chart.removeSeries(series));
-  trendSeries.forEach(series => series.setMarkers([]));
+  trendSeries.forEach(series => reateSeriesMarkers(series, []));
   trendSeries = []
   // We have to create new series for each trend lines we are pushing. otherwise it wont work
   // because it tries to connect dots {}'s between each trend line / range / breaktrend
@@ -278,7 +278,7 @@ export function updateChartWithTrendData(chart, candlesData, data) {
     let endTrendMarkerPos = trend.direction == "D" ? 'belowBar' : 'aboveBar';
     let startTrendMarkerPos = trend.direction == "D" ? 'aboveBar' : 'belowBar';
     // Set the markers on the trend line series
-    trendLineSeries.setMarkers([
+    reateSeriesMarkers(trendLineSeries, [
       { time: trend.startTrend.timestamp / 1000, position: endTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.startTrend.value },
       { time: trend.endTrend?.timestamp / 1000, position: startTrendMarkerPos, color: 'yellow', shape: 'square', text: trend.endTrend?.value },
     ])
