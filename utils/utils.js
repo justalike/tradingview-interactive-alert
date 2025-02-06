@@ -83,7 +83,7 @@ export function processKeyBars(chart, waveSeries, candleSeries, candleSeriesData
       updateSeriesData(candleSeries, newCandles);
 
       function createAndSetLineSeries(data) {
-        const keyBarlineSeries = chart.addLineSeries({
+        const keyBarlineSeries = chart.addSeries(LightweightCharts.LineSeries, {
           color: 'orange',
           lineWidth: 2,
           lineStyle: 2,

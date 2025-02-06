@@ -41,15 +41,15 @@ volumeSeries.priceScale().applyOptions({
   },
 });
 
-lineSeries = chart.addLineSeries({
+lineSeries = chart.addSeries(LightweightCharts.LineSeries, {
   lineWidth: 0.5,
   lineStyle: 2 // or LineStyle.Dashed
 });
-waveSeries = chart.addLineSeries({
+waveSeries = chart.addSeries(LightweightCharts.LineSeries, {
   lineWidth: 2,
   lineStyle: 2
 });
-volumeBarsSeries = chart.addLineSeries({
+volumeBarsSeries = chart.addSeries(LightweightCharts.LineSeries, {
   lineWidth: 2,
   lineStyle: 2
 })
@@ -213,14 +213,14 @@ function updateChartWithTrendData(data) {
       console.log('Missing or invalid data for trend:', trend);
       return;
     }
-    trendLineSeries = chart.addLineSeries({
+    trendLineSeries = chart.addSeries(LightweightCharts.LineSeries, {
       color: trend.direction == "U" ? 'white' : 'yellow', // Set color based on direction
       lineWidth: 2,
       priceLineVisible: false,
       crosshairMarkerVisible: false,
     });
 
-    breakTrendLineSeries = chart.addLineSeries({
+    breakTrendLineSeries = chart.addSeries(LightweightCharts.LineSeries, {
       color: trend.direction == "U" ? 'white' : 'yellow',
       lineWidth: 2,
       lineStyle: 2,
@@ -230,7 +230,7 @@ function updateChartWithTrendData(data) {
       overlay: true
     })
 
-    rangesSeries = chart.addLineSeries({
+    rangesSeries = chart.addSeries(LightweightCharts.LineSeries, {
       color: trend.direction === "U" ? 'lime' : 'red',
       lineWidth: 2,
       lineStyle: 1,
@@ -334,7 +334,7 @@ function updateChartWithData(data) {
   console.log(markersData)
 
   // Set the markers on the line series
-  reateSeriesMarkers(lineSeries, markersData);
+  createSeriesMarkers(lineSeries, markersData);
 }
 function updateWaveSeries(chart, data) {
   if (!data.every(item => isValidWaveData(item))) {
@@ -487,7 +487,7 @@ document.getElementById('loadDataButton').addEventListener('click', async () => 
 connectWebSocket()
 
 // function createAndSetBreakTrendSeries(data) {
-//   const lineSeries = chart.addLineSeries({
+//   const lineSeries = chart.addSeries(LightweightCharts.LineSeries,{
 //     color: 'green',
 //     lineWidth: 2,
 //     lineStyle: 2,
